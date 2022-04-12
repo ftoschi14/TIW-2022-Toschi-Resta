@@ -35,7 +35,8 @@ CREATE TABLE `BankAccount`(
 	`UserID` integer not null,
 	`Name` varchar(40) not null,
 	`Balance` decimal(10,2) not null,
-	constraint `UID` foreign key(`UserID`) references `User`(`ID`) on update cascade on delete cascade
+	constraint `UID` foreign key(`UserID`) references `User`(`ID`) on update cascade on delete cascade,
+	constraint `NoNegativeBalance` check(`Balance`>=0)
 	)engine=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 	

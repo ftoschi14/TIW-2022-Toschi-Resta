@@ -31,7 +31,8 @@ CREATE TABLE `bankaccount` (
   `Balance` decimal(10,2) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `UID` (`UserID`),
-  CONSTRAINT `UID` FOREIGN KEY (`UserID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `UID` FOREIGN KEY (`UserID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  constraint `NoNegativeBalance` check(`Balance`>=0)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
