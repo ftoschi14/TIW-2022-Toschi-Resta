@@ -25,8 +25,8 @@ public class UserDAO {
 		//Preparing the statement
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(0, email);
-			preparedStatement.setString(1, password);
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, password);
 			
 			//Executing the query
 			result = preparedStatement.executeQuery();
@@ -76,7 +76,7 @@ public class UserDAO {
 		//Preparing the statement
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, ID);
+			preparedStatement.setInt(1, ID);
 			
 			//Executing the query
 			result = preparedStatement.executeQuery();
@@ -124,11 +124,11 @@ public class UserDAO {
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, user.getID());
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, password);
-			preparedStatement.setString(3, user.getName());
-			preparedStatement.setString(4, user.getSurname());
+			preparedStatement.setInt(1, user.getID());
+			preparedStatement.setString(2, user.getEmail());
+			preparedStatement.setString(3, password);
+			preparedStatement.setString(4, user.getName());
+			preparedStatement.setString(5, user.getSurname());
 			
 			//Executing update
 			result = preparedStatement.executeUpdate();
