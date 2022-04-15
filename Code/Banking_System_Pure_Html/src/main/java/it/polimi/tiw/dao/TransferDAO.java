@@ -29,8 +29,8 @@ private Connection connection;
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, accountID);
 			preparedStatement.setInt(1, accountID);
+			preparedStatement.setInt(2, accountID);
 			
 			//Executing the query
 			result = preparedStatement.executeQuery();
@@ -79,11 +79,11 @@ private Connection connection;
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setDouble(0, amount);
-			preparedStatement.setTimestamp(1, timestamp);
-			preparedStatement.setString(2, reason);
-			preparedStatement.setInt(3, senderid);
-			preparedStatement.setInt(4, recipentid);
+			preparedStatement.setDouble(1, amount);
+			preparedStatement.setTimestamp(2, timestamp);
+			preparedStatement.setString(3, reason);
+			preparedStatement.setInt(4, senderid);
+			preparedStatement.setInt(5, recipentid);
 			
 			//Executing update
 			result = preparedStatement.executeUpdate();
