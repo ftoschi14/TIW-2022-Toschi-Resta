@@ -123,6 +123,7 @@ public class UserDAO {
 		
 		try {
 			//Preparing the statement
+			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(0, user.getID());
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, password);
