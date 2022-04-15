@@ -9,7 +9,7 @@ USE `bank`;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET nameS utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -18,32 +18,32 @@ USE `bank`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `bankaccount`
+-- Table structure for table `bank_account`
 --
 
-DROP TABLE IF EXISTS `bankaccount`;
+DROP TABLE IF EXISTS `bank_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `bankaccount` (
+CREATE TABLE `bank_account` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `UserID` int NOT NULL,
-  `Name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
-  `Balance` decimal(10,2) NOT NULL,
+  `userID` int NOT NULL,
+  `name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `balance` decimal(10,2) NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `UID` (`UserID`),
-  CONSTRAINT `UID` FOREIGN KEY (`UserID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  constraint `NoNegativeBalance` check(`Balance`>=0)
+  KEY `UID` (`userID`),
+  CONSTRAINT `UID` FOREIGN KEY (`userID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  constraint `NoNegativebalance` check(`balance`>=0)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bankaccount`
+-- Dumping data for table `bank_account`
 --
 
-LOCK TABLES `bankaccount` WRITE;
-/*!40000 ALTER TABLE `bankaccount` DISABLE KEYS */;
-INSERT INTO `bankaccount` VALUES (1,1,'myAccount',15000.00),(2,2,'myAccount',15000.00),(3,3,'myAccount',20000.00),(4,4,'default',20000.00),(5,5,'default',25000.00),(6,6,'default',25000.00),(7,1,'accountA',5000.00),(8,1,'AccountB',2000.00),(9,2,'Account1',5000.00),(10,3,'NewAccount',1000.00);
-/*!40000 ALTER TABLE `bankaccount` ENABLE KEYS */;
+LOCK TABLES `bank_account` WRITE;
+/*!40000 ALTER TABLE `bank_account` DISABLE KEYS */;
+INSERT INTO `bank_account` VALUES (1,1,'myAccount',15000.00),(2,2,'myAccount',15000.00),(3,3,'myAccount',20000.00),(4,4,'default',20000.00),(5,5,'default',25000.00),(6,6,'default',25000.00),(7,1,'accountA',5000.00),(8,1,'AccountB',2000.00),(9,2,'Account1',5000.00),(10,3,'NewAccount',1000.00);
+/*!40000 ALTER TABLE `bank_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -55,17 +55,17 @@ DROP TABLE IF EXISTS `transfer`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transfer` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Amount` decimal(8,2) NOT NULL,
+  `amount` decimal(8,2) NOT NULL,
   `Timestamp` timestamp NOT NULL,
-  `Reason` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `IDOriginAccount` int NOT NULL,
-  `IDDestinationAccount` int NOT NULL,
+  `reason` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `senderID` int NOT NULL,
+  `recipientID` int NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `OAccount` (`IDOriginAccount`),
-  KEY `DAccount` (`IDDestinationAccount`),
-  CONSTRAINT `DAccount` FOREIGN KEY (`IDDestinationAccount`) REFERENCES `bankaccount` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `OAccount` FOREIGN KEY (`IDOriginAccount`) REFERENCES `bankaccount` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `PositiveAMount` CHECK ((`Amount` >= 0))
+  KEY `OAccount` (`senderID`),
+  KEY `DAccount` (`recipientID`),
+  CONSTRAINT `DAccount` FOREIGN KEY (`recipientID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `OAccount` FOREIGN KEY (`senderID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Positiveamount` CHECK ((`amount` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,12 +88,12 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `Password` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `Name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `Surname` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `surname` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `Username` (`Username`)
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
