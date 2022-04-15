@@ -1,5 +1,5 @@
 package it.polimi.tiw.dao;
 
-public class TransactionDAO {
+public class TransferDAO {
 
 }
