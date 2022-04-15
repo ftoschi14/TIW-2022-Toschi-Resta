@@ -26,7 +26,7 @@ public class AccountDAO {
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, ID);
+			preparedStatement.setInt(1, ID);
 			
 			//Executing the query
 			result = preparedStatement.executeQuery();
@@ -80,7 +80,7 @@ public class AccountDAO {
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, userID);
+			preparedStatement.setInt(1, userID);
 			
 			//Executing the query
 			result = preparedStatement.executeQuery();
@@ -129,9 +129,9 @@ public class AccountDAO {
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, userid);
-			preparedStatement.setString(1, name);
-			preparedStatement.setDouble(2, balance);
+			preparedStatement.setInt(1, userid);
+			preparedStatement.setString(2, name);
+			preparedStatement.setDouble(3, balance);
 			
 			//Executing update
 			result = preparedStatement.executeUpdate();
