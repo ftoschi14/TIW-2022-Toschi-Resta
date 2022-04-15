@@ -120,8 +120,8 @@ public class AccountDAO {
 		return accounts;
 	}
 	
-	public int createAccount(int id, int userid, String name, double balance) throws SQLException {
-		String query = "INSERT INTO bankaccount(ID, userID, name, balance) VALUES(?,?,?,?)";
+	public int createAccount(int userid, String name, double balance) throws SQLException {
+		String query = "INSERT INTO bankaccount(userID, name, balance) VALUES(?,?,?)";
 		
 		int result = 0;
 		PreparedStatement preparedStatement = null;
@@ -129,10 +129,9 @@ public class AccountDAO {
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, id);
-			preparedStatement.setInt(1, userid);
-			preparedStatement.setString(2, name);
-			preparedStatement.setDouble(3, balance);
+			preparedStatement.setInt(0, userid);
+			preparedStatement.setString(1, name);
+			preparedStatement.setDouble(2, balance);
 			
 			//Executing update
 			result = preparedStatement.executeUpdate();
