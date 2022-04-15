@@ -17,7 +17,7 @@ public class AccountDAO {
 	public Account findAccountByID(int ID) throws SQLException {
 		Account account = null;
 		
-		String query = "SELECT name, balance FROM bankaccount WHERE id = ?";
+		String query = "SELECT name, balance FROM bankaccount WHERE ID = ?";
 		
 		ResultSet result = null;
 		PreparedStatement preparedStatement = null;
@@ -71,7 +71,7 @@ public class AccountDAO {
 		List<Account> accounts = new ArrayList<>();
 		Account account = null;
 		
-		String query = "SELECT name, balance FROM bankaccount WHERE userid = ?";
+		String query = "SELECT name, balance FROM bankaccount WHERE userID = ?";
 		
 		ResultSet result = null;
 		PreparedStatement preparedStatement = null;
@@ -121,7 +121,7 @@ public class AccountDAO {
 	}
 	
 	public int createAccount(int id, int userid, String name, double balance) throws SQLException {
-		String query = "INSERT INTO bankaccount(id, userid, name, balance) VALUES(?,?,?,?)";
+		String query = "INSERT INTO bankaccount(ID, userID, name, balance) VALUES(?,?,?,?)";
 		
 		int result = 0;
 		PreparedStatement preparedStatement = null;
