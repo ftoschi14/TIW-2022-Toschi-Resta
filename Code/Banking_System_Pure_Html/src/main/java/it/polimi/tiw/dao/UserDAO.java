@@ -115,8 +115,8 @@ public class UserDAO {
 		return user;
 	}
 	
-	public int registerUser(User user, String password) throws SQLException {
-		String query = "INSERT INTO user(id, username, password, name, surname) VALUES (?,?,?,?,?)";
+	public int registerUser(String email, String password, String name, String surname) throws SQLException {
+		String query = "INSERT INTO user(username, password, name, surname) VALUES (?,?,?,?)";
 		
 		int result = 0;
 		PreparedStatement preparedStatement = null;
@@ -124,11 +124,11 @@ public class UserDAO {
 		try {
 			//Preparing the statement
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, user.getID());
-			preparedStatement.setString(2, user.getEmail());
-			preparedStatement.setString(3, password);
-			preparedStatement.setString(4, user.getName());
-			preparedStatement.setString(5, user.getSurname());
+			
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, password);
+			preparedStatement.setString(3, name);
+			preparedStatement.setString(4, surname);
 			
 			//Executing update
 			result = preparedStatement.executeUpdate();
