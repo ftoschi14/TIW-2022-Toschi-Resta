@@ -31,14 +31,18 @@ public class UserDAO {
 			//Executing the query
 			result = preparedStatement.executeQuery();
 			
-			while(result.next()) {
+			if(!result.isBeforeFirst()) { //ResultSet contains no rows
+				return null;
+			} else {
+				//Credentials can only match 1 user. 
+				result.next();
 				user = new User();
 				user.setEmail(email);
 				user.setID(result.getInt("id"));
 				user.setName(result.getString("name"));
 				user.setSurname(result.getString("surname"));
 			}
-			
+				
 		} catch (SQLException e) {
 			//Will be catched at controller level
 			throw new SQLException(e);
@@ -81,7 +85,11 @@ public class UserDAO {
 			//Executing the query
 			result = preparedStatement.executeQuery();
 			
-			while(result.next()) {
+			if(!result.isBeforeFirst()) {
+				return null;
+			} else {
+				// Only 1 match expected
+				result.next();
 				user = new User();
 				user.setID(ID);
 				user.setEmail(result.getString("username"));

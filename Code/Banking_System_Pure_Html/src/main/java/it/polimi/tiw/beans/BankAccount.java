@@ -1,6 +1,6 @@
 package it.polimi.tiw.beans;
 
-public class Account {
+public class BankAccount {
 	private int ID, userID;
 	private String name;
 	private double balance;

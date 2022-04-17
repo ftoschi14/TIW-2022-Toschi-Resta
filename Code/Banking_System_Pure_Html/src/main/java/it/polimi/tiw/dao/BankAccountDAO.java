@@ -1,21 +1,21 @@
 package it.polimi.tiw.dao;
 
-import it.polimi.tiw.beans.Account;
+import it.polimi.tiw.beans.BankAccount;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class AccountDAO {
+public class BankAccountDAO {
 	private Connection connection;
 	
-	public AccountDAO(Connection connection) {
+	public BankAccountDAO(Connection connection) {
 		this.connection = connection;
 	}
 	
-	public Account findAccountByID(int ID) throws SQLException {
-		Account account = null;
+	public BankAccount findAccountByID(int ID) throws SQLException {
+		BankAccount account = null;
 		
 		String query = "SELECT name, balance FROM bankaccount WHERE ID = ?";
 		
@@ -32,7 +32,7 @@ public class AccountDAO {
 			result = preparedStatement.executeQuery();
 			
 			while(result.next()) {
-				account = new Account();
+				account = new BankAccount();
 				account.setID(ID);
 				account.setUserID(result.getInt("userid"));
 				account.setName(result.getString("name"));
@@ -67,9 +67,9 @@ public class AccountDAO {
 		
 	}
 	
-	public List<Account> findAllAccountsByUserID (int userID) throws SQLException{
-		List<Account> accounts = new ArrayList<>();
-		Account account = null;
+	public List<BankAccount> findAllAccountsByUserID (int userID) throws SQLException{
+		List<BankAccount> accounts = new ArrayList<>();
+		BankAccount account = null;
 		
 		String query = "SELECT name, balance FROM bankaccount WHERE userID = ?";
 		
@@ -86,7 +86,7 @@ public class AccountDAO {
 			result = preparedStatement.executeQuery();
 			
 			while(result.next()) {
-				account = new Account();
+				account = new BankAccount();
 				account.setID(result.getInt("id"));
 				account.setUserID(userID);
 				account.setName(result.getString("name"));
