@@ -20,7 +20,7 @@ private Connection connection;
 		List<Transfer> transfers = new ArrayList<>();
 		Transfer transfer = null;
 		
-		String query = "SELECT amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID = ? or recipientID = ?";
+		String query = "SELECT id, amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID = ? or recipientID = ?";
 		
 		ResultSet result = null;
 		PreparedStatement preparedStatement = null;
