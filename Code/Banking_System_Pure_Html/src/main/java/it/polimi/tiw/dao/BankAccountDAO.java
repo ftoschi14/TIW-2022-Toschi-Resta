@@ -38,7 +38,7 @@ public class BankAccountDAO {
 				account.setID(ID);
 				account.setUserID(result.getInt("userid"));
 				account.setName(result.getString("name"));
-				account.setBalance(result.getDouble("balance"));
+				account.setBalance(result.getBigDecimal("balance"));
 			}
 			
 		}catch(SQLException e) {
@@ -92,7 +92,7 @@ public class BankAccountDAO {
 				account.setID(result.getInt("id"));
 				account.setUserID(userID);
 				account.setName(result.getString("name"));
-				account.setBalance(result.getDouble("balance"));
+				account.setBalance(result.getBigDecimal("balance"));
 				accounts.add(account);
 			}
 			
