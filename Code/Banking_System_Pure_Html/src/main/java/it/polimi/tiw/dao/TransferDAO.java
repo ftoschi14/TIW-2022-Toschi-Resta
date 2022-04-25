@@ -1,5 +1,6 @@
 package it.polimi.tiw.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import it.polimi.tiw.beans.Transfer;
 import java.sql.PreparedStatement;
@@ -71,37 +72,74 @@ private Connection connection;
 		return transfers;
 	}
 	
-	public int makeTransfer(double amount, Timestamp timestamp, String reason, int senderid, int recipentid) throws SQLException{
-		String query = "INSERT INTO transfer(amount,timestamp,reason,senderID,recipientID) VALUES (?,?,?,?,?)";
-		int result = 0;
-		PreparedStatement preparedStatement = null;
+	public void makeTransfer(BigDecimal amount, Timestamp timestamp, String reason, int senderid, int recipentid) throws SQLException{
+		String queryInsert = "INSERT INTO transfer(amount,timestamp,reason,senderID,recipientID) VALUES (?,?,?,?,?)";
+		String queryUpdateRecipient = "UPDATE bank.bank_account SET balance = balance + ? WHERE id = ?" ;
+		String queryUpdateSender = "UPDATE bank.bank_account SET balance = balance - ? WHERE id = ?" ;
+		PreparedStatement preparedStatementInsert = null;
+		PreparedStatement preparedStatementUpdateRecipient = null;
+		PreparedStatement preparedStatementUpdateSender = null;
 		
 		try {
-			//Preparing the statement
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setDouble(1, amount);
-			preparedStatement.setTimestamp(2, timestamp);
-			preparedStatement.setString(3, reason);
-			preparedStatement.setInt(4, senderid);
-			preparedStatement.setInt(5, recipentid);
+			//Disabling autocommit for atomicity
+			connection.setAutoCommit(false);
+			
+			//Preparing the statement for inserting the entry
+			preparedStatementInsert = connection.prepareStatement(queryInsert);
+			preparedStatementInsert.setBigDecimal(1, amount);
+			preparedStatementInsert.setTimestamp(2, timestamp);
+			preparedStatementInsert.setString(3, reason);
+			preparedStatementInsert.setInt(4, senderid);
+			preparedStatementInsert.setInt(5, recipentid);
+			
 			
 			//Executing update
-			result = preparedStatement.executeUpdate();
+			preparedStatementInsert.executeUpdate();
+			connection.commit();
+			
+			//Preparing the statement for updating recipient account
+			preparedStatementUpdateRecipient = connection.prepareStatement(queryUpdateRecipient);
+			preparedStatementUpdateRecipient.setBigDecimal(1,amount);
+			preparedStatementUpdateRecipient.setInt(2, recipentid);
+			
+			//Executing update
+			preparedStatementUpdateRecipient.executeUpdate();
+			connection.commit();
+			
+			//Preparing the statement for updating recipient account
+			preparedStatementUpdateSender = connection.prepareStatement(queryUpdateSender);
+			preparedStatementUpdateSender.setBigDecimal(1,amount);
+			preparedStatementUpdateSender.setInt(2, senderid);
+			
+			//Executing update
+			preparedStatementUpdateSender.executeUpdate();
+			connection.commit();
+			
+			
 			
 		} catch (SQLException e) {
+			connection.rollback();
+			//TO-DO: GESTIONE MIGLIORE DELLE ECCEZIONI
 			throw new SQLException(e);
 		} finally {
+			//Enabling autocommit
+			connection.setAutoCommit(true);
 			
 			//Close PreparedStatement
 			try {
-				if(preparedStatement != null) {
-					preparedStatement.close();
+				if(preparedStatementInsert != null) {
+					preparedStatementInsert.close();
+				}
+				if(preparedStatementUpdateRecipient != null) {
+					preparedStatementUpdateRecipient.close();
+				}
+				if(preparedStatementUpdateSender != null) {
+					preparedStatementUpdateSender.close();
 				}
 			}catch (SQLException e1) {
 				throw new SQLException(e1);
 			}
 		}
 		
-		return result;
 	}
 }
