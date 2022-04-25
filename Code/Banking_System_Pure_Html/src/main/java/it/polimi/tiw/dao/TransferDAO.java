@@ -72,8 +72,8 @@ private Connection connection;
 		return transfers;
 	}
 	
-	public void makeTransfer(BigDecimal amount, Timestamp timestamp, String reason, int senderid, int recipentid) throws SQLException{
-		String queryInsert = "INSERT INTO transfer(amount,timestamp,reason,senderID,recipientID) VALUES (?,?,?,?,?)";
+	public void makeTransfer(BigDecimal amount, String reason, int senderid, int recipentid) throws SQLException{
+		String queryInsert = "INSERT INTO transfer(amount,timestamp,reason,senderID,recipientID) VALUES (?,?,?,?)";
 		String queryUpdateRecipient = "UPDATE bank.bank_account SET balance = balance + ? WHERE id = ?" ;
 		String queryUpdateSender = "UPDATE bank.bank_account SET balance = balance - ? WHERE id = ?" ;
 		PreparedStatement preparedStatementInsert = null;
@@ -87,10 +87,9 @@ private Connection connection;
 			//Preparing the statement for inserting the entry
 			preparedStatementInsert = connection.prepareStatement(queryInsert);
 			preparedStatementInsert.setBigDecimal(1, amount);
-			preparedStatementInsert.setTimestamp(2, timestamp);
-			preparedStatementInsert.setString(3, reason);
-			preparedStatementInsert.setInt(4, senderid);
-			preparedStatementInsert.setInt(5, recipentid);
+			preparedStatementInsert.setString(2, reason);
+			preparedStatementInsert.setInt(3, senderid);
+			preparedStatementInsert.setInt(4, recipentid);
 			
 			
 			//Executing update
