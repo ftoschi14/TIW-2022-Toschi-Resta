@@ -33,6 +33,9 @@ public class GoToTransferConfirmed extends HttpServlet {
         super();
     }
     
+    /**
+     * Overriding init method to use thymeleaf
+     */
     public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -54,11 +57,12 @@ public class GoToTransferConfirmed extends HttpServlet {
 		}
 		
 		
+		
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		doGet(request, response);
 	}
 
 }
