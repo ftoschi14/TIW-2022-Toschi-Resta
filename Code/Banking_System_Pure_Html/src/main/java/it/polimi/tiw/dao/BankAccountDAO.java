@@ -1,6 +1,8 @@
 package it.polimi.tiw.dao;
 
 import it.polimi.tiw.beans.BankAccount;
+
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -120,7 +122,7 @@ public class BankAccountDAO {
 		return accounts;
 	}
 	
-	public int createAccount(int userid, String name, double balance) throws SQLException {
+	public int createAccount(int userid, String name, BigDecimal balance) throws SQLException {
 		String query = "INSERT INTO bank_account(userID, name, balance) VALUES(?,?,?)";
 		
 		int result = 0;
@@ -131,7 +133,7 @@ public class BankAccountDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, userid);
 			preparedStatement.setString(2, name);
-			preparedStatement.setDouble(3, balance);
+			preparedStatement.setBigDecimal(3, balance);
 			
 			//Executing update
 			result = preparedStatement.executeUpdate();
