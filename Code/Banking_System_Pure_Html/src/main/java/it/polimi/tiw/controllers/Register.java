@@ -23,7 +23,8 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
-import it.polimi.tiw.utils.TemplateHandler;
+import it.polimi.tiw.utils.EngineHandler;
+import it.polimi.tiw.utils.Paths;
 
 /**
  * Servlet implementation class Register
@@ -44,7 +45,7 @@ public class Register extends HttpServlet {
     @Override
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
-    	engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
+    	engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
     }
 
     @Override
@@ -63,7 +64,7 @@ public class Register extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		
-		engine.process(Path.toRegisterPage, context, response.getWriter());
+		engine.process(Paths.pathToRegistrationPage, context, response.getWriter());
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class Register extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
-		response.sendRedirect(Paths.goToHomeServlet);
+		response.sendRedirect(Paths.pathToGoToHomeServlet);
 	}
 
 }

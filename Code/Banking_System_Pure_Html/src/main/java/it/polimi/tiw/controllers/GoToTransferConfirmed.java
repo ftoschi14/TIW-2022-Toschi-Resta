@@ -23,7 +23,7 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import it.polimi.tiw.utils.Paths;
-import it.polimi.tiw.utils.TemplateHandler;
+import it.polimi.tiw.utils.EngineHandler;
 
 import org.thymeleaf.context.WebContext;
 
@@ -43,7 +43,7 @@ public class GoToTransferConfirmed extends HttpServlet {
      */
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
-		engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
+		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

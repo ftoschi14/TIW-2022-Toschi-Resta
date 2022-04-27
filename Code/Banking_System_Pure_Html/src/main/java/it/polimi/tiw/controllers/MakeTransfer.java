@@ -26,7 +26,7 @@ import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.dao.TransferDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import it.polimi.tiw.utils.Paths;
-import it.polimi.tiw.utils.TemplateHandler;
+import it.polimi.tiw.utils.EngineHandler;
 
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -51,7 +51,7 @@ public class MakeTransfer extends HttpServlet {
      */
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
-		engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
+		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 	}
 
 	

@@ -1,9 +1,9 @@
 package it.polimi.tiw.controllers;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -21,7 +21,8 @@ import it.polimi.tiw.beans.BankAccount;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
-import it.polimi.tiw.utils.TemplateHandler;
+import it.polimi.tiw.utils.EngineHandler;
+import it.polimi.tiw.utils.Paths;
 
 /**
  * Servlet implementation class GoToHome
@@ -40,7 +41,7 @@ public class GoToHome extends HttpServlet {
     @Override
     public void init() throws ServletException{
     	connection = ConnectionHandler.getConnection(getServletContext());
-    	engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
+    	engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
     }
     
     @Override
@@ -60,11 +61,11 @@ public class GoToHome extends HttpServlet {
 		
 		// If no session is found or no User is found, then redirect to login page
 		if(session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(Paths.pathToLogin);
+			response.sendRedirect(Paths.pathToLoginServlet);
 		}
 		
 		User user = (User) session.getAttribute("user");
-		List<BankAccount> accounts;
+		List<BankAccount> accounts = new ArrayList<>();
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		try {
 
@@ -79,7 +80,7 @@ public class GoToHome extends HttpServlet {
 		}
 		
 		//Redirect to page with Account list
-		String path = Paths.pathToHomepage;
+		String path = Paths.pathToHomePage;
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		context.setVariable("accounts", accounts);

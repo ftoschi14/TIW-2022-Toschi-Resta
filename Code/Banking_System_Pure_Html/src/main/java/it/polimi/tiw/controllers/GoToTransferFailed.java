@@ -19,7 +19,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.utils.ConnectionHandler;
 import it.polimi.tiw.utils.Paths;
-import it.polimi.tiw.utils.TemplateHandler;
+import it.polimi.tiw.utils.EngineHandler;
 
 
 @WebServlet("/GoToTransferFailed")
@@ -37,7 +37,7 @@ public class GoToTransferFailed extends HttpServlet {
      */
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
-		engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
+		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

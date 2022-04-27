@@ -6,7 +6,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-public class TemplateHandler {
+public class EngineHandler {
 	
 	public static TemplateEngine getHTMLTemplateEngine(ServletContext context) {
 		

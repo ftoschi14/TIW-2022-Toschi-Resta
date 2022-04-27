@@ -12,7 +12,7 @@ public class Paths {
 	
 	public static String pathToLoginServlet = "/Login";
 	public static String pathToGoToLoginServlet = "/GoToLogin";
-	public static String pathToRegistrationServlet = "/Registration";
+	public static String pathToRegistrationServlet = "/Register";
 	public static String pathToGoToHomeServlet = "/GoToHome";
 	public static String pathToSelectAccountServlet = "/SelectAccount";
 	public static String pathToGoToTransferConfirmedServlet = "/GoTransferConfirmed";

@@ -22,7 +22,7 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
-import it.polimi.tiw.utils.TemplateHandler;
+import it.polimi.tiw.utils.EngineHandler;
 
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -44,7 +44,7 @@ public class SelectAccount extends HttpServlet {
      */
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
-		engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
+		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 	}
 
 	/**
