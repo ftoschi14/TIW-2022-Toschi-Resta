@@ -16,6 +16,7 @@ import org.thymeleaf.TemplateEngine;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
+import it.polimi.tiw.utils.Paths;
 import it.polimi.tiw.utils.TemplateHandler;
 
 /**
@@ -72,7 +73,7 @@ public class Login extends HttpServlet {
 		
 		if(user != null) {
 			request.getSession().setAttribute("user", user);
-			path = getServletContext().getContextPath() + "/Home";
+			path = getServletContext().getContextPath() + Paths.pathToHomePage;
 			response.sendRedirect(path);
 		} else {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
