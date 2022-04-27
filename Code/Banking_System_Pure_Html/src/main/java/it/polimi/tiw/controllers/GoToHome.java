@@ -27,7 +27,7 @@ import it.polimi.tiw.utils.Paths;
 /**
  * Servlet implementation class GoToHome
  */
-@WebServlet("/Home")
+@WebServlet("/GoToHome")
 public class GoToHome extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
@@ -61,7 +61,7 @@ public class GoToHome extends HttpServlet {
 		
 		// If no session is found or no User is found, then redirect to login page
 		if(session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(Paths.pathToLoginServlet);
+			response.sendRedirect(getServletContext().getContextPath() + Paths.pathToLoginServlet);
 		}
 		
 		User user = (User) session.getAttribute("user");

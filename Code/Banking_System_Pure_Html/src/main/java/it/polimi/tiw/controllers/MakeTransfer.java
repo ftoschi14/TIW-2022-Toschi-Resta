@@ -65,7 +65,7 @@ public class MakeTransfer extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// If the user is not logged in (not present in session) redirect to the login
 		// TO-DO: FILTER TO CHECK IF THE USER IS LOGGED
-		String loginpath = getServletContext().getContextPath() + "/Login.html";
+		String loginpath = getServletContext().getContextPath() + Paths.pathToGoToLoginServlet;
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
 			response.sendRedirect(loginpath);

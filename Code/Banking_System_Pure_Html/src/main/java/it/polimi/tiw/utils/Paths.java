@@ -14,6 +14,7 @@ public class Paths {
 	public static String pathToGoToLoginServlet = "/GoToLogin";
 	public static String pathToRegistrationServlet = "/Register";
 	public static String pathToGoToHomeServlet = "/GoToHome";
+	public static String pathToGoToCreateAccountServlet = "/CreateAccount";
 	public static String pathToSelectAccountServlet = "/SelectAccount";
 	public static String pathToGoToTransferConfirmedServlet = "/GoTransferConfirmed";
 	public static String pathToGoToTransferFailedServlet = "/GoTransferFailed";

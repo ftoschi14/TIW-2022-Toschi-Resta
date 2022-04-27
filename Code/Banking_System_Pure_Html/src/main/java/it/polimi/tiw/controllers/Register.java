@@ -34,6 +34,7 @@ public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
 	private TemplateEngine engine;
+	private Pattern pattern;
 	
 	// Regex for email address validation
 	private final String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
@@ -46,6 +47,7 @@ public class Register extends HttpServlet {
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
     	engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
+		pattern = Pattern.compile(regex);
     }
 
     @Override
@@ -85,7 +87,6 @@ public class Register extends HttpServlet {
 		}
 		
 		// Email validity check
-		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
 		if(!matcher.matches()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid email format");
