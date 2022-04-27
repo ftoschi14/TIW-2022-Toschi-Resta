@@ -22,6 +22,9 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
+import it.polimi.tiw.utils.TemplateHandler;
+
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Servlet implementation class SelectAccount
@@ -29,8 +32,8 @@ import it.polimi.tiw.utils.ConnectionHandler;
 @WebServlet("/SelectAccount")
 public class SelectAccount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	private Connection connection = null;
+	private TemplateEngine engine;
     
     public SelectAccount() {
         super();
@@ -40,13 +43,8 @@ public class SelectAccount extends HttpServlet {
      * Overriding init method to use thymeleaf
      */
     public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
+		engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
 	}
 
 	/**
@@ -69,7 +67,7 @@ public class SelectAccount extends HttpServlet {
 		// gets and checks params
 		Integer bankAccountID;
 		try {
-			bankAccountID = Integer.parseInt(request.getParameter("bankAccountID"));
+			bankAccountID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("bankAccountID")));
 		}catch(NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
 			return;
@@ -96,8 +94,8 @@ public class SelectAccount extends HttpServlet {
 		String path = "/WEB-INF/AccountDetails.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-		context.setVariable("accunt", bankAccount);
-		templateEngine.process(path, context, response.getWriter());
+		context.setVariable("account", bankAccount);
+		engine.process(path, context, response.getWriter());
 	}
 
 	
