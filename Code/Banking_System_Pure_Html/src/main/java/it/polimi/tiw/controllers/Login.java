@@ -57,11 +57,9 @@ public class Login extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Obtain and sanitize user input
-		String email;
-		String password;
 		
-		email = StringEscapeUtils.escapeJava(request.getParameter("email"));
-		password = StringEscapeUtils.escapeJava(request.getParameter("password"));
+		String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
+		String password = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please type your username and password");

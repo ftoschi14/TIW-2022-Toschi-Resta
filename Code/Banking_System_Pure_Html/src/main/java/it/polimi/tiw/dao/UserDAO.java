@@ -123,6 +123,52 @@ public class UserDAO {
 		return user;
 	}
 	
+	public boolean isEmailTaken(String email) throws SQLException {
+		boolean taken = false;
+		String query = "SELECT id FROM user WHERE username = ?";
+		
+		ResultSet result = null;
+		PreparedStatement preparedStatement = null;
+		
+		//Preparing the statement
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, email);
+			
+			//Executing the query
+			result = preparedStatement.executeQuery();
+			
+			if(result.isBeforeFirst()) {
+				// Matched some other user
+				taken = true;
+			}
+			
+		} catch (SQLException e) {
+			//Will be catched at controller level
+			throw new SQLException(e);
+		} finally {
+			//Close ResultSet
+			try {
+				if (result != null) {
+					result.close();
+				}
+			} catch (SQLException e1) {
+				//Will be catched at controller level
+				throw new SQLException(e1);
+			}
+			//Close PreparedStatement
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e2) {
+				//Will be catched at controller level
+				throw new SQLException(e2);
+			}
+		}
+		return taken;
+	}
+	
 	public int registerUser(String email, String password, String name, String surname) throws SQLException {
 		String query = "INSERT INTO user(username, password, name, surname) VALUES (?,?,?,?)";
 		
