@@ -21,7 +21,7 @@ private Connection connection;
 		List<Transfer> transfers = new ArrayList<>();
 		Transfer transfer = null;
 		
-		String query = "SELECT id, amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID = ? or recipientID = ?";
+		String query = "SELECT id, amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID = ? or recipientID = ? ORDER BY timestamp DESC";
 		
 		ResultSet result = null;
 		PreparedStatement preparedStatement = null;
@@ -43,6 +43,7 @@ private Connection connection;
 				transfer.setReason(result.getString("reason"));
 				transfer.setSenderID(result.getInt("senderID"));
 				transfer.setRecipientID(result.getInt("recipientID"));
+				transfer.setTimestamp(result.getTimestamp("timestamp"));
 				transfers.add(transfer);
 			}
 			
