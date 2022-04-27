@@ -1,7 +1,9 @@
 package it.polimi.tiw.controllers;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,23 +13,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.tiw.beans.BankAccount;
+import it.polimi.tiw.beans.User;
+import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
+import it.polimi.tiw.utils.Paths;
+import it.polimi.tiw.utils.TemplateHandler;
 
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 
 @WebServlet("/GoToTransactionConfirmed")
 public class GoToTransferConfirmed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	private Connection connection = null;
+	private TemplateEngine engine;
     
     public GoToTransferConfirmed() {
         super();
@@ -37,13 +42,8 @@ public class GoToTransferConfirmed extends HttpServlet {
      * Overriding init method to use thymeleaf
      */
     public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
+		engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
 	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,7 +56,44 @@ public class GoToTransferConfirmed extends HttpServlet {
 			return;
 		}
 		
+		//get and check params
+		User senderUser = null;
+		User recipientUser = null;
+		BankAccount sender = null;
+		BankAccount recipient = null;
+		UserDAO userDAO = new UserDAO(connection);
+		BigDecimal amount;
+		String reason = (String)request.getAttribute("reason");
 		
+		senderUser = (User)session.getAttribute("user");
+		
+		sender = (BankAccount)request.getAttribute("sender");
+		recipient = (BankAccount)request.getAttribute("recipient");
+		amount = (BigDecimal)request.getAttribute("amount");
+		
+		try {
+			recipientUser = userDAO.findUserByID(recipient.getUserID());
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(sender == null || recipient == null || recipientUser == null || amount == null || reason == null) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Wrong parameters");
+			return;
+		}
+		
+		//redirect to the page with the account details
+		String path = Paths.pathToTransferConfirmedPage;
+		ServletContext servletContext = getServletContext();
+		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
+		context.setVariable("senderAccount", sender);
+		context.setVariable("recipientAccount", recipient);
+		context.setVariable("oldBalanceSenderAccount", sender.getBalance().add(amount));
+		context.setVariable("oldBalanceRecipientAccount", recipient.getBalance().subtract(amount));
+		context.setVariable("reason", reason);
+		context.setVariable("amount", amount);
+		context.setVariable("recipientAccountUser", recipientUser);
+		engine.process(path, context, response.getWriter());
 		
 	}
 
