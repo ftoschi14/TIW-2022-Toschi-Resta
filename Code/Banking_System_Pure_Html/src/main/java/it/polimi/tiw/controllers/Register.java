@@ -82,7 +82,8 @@ public class Register extends HttpServlet {
 		String surname = StringEscapeUtils.escapeJava(request.getParameter("surname"));
 		
 		// Basic param nullcheck
-		if(email == null || password == null || passwordRep == null || name == null || surname == null) {
+		if(email == null || password == null || passwordRep == null || name == null || surname == null
+		|| email.isEmpty() || password.isEmpty() || name.isEmpty() || surname.isEmpty()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please fill out all the required fields");
 		}
 		
