@@ -25,7 +25,6 @@ import it.polimi.tiw.utils.TemplateHandler;
 @WebServlet("/GoToTransferFailed")
 public class GoToTransferFailed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	private Connection connection = null;
 	private TemplateEngine engine;
    
