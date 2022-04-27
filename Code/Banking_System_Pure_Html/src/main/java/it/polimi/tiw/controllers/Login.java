@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
@@ -54,7 +52,7 @@ public class Login extends HttpServlet {
 		password = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
-			error(request, response, "Please type your username and password");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please type your username and password");
 			return;
 		}
 		
@@ -66,7 +64,7 @@ public class Login extends HttpServlet {
 			user = dao.findUser(email, password);
 		} catch (SQLException e) {
 			// Redirect to error page -> Unable to check credentials
-			error(request, response, "DB Connection Error: Unable to check credentials");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to check credentials");
 		}
 		
 		//If user exists, add to session and redirect to homepage, otherwise redirect to login page (no user found)
@@ -77,19 +75,9 @@ public class Login extends HttpServlet {
 			path = getServletContext().getContextPath() + "/Home";
 			response.sendRedirect(path);
 		} else {
-			error(request, response, "Invalid credentials");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
 		}
 
-	}
-	
-	private void error(HttpServletRequest req, HttpServletResponse res, String errorMsg) throws IOException {
-		ServletContext servletContext = getServletContext();
-		
-		final WebContext ctx = new WebContext(req, res, servletContext, req.getLocale());
-		ctx.setVariable("errorMsg", errorMsg);
-		
-		String path = "/Login.html";
-		engine.process(path, ctx, res.getWriter());
 	}
 
 }
