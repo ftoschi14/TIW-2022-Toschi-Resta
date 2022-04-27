@@ -39,7 +39,7 @@ class TransferDAOTest {
 			
 			for(Transfer t : transfers) {
 				System.out.println("Transfer: " + t.getID() + ", AMT: " + t.getAmount() + ", Reason: " + t.getReason()
-				 + ", From: " + t.getSenderID() + ", To: " + t.getRecipientID());
+				 + ", From: " + t.getSenderID() + ", To: " + t.getRecipientID()+ ", Timestamp: " + t.getTimestamp());
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
