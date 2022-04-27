@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import it.polimi.tiw.utils.Paths;
+
 
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {
@@ -25,7 +27,7 @@ public class Logout extends HttpServlet {
 		if(session != null) {
 			session.invalidate();
 		}
-		String path = getServletContext().getContextPath() + "/Login.html";
+		String path = getServletContext().getContextPath() + Paths.pathToLoginPage;
 		response.sendRedirect(path);
 	}
 
