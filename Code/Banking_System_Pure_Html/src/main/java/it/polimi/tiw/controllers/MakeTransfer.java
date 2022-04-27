@@ -25,6 +25,10 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.dao.TransferDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
+import it.polimi.tiw.utils.Paths;
+import it.polimi.tiw.utils.TemplateHandler;
+
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Servlet implementation class MakeTransfer
@@ -32,8 +36,8 @@ import it.polimi.tiw.utils.ConnectionHandler;
 @WebServlet("/MakeTransfer")
 public class MakeTransfer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	private Connection connection = null;
+	private TemplateEngine engine;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -46,13 +50,8 @@ public class MakeTransfer extends HttpServlet {
      * Overriding init method to use thymeleaf
      */
     public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(getServletContext());
+		engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
 	}
 
 	
@@ -78,12 +77,13 @@ public class MakeTransfer extends HttpServlet {
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		BankAccount senderAccount = null;
 		BankAccount recipientAccount = null;
-		User recipientUser = null;
+		User recipientUser = null;	
 		
-		//get and checks params
+		
+		//get, sanitize and checks params
 		Integer recipientID = null;
 		try {
-			recipientID = Integer.parseInt(request.getParameter("recipientID"));
+			recipientID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("recipientID")));
 		}catch(NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect recipient id");
 			return;
@@ -99,14 +99,14 @@ public class MakeTransfer extends HttpServlet {
 		
 		Integer senderID = null;
 		try {
-			senderID = Integer.parseInt(request.getParameter("senderID"));
+			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("senderID")));
 		}catch(NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect sender id");
 			return;
 		}
 		
 		BigDecimal amount = null;
-		String amountString = request.getParameter("amount");
+		String amountString = StringEscapeUtils.escapeJava(request.getParameter("amount"));
 		if(amountString == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect amount");
 			return;
@@ -115,7 +115,7 @@ public class MakeTransfer extends HttpServlet {
 			amount = new BigDecimal(amountString.replace(",","."));
 		}
 		
-		String reason = request.getParameter("reason");
+		String reason = StringEscapeUtils.escapeJava(request.getParameter("reason"));
 		if(reason == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect reason");
 			return;
@@ -123,37 +123,55 @@ public class MakeTransfer extends HttpServlet {
 		
 		//If the recipient account exists for the recipient user selected
 		//and amount <= sender account balance make the transfer
+		String path;
 		try {
 			recipientAccount = bankAccountDAO.findAccountByID(recipientID);
 			senderAccount = bankAccountDAO.findAccountByID(senderID);
 			if(recipientAccount == null) {
 				//TO-DO REDIRECT TransactionFailed
+				request.setAttribute("failReason", "No recipient account selected");
+				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
+				response.sendRedirect(path);
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
 				//TO-DO REDIRECT TransactionFailed
+				request.setAttribute("failReason", "The user selected is not the owner of the recipient account selected");
+				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
+				response.sendRedirect(path);
 			}
 			else if(amount.compareTo(senderAccount.getBalance()) == 1) {
 				//TO-DO REDIRECT TransactionFailed
-			
+				request.setAttribute("failReason", "Your account can't afford this transfer");
+				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
+				response.sendRedirect(path);
 			}
-			
-			TransferDAO transferDAO = new TransferDAO(connection);
-			transferDAO.makeTransfer(amount, reason, senderID, recipientID);
-			//TO-DO REDIRECT TransactionConfirmed
-			String path = "/WEB-INF/TransactionConfirmed.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-			context.setVariable("sender", senderAccount);
-			context.setVariable("recipient", recipientAccount);
-			context.setVariable("recipientuser", recipientUserID);
-			context.setVariable("amount", amount);
-			templateEngine.process(path, context, response.getWriter());
+			else {
+				TransferDAO transferDAO = new TransferDAO(connection);
+				transferDAO.makeTransfer(amount, reason, senderID, recipientID);
+				//TO-DO REDIRECT TransactionConfirmed
+				request.setAttribute("sender", senderAccount);
+				request.setAttribute("recipient", recipientAccount);
+				request.setAttribute("amount", amount);
+				request.setAttribute("reason", reason);
+				
+				
+				path = getServletContext().getContextPath() + Paths.pathToGoToTransferConfirmedServlet;
+				response.sendRedirect(path);
+			}
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
-			//response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to recover mission");
 			return;
 		}
 	}
-
+	@Override
+	public void destroy() {
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e){
+				
+			}
+		}
+	}
 }
