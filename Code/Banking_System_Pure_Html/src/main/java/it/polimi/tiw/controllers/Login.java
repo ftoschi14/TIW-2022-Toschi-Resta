@@ -35,10 +35,21 @@ public class Login extends HttpServlet {
     /**
      * Initializes Login Servlet, instantiating a SQL connection to the DB.
      */
+    @Override
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
     	engine = TemplateHandler.getHTMLTemplateEngine(getServletContext());
     }
+    
+
+	@Override
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch(SQLException exc) {
+			exc.printStackTrace();
+		}
+	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
@@ -73,7 +84,7 @@ public class Login extends HttpServlet {
 		
 		if(user != null) {
 			request.getSession().setAttribute("user", user);
-			path = getServletContext().getContextPath() + Paths.pathToHomePage;
+			path = getServletContext().getContextPath() + Paths.pathGoToHomeServlet;
 			response.sendRedirect(path);
 		} else {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
