@@ -55,7 +55,7 @@ class UserDAOTest {
 
 	@Test
 	void testRegisterUser() {
-		String email = "Federico3@toschi.it";
+		String email = "Federico4@toschi.it";
 		String pw = "abcde";
 		String name = "Federico";
 		String surname = "Toschi";

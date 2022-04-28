@@ -1,5 +1,6 @@
 package it.polimi.tiw.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -170,32 +171,61 @@ public class UserDAO {
 	}
 	
 	public int registerUser(String email, String password, String name, String surname) throws SQLException {
-		String query = "INSERT INTO user(username, password, name, surname) VALUES (?,?,?,?)";
+		String userQuery = "INSERT INTO user(username, password, name, surname) VALUES (?,?,?,?)";
+		String bankAccountQuery = "INSERT INTO bank_account(userID, name, balance) VALUES(?,?,?)";
 		
 		int result = 0;
-		PreparedStatement preparedStatement = null;
+		PreparedStatement userPreparedStatement = null;
+		PreparedStatement bankAccPreparedStatement = null;
 		
 		try {
-			//Preparing the statement
-			preparedStatement = connection.prepareStatement(query);
+			connection.setAutoCommit(false);
 			
-			preparedStatement.setString(1, email);
-			preparedStatement.setString(2, password);
-			preparedStatement.setString(3, name);
-			preparedStatement.setString(4, surname);
+			//Preparing the statement
+			userPreparedStatement = connection.prepareStatement(userQuery);
+			
+			userPreparedStatement.setString(1, email);
+			userPreparedStatement.setString(2, password);
+			userPreparedStatement.setString(3, name);
+			userPreparedStatement.setString(4, surname);
 			
 			//Executing update
-			result = preparedStatement.executeUpdate();
+			result = userPreparedStatement.executeUpdate();
+			
+			//Commit first part
+			connection.commit();
+			
+			User user = findUser(email, password);
+			
+			//Preparing bank account creation statement
+			bankAccPreparedStatement = connection.prepareStatement(bankAccountQuery);
+			
+			bankAccPreparedStatement.setInt(1, user.getID());
+			bankAccPreparedStatement.setString(2, "Default account");
+			bankAccPreparedStatement.setBigDecimal(3, new BigDecimal(0));
+			
+			result = bankAccPreparedStatement.executeUpdate();
+			
+			connection.commit();
 			
 		} catch (SQLException e) {
-			throw new SQLException(e);
-		} finally {
 			
+			connection.rollback();
+			throw new SQLException(e);
+			
+		} finally {
+			connection.setAutoCommit(true);
 			//Close PreparedStatement
 			try {
-				if(preparedStatement != null) {
-					preparedStatement.close();
+				
+				if(userPreparedStatement != null) {
+					userPreparedStatement.close();
 				}
+				
+				if(bankAccPreparedStatement != null) {
+					bankAccPreparedStatement.close();
+				}
+				
 			}catch (SQLException e1) {
 				throw new SQLException(e1);
 			}

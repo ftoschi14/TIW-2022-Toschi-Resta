@@ -98,6 +98,10 @@ public class Register extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Passwords do not match!");
 		}
 		
+		if(password.length() < 8) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please use a stronger password (at least 8 characters)");
+		}
+		
 		UserDAO userDAO = new UserDAO(connection);
 		// Check if email is already taken
 		try {
@@ -110,12 +114,8 @@ public class Register extends HttpServlet {
 		
 		// Proceed with user registration, and creation of default bank account
 		User user = null;
-		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		try {
-			userDAO.registerUser(email, password, name, surname);
-			user = userDAO.findUser(email, password);
-			
-			bankAccountDAO.createAccount(user.getID(), "Default account", new BigDecimal(0));			
+			userDAO.registerUser(email, password, name, surname);	
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error during account creation");
 		}
