@@ -130,18 +130,21 @@ public class MakeTransfer extends HttpServlet {
 			if(recipientAccount == null) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "No recipient account selected");
+				request.setAttribute("senderid", senderAccount.getID());
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
 				response.sendRedirect(path);
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "The user selected is not the owner of the recipient account selected");
+				request.setAttribute("senderid", senderAccount.getID());
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
 				response.sendRedirect(path);
 			}
 			else if(amount.compareTo(senderAccount.getBalance()) == 1) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "Your account can't afford this transfer");
+				request.setAttribute("senderid", senderAccount.getID());
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
 				response.sendRedirect(path);
 			}
@@ -153,7 +156,6 @@ public class MakeTransfer extends HttpServlet {
 				request.setAttribute("recipient", recipientAccount);
 				request.setAttribute("amount", amount);
 				request.setAttribute("reason", reason);
-				
 				
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferConfirmedServlet;
 				response.sendRedirect(path);
