@@ -52,9 +52,26 @@ class UserDAOTest {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	void testRegisterUser_New() {
+		String email = "Federico5@toschi.it"; //Change me
+		String pw = "abcde";
+		String name = "Federico";
+		String surname = "Toschi";
+		
+		try {
+			int res = dao.registerUser(email, pw, name, surname);
+			assertEquals(1, res);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	@Test
-	void testRegisterUser() {
+	void testRegisterUser_AlreadyExisting() {
 		String email = "Federico4@toschi.it";
 		String pw = "abcde";
 		String name = "Federico";
