@@ -25,7 +25,6 @@ import it.polimi.tiw.utils.EngineHandler;
 @WebServlet("/GoToTransferFailed")
 public class GoToTransferFailed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Connection connection = null;
 	private TemplateEngine engine;
    
     public GoToTransferFailed() {
@@ -36,7 +35,6 @@ public class GoToTransferFailed extends HttpServlet {
      * Overriding init method to use thymeleaf
      */
     public void init() throws ServletException {
-		connection = ConnectionHandler.getConnection(getServletContext());
 		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 	}
 	
@@ -51,11 +49,13 @@ public class GoToTransferFailed extends HttpServlet {
 		}
 		
 		String reason = (String)request.getAttribute("failReason");
+		Integer senderid = (Integer)request.getAttribute("senderid");
 		
 		String path = Paths.pathToTransferFailedPage;
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		context.setVariable("reason", reason);
+		context.setVariable("senderid", senderid);
 		engine.process(path, context, response.getWriter());
 	}
 
@@ -64,14 +64,5 @@ public class GoToTransferFailed extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	@Override
-	public void destroy() {
-		if (connection != null) {
-			try {
-				connection.close();
-			} catch (SQLException e){
-				
-			}
-		}
-	}
+	
 }
