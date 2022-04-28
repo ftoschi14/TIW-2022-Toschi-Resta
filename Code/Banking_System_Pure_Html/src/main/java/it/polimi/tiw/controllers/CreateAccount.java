@@ -30,8 +30,7 @@ import it.polimi.tiw.utils.Paths;
 public class CreateAccount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
-	private TemplateEngine engine;
-	private String regex = "/[^\\s\\\\]/"; //Match any character, non-whitespace
+	private String regex = "^\\w+[\\w|\\s]*"; //Match first character as word, then allow whitespace
 	private Pattern pattern;
        
     public CreateAccount() {
@@ -41,7 +40,6 @@ public class CreateAccount extends HttpServlet {
     @Override
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
-    	engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 		pattern = Pattern.compile(regex);
     }
     
