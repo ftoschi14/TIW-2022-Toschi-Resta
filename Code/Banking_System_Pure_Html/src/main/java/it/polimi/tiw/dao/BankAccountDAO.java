@@ -22,12 +22,10 @@ public class BankAccountDAO {
 		String query = "SELECT userid, name, balance FROM bank_account WHERE ID = ?";
 		
 		ResultSet result = null;
-		PreparedStatement preparedStatement = null;
 		
 		
-		try {
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			//Preparing the statement
-			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, ID);
 			
 			//Executing the query
@@ -41,28 +39,14 @@ public class BankAccountDAO {
 				account.setBalance(result.getBigDecimal("balance"));
 			}
 			
-		}catch(SQLException e) {
-			//will be catched at controller level
-			throw new SQLException(e);
-		}finally {
-			//close the resultSet
-			//Close ResultSet
-			try {
-				if (result != null) {
-					result.close();
-				}
-			} catch (Exception e1) {
-				//Will be catched at controller level
-				throw new SQLException(e1);
+			//close the result
+			if(result != null) {
+				result.close();
 			}
-			//Close PreparedStatement
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
-				}
-			} catch (Exception e2) {
-				//Will be catched at controller level
-				throw new SQLException(e2);
+			
+			//close the prepared statement
+			if(preparedStatement != null) {
+				preparedStatement.close();
 			}
 		}
 		return account;
@@ -76,12 +60,10 @@ public class BankAccountDAO {
 		String query = "SELECT id, name, balance FROM bank_account WHERE userID = ?";
 		
 		ResultSet result = null;
-		PreparedStatement preparedStatement = null;
 		
 		
-		try {
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			//Preparing the statement
-			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, userID);
 			
 			//Executing the query
@@ -96,28 +78,16 @@ public class BankAccountDAO {
 				accounts.add(account);
 			}
 			
-		}catch(SQLException e) {
-			//will be catched at controller level
-			throw new SQLException(e);
-		}finally {
-			//Close ResultSet
-			try {
-				if (result != null) {
-					result.close();
-				}
-			} catch (Exception e1) {
-				//Will be catched at controller level
-				throw new SQLException(e1);
+			//close the statement
+			if(result != null) {
+				result.close();
 			}
-			//Close PreparedStatement
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
-				}
-			} catch (Exception e2) {
-				//Will be catched at controller level
-				throw new SQLException(e2);
+			
+			//close the result set
+			if(preparedStatement != null) {
+				preparedStatement.close();
 			}
+			
 		}
 		return accounts;
 	}
@@ -126,11 +96,10 @@ public class BankAccountDAO {
 		String query = "INSERT INTO bank_account(userID, name, balance) VALUES(?,?,?)";
 		
 		int result = 0;
-		PreparedStatement preparedStatement = null;
 		
-		try {
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			//Preparing the statement
-			preparedStatement = connection.prepareStatement(query);
+			
 			preparedStatement.setInt(1, userid);
 			preparedStatement.setString(2, name);
 			preparedStatement.setBigDecimal(3, balance);
@@ -138,19 +107,12 @@ public class BankAccountDAO {
 			//Executing update
 			result = preparedStatement.executeUpdate();
 			
-		}catch(SQLException e) {
-			//will be catched at controller level
-			throw new SQLException(e);
-		}finally {
-			//Close PreparedStatement
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
-				}
-			} catch (Exception e2) {
-				//Will be catched at controller level
-				throw new SQLException(e2);
+			//Close the prepared statement
+			if(preparedStatement != null) {
+				preparedStatement.close();
 			}
+			
+			
 		}
 		return result;
 	}

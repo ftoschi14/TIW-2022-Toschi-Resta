@@ -72,13 +72,10 @@ public class MakeTransfer extends HttpServlet {
 			return;
 		}
 		
-	
-		User user = (User) session.getAttribute("user");
+
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		BankAccount senderAccount = null;
 		BankAccount recipientAccount = null;
-		User recipientUser = null;	
-		
 		
 		//get, sanitize and checks params
 		Integer recipientID = null;
@@ -162,7 +159,7 @@ public class MakeTransfer extends HttpServlet {
 			}
 			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to make the transfer");
 			return;
 		}
 	}

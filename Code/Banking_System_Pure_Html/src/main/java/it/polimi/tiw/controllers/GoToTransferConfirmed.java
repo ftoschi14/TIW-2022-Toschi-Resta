@@ -56,16 +56,12 @@ public class GoToTransferConfirmed extends HttpServlet {
 			return;
 		}
 		
-		//get and check params
-		User senderUser = null;
 		User recipientUser = null;
 		BankAccount sender = null;
 		BankAccount recipient = null;
 		UserDAO userDAO = new UserDAO(connection);
 		BigDecimal amount;
 		String reason = (String)request.getAttribute("reason");
-		
-		senderUser = (User)session.getAttribute("user");
 		
 		sender = (BankAccount)request.getAttribute("sender");
 		recipient = (BankAccount)request.getAttribute("recipient");
@@ -74,7 +70,8 @@ public class GoToTransferConfirmed extends HttpServlet {
 		try {
 			recipientUser = userDAO.findUserByID(recipient.getUserID());
 		}catch(SQLException e) {
-			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to find the user");
+			return;
 		}
 		
 		if(sender == null || recipient == null || recipientUser == null || amount == null || reason == null) {

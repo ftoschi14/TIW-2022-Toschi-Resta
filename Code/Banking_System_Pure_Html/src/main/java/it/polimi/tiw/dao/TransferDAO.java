@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.sql.Timestamp;
 
 
 public class TransferDAO {
@@ -24,12 +23,10 @@ private Connection connection;
 		String query = "SELECT id, amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID = ? or recipientID = ? ORDER BY timestamp DESC";
 		
 		ResultSet result = null;
-		PreparedStatement preparedStatement = null;
 		
 		
-		try {
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			//Preparing the statement
-			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, accountID);
 			preparedStatement.setInt(2, accountID);
 			
@@ -47,27 +44,14 @@ private Connection connection;
 				transfers.add(transfer);
 			}
 			
-		}catch(SQLException e) {
-			//will be catched at controller level
-			throw new SQLException(e);
-		}finally {
-			//Close ResultSet
-			try {
-				if (result != null) {
-					result.close();
-				}
-			} catch (Exception e1) {
-				//Will be catched at controller level
-				throw new SQLException(e1);
+			//close the result set
+			if(result != null) {
+				result.close();
 			}
-			//Close PreparedStatement
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
-				}
-			} catch (Exception e2) {
-				//Will be catched at controller level
-				throw new SQLException(e2);
+			
+			//close the prepared statement
+			if(preparedStatement != null) {
+				preparedStatement.close();
 			}
 		}
 		return transfers;
@@ -97,6 +81,11 @@ private Connection connection;
 			preparedStatementInsert.executeUpdate();
 			connection.commit();
 			
+			//close the prepared statement
+			if(preparedStatementInsert != null) {
+				preparedStatementInsert.close();
+			}
+			
 			//Preparing the statement for updating recipient account
 			preparedStatementUpdateRecipient = connection.prepareStatement(queryUpdateRecipient);
 			preparedStatementUpdateRecipient.setBigDecimal(1,amount);
@@ -105,6 +94,11 @@ private Connection connection;
 			//Executing update
 			preparedStatementUpdateRecipient.executeUpdate();
 			connection.commit();
+			
+			//close the prepared statement
+			if(preparedStatementUpdateRecipient != null) {
+				preparedStatementUpdateRecipient.close();
+			}
 			
 			//Preparing the statement for updating recipient account
 			preparedStatementUpdateSender = connection.prepareStatement(queryUpdateSender);
@@ -115,8 +109,10 @@ private Connection connection;
 			preparedStatementUpdateSender.executeUpdate();
 			connection.commit();
 			
-			
-			
+			//close the prepared statement
+			if(preparedStatementUpdateSender != null) {
+				preparedStatementUpdateSender.close();
+			}
 		} catch (SQLException e) {
 			connection.rollback();
 			//TO-DO: GESTIONE MIGLIORE DELLE ECCEZIONI
@@ -124,21 +120,6 @@ private Connection connection;
 		} finally {
 			//Enabling autocommit
 			connection.setAutoCommit(true);
-			
-			//Close PreparedStatement
-			try {
-				if(preparedStatementInsert != null) {
-					preparedStatementInsert.close();
-				}
-				if(preparedStatementUpdateRecipient != null) {
-					preparedStatementUpdateRecipient.close();
-				}
-				if(preparedStatementUpdateSender != null) {
-					preparedStatementUpdateSender.close();
-				}
-			}catch (SQLException e1) {
-				throw new SQLException(e1);
-			}
 		}
 		
 	}
