@@ -56,7 +56,7 @@ DROP TABLE IF EXISTS `transfer`;
 CREATE TABLE `transfer` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `amount` decimal(8,2) NOT NULL,
-  `Timestamp` timestamp NOT NULL,
+  `Timestamp` timestamp NOT NULL default current_timestamp,
   `reason` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `senderID` int NOT NULL,
   `recipientID` int NOT NULL,

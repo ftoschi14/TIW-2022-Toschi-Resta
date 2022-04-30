@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS `Transfer`;
 CREATE TABLE `Transfer`(
 	`ID` integer AUTO_INCREMENT primary key,
 	`Amount` decimal(8,2) not null,
-	`Timestamp` timestamp not null,
+	`Timestamp` timestamp not null default current_timestamp,
 	`Reason` varchar(255) not null,
 	`IDOriginAccount` integer not null,
 	`IDDestinationAccount` integer not null,
