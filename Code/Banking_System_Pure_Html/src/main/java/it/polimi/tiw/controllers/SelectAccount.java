@@ -3,6 +3,8 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,13 +16,11 @@ import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import it.polimi.tiw.beans.BankAccount;
 import it.polimi.tiw.beans.User;
+import it.polimi.tiw.beans.Transfer;
 import it.polimi.tiw.dao.BankAccountDAO;
-import it.polimi.tiw.dao.UserDAO;
+import it.polimi.tiw.dao.TransferDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import it.polimi.tiw.utils.EngineHandler;
 import it.polimi.tiw.utils.Paths;
@@ -64,6 +64,8 @@ public class SelectAccount extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		BankAccount bankAccount = null;
+		TransferDAO transferDAO = new TransferDAO(connection);
+		List<Transfer> transfers = new ArrayList<>();
 		
 		// gets and checks params
 		Integer bankAccountID;
@@ -91,11 +93,20 @@ public class SelectAccount extends HttpServlet {
 			return;
 		}
 		
+		//get the transfers for the selected account
+		try {
+			transfers = transferDAO.getTransferByAccountID(bankAccountID);
+		}catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get the transfers of the selected bank account");
+			return;
+		}
+		
 		//redirect to the page with the account details
 		String path = "/WEB-INF/AccountDetails.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		context.setVariable("account", bankAccount);
+		context.setVariable("transfers", transfers);
 		engine.process(path, context, response.getWriter());
 	}
 
