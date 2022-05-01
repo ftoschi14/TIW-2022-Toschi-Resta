@@ -10,7 +10,7 @@
 	</div>
 	
 	<div class="go_back">
-		<a th:href="@{/GoToHome}">Go back</a>
+		<a th:href="@{/GoToHome}">Go back to Home</a>
 	</div>
 	
 	<h1 class="account_details">Account Details</h1>
@@ -18,6 +18,38 @@
 	<div class="account_code">Your account code is: <span th:text="${account.ID}">1</span></div>
 	<div class="account_balance">Your balance is: <span th:text="${account.ID}">2000 </span>&euro;</div>
 	
+	<div class="require_transfer">
+	<h1 class="require_transfer_form_title">Require Transfer</h1>
+		<p>Complete the form to make a transfer</p>
+		<form action="#" th:action="@{/MakeTransfer}" name="require_transfer_form" method="post">
+			<fieldset form="require_transfer_form">
+				<div class="input_form">
+					<label for="recipientID" form="require_transfer_form">Recipient Account ID</label>
+					<input type="number" name="recipientID" placeholder="Enter the code of the destination account" min=1 form="require_transfer_form" required/><br>
+				</div>
+				
+				<div class="input_form">
+					<label for="recipientUserID" form="require_transfer_form">Recipient User ID</label>
+					<input type="number" name="recipientUserID" placeholder="Enter the code of the owner of the destination account" min=1 form="require_transfer_form" required/><br>
+				</div>
+				
+				<div class="input_form">
+					<label for="amount" form="require_transfer_form">Amount</label>
+					<input type="number" name="amount" placeholder="Enter the amount you want to transfer" min=0.01 step=0.01 form="require_transfer_form" required/><br>
+				</div>
+				
+				<div class="input_form">
+					<label for="reason" form="require_transfer_form">Reason</label>
+					<input type="text" name="reason" placeholder="Enter the reason of your transfer" form="require_transfer_form" maxlength=255 required/><br>
+				</div>
+				
+				<input type="hidden" name="senderID" th:value="${account.id}" form="require_transfer_form" required/>
+				
+				<button type="submit" name="action" value="sendtransfer">Sumbit</button><br>
+				
+			</fieldset>
+		</form>
+	</div>
 	
 	<div class="account_transfers">
 	<h1 class="account_transfers_title">Your Transfers</h1>
@@ -26,7 +58,7 @@
 			<div class="no_transfers">You don't have any transfer in this account</div>
 		</div>
 			<div th:case="*" th:each="t : ${transfers}" th:class="${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer'">
-				<span class="t_transferID" th:text="${ID: + t.ID}">transfer ID: 1</span><br>
+				<span class="t_transferID" th:text="${ID: + t.ID}"> 1</span><br>
 				<span class="t_otherAccountID" th:text="${account.ID}==${t.senderID} ? 'Recipient Account ID: ' + ${t.recipient} : 'Sender Account ID ' + ${t.senderID}">transfer source or sender ID: 1</span><br>
 				<span class="t_amount" th:text="${Amount: + t.amount}">amount: 100</span>&euro;<br>
 				<span class="t_reason" th:text="${Reason: + t.reason}">transfer reason: my reason</span><br>
@@ -35,37 +67,5 @@
 		</div>
 	</div>
 	
-	<div class="require_transfer_form">
-	<h1 class="require_transfer_form_title">Require Transfer</h1>
-		<p>Complete the form to make a transfer</p>
-		<form action="#" th:action="@{/MakeTransfer}" method="post">
-			<fieldset>
-				<div class="input_form">
-					<label for="recipientID">Recipient Account ID</label>
-					<input type="number" name="recipientID" placeholder="Enter the code of the destination account" min=1 required/><br>
-				</div>
-				
-				<div class="input_form">
-					<label for="recipientUserID">Recipient User ID</label>
-					<input type="number" name="recipientUserID" placeholder="Enter the code of the owner of the destination account" min=1 required/><br>
-				</div>
-				
-				<div class="input_form">
-					<label for="amount">Amount</label>
-					<input type="number" name="amount" placeholder="Enter the amount you want to transfer" min=0.01 step=0.01 required/><br>
-				</div>
-				
-				<div class="input_form">
-					<label for="reason">Reason</label>
-					<input type="text" name="reason" placeholder="Enter the reason of your transfer" required/><br>
-				</div>
-				
-				<input type="hidden" name="senderID" th:value="${account.id}" required/>
-				
-				<button type="submit" name="action" value="sendtransfer">Sumbit</button><br>
-				
-			</fieldset>
-		</form>
-	</div>
 </body>
 </html>
