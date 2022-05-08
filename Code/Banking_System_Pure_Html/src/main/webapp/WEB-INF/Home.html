@@ -1,13 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-  <head>
-    <meta charset="utf-8">
-    
-  </head>
+<head>
+  <meta charset="utf-8">
+  <title>Home</title>
+</head>
 
-  <body>
-    
-  </body>
+<body>
+
+  <div class="home_left">
+
+    <div class="logout">
+      <a th:href="@{/Logout}">Logout</a>
+    </div>
+
+    <div class="go_back">
+      <a th:href="@{/GoToHome}">Go back to Home</a>
+    </div>
+
+    <div class="user_data">
+      <h1>
+        <span class="user_fullname" th:text="${session.user.surname + ', ' + session.user.name}">Surname, Name</span><br>
+        <small class="welcome_msg">Welcome back!</small>
+      </h1><br>
+      <span>Your summary: 0</span>&euro;<br>
+    </div>
+
+    <div class="add_account">
+      <form action="#" th:action="@{/CreateAccount}" name="newacc_form" method="post">
+        <fieldset form="newacc_form">
+
+          <div class="input_form">
+            <label for="accountName" form="newacc_form">New Account</label><br>
+            <input type="text" name="accountName" placeholder="Bank account" form="newacc_form" maxlength=40 required /><br>
+          </div>
+
+        </fieldset>
+
+        <button type="submit" name="action" value="createaccount">Create</button><br>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="home_right">
+    <h1 class="bank_accounts_title">Your Accounts</h1>
+    <div class="account_list">
+      <div class="bank_account" th:each="acc : ${accounts}">
+        <span class="acc_name" th:text="${acc.name}">Default</span>
+        <span class="acc_balance" th:text="${acc.balance}">1000</span>&euro;
+      </div> <br>
+    </div>
+  </div>
+
+</body>
 
 </html>
