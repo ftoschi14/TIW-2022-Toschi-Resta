@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
 
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+  </head>
+
+  <body>
+
+    <div class="login_box">
+      <div class="login_box_credentials">
+
+        <form action="#" th:action="@{/Login}" name="login_form" method="post">
+          <fieldset form="login_form">
+
+            <div class="input_form">
+              <label for="email" form="login_form">E-mail</label>
+              <input type="text" name="email" placeholder="E-mail address" form="login_form" maxlength=50 required/><br>
+            </div>
+
+            <div class="input_form">
+              <label for="password" form="login_form">Password</label>
+              <input type="password" name="password" placeholder="*****" form="login_form" minlength=8 maxlength=50 required/><br>
+            </div>
+
+          </fieldset>
+        </form>
+
+      </div>
+
+      <div class="login_box_right">
+
+        <h1 class="bank_name">PolimiBank</h1>
+        <p>Noi siamo la PolimiBank</p>
+
+        <button form="login_form" type="submit" name="login_action" value="login">Login</button></br>
+        <a class="register_button" th:href="@{/Register}">Register</a>
+      </div>
+
+    </div>
+
+  </body>
+
 </html>
