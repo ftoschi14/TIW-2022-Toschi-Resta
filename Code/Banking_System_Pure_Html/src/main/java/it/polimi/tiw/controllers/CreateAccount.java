@@ -15,12 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
-import it.polimi.tiw.utils.EngineHandler;
 import it.polimi.tiw.utils.Paths;
 
 /**
@@ -73,12 +71,14 @@ public class CreateAccount extends HttpServlet {
 		// Basic nullcheck
 		if(accountName == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Account name");
+			return;
 		}
 		
 		// Check for valid account name (at least one non-whitespace character)
 		Matcher matcher = pattern.matcher(accountName);
 		if(!matcher.matches()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Account name (At least one non-whitespace required)");
+			return;
 		}
 		
 		// Proceed with BankAccount creation
@@ -88,6 +88,7 @@ public class CreateAccount extends HttpServlet {
 			bankAccountDAO.createAccount(user.getID(), accountName, new BigDecimal(0));
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to create Bank Account");
+			return;
 		}
 		
 		String path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;

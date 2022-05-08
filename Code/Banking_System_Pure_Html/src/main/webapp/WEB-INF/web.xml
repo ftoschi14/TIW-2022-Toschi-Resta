@@ -20,6 +20,6 @@
   </context-param>
   
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file> <!-- TODO change-->
+    <welcome-file>GoToLogin</welcome-file> <!-- TODO change-->
   </welcome-file-list>
 </web-app>

@@ -3,7 +3,7 @@ package it.polimi.tiw.utils;
 public class Paths {
 	
 	public static String pathToLoginPage = "/WEB-INF/Login.html";
-	public static String pathToRegistrationPage = "/WEB-INF/Registration.html";
+	public static String pathToRegistrationPage = "/WEB-INF/Register.html";
 	public static String pathToHomePage = "/WEB-INF/Home.html";
 	public static String pathToAccountDetailsPage = "/WEB-INF/AccountDetails.html";
 	public static String pathToTransferConfirmedPage = "/WEB-INF/TransferConfirmed.html";

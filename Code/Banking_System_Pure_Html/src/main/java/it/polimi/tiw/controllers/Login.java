@@ -57,11 +57,11 @@ public class Login extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Obtain and sanitize user input
-		
 		String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
 		String password = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
+			System.out.println("email: " + request.getParameter("email") + ", password: " + request.getParameter("password"));
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please type your username and password");
 			return;
 		}
@@ -75,6 +75,7 @@ public class Login extends HttpServlet {
 		} catch (SQLException e) {
 			// Redirect to error page -> Unable to check credentials
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to check credentials");
+			return;
 		}
 		
 		//If user exists, add to session and redirect to homepage, otherwise redirect to login page (no user found)

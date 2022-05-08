@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Login</title>
+  <link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
 </head>
 
 <body>
@@ -11,20 +13,23 @@
   <div class="login_box">
     <div class="login_box_credentials">
 
-      <form action="#" th:action="@{/Login}" name="login_form" method="post">
+      <form th:action="@{/Login}" name="login_form" method="POST">
         <fieldset form="login_form">
 
           <div class="input_form">
-            <label for="email" form="login_form">E-mail</label>
-            <input type="text" name="email" placeholder="E-mail address" form="login_form" maxlength=50 required /><br>
+            <label for="email">E-mail</label><br>
+            <input type="email" placeholder="E-mail address" maxlength=50 name="email" required /><br>
           </div>
 
           <div class="input_form">
-            <label for="password" form="login_form">Password</label>
-            <input type="password" name="password" placeholder="*****" form="login_form" minlength=8 maxlength=50 required /><br>
+            <label for="password">Password</label><br>
+            <input type="password" placeholder="*****" minlength=8 maxlength=50 name="password" required /><br>
           </div>
 
         </fieldset>
+
+        <input type="submit" id="submit-form" class="hidden"/>
+
       </form>
 
     </div>
@@ -34,8 +39,8 @@
       <h1 class="bank_name">PolimiBank</h1>
       <p>Noi siamo la PolimiBank</p>
 
-      <button form="login_form" type="submit" name="login_action" value="login">Login</button></br>
-      <a class="register_button" th:href="@{/Register}">Register</a>
+      <label class="button login" for="submit-form" tabindex="0">Submit</label></br>
+      <a class="button register" th:href="@{/Register}">Register</a>
     </div>
 
   </div>
