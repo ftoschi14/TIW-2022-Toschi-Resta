@@ -1,10 +1,61 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+  <meta charset="ISO-8859-1">
+  <title>Register</title>
 </head>
+
 <body>
 
+  <div class="go_back">
+		<a th:href="@{/GoToHome}">Back</a>
+	</div>
+
+  <div class="registration_box">
+
+    <div class="registration_info">
+      <h1 class="registration_title">PolimiBank - Account creation</h1>
+      <small class="registration_subtitle">Please fill out all the required fields</small>
+    </div>
+
+    <form action="#" th:action="@{/Register}" name="register_account_form" method="post">
+
+			<fieldset form="register_account_form">
+
+        <div class="input_form">
+          <label for="email" form="register_account_form">E-mail</label><br>
+          <input type="text" name="email" placeholder="E-mail address" form="register_account_form" maxlength=50 required /><br>
+        </div>
+
+        <div class="input_form">
+          <label for="password" form="register_account_form">Password</label><br>
+          <input type="password" name="password" placeholder="Password" form="register_account_form" minlength=8 maxlength=50 required /><br>
+        </div>
+
+        <div class="input_form">
+          <label for="passwordRep" form="register_account_form">Repeat Password</label><br>
+          <input type="password" name="passwordRep" placeholder="Repeat Password" form="register_account_form" minlength=8 maxlength=50 required /><br>
+        </div>
+
+        <div class="input_form">
+          <label for="name" form="register_account_form">First Name</label><br>
+          <input type="text" name="name" placeholder="First Name" form="register_account_form" maxlength=50 required /><br>
+        </div>
+
+        <div class="input_form">
+          <label for="surname" form="register_account_form">Surname</label><br>
+          <input type="text" name="surname" placeholder="Surname" form="register_account_form" maxlength=50 required /><br>
+        </div>
+
+      </fieldset>
+
+      <button type="submit" name="action" value="registeraccount">Register</button><br>
+
+    </form>
+
+  </div>
+
 </body>
+
 </html>

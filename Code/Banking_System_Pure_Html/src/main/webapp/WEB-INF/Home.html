@@ -14,10 +14,6 @@
       <a th:href="@{/Logout}">Logout</a>
     </div>
 
-    <div class="go_back">
-      <a th:href="@{/GoToHome}">Go back to Home</a>
-    </div>
-
     <div class="user_data">
       <h1>
         <span class="user_fullname" th:text="${session.user.surname + ', ' + session.user.name}">Surname, Name</span><br>
