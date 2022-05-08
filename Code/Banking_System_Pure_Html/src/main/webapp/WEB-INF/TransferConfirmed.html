@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Transfer Confirmed</title>
+	<meta charset="UTF-8">
+	<title>Transfer Confirmed</title>
 </head>
+
 <body>
 	<div class="logout">
 		<a th:href="@{/Logout}">Logout</a>
@@ -14,11 +16,11 @@
 	</div>
 	<br>
 	<div class="tc_sender_account">
-		Sender Account ID:<span  th:value="'Sender Account ID: ' + ${senderAccount.ID}"> 1</span><br>
-		Owner ID:<span  th:value="'Ownwe ID: ' + ${senderAccount.userID}"> 1</span><br>
-		Account name:<span  th:value="'Account name: ' + ${senderAccount.name}"> conto1</span><br>
-		Old Balance:<span  th:value="'Old balance: ' + ${oldBalanceSenderAccount}"> 500&euro;</span><br>
-		New Balance:<span  th:value="'New balance: ' + ${senderAccount.balance}"> 400&euro;</span><br>
+		Sender Account ID:<span th:value="'Sender Account ID: ' + ${senderAccount.ID}"> 1</span><br>
+		Owner ID:<span th:value="'Ownwe ID: ' + ${senderAccount.userID}"> 1</span><br>
+		Account name:<span th:value="'Account name: ' + ${senderAccount.name}"> conto1</span><br>
+		Old Balance:<span th:value="'Old balance: ' + ${oldBalanceSenderAccount}"> 500&euro;</span><br>
+		New Balance:<span th:value="'New balance: ' + ${senderAccount.balance}"> 400&euro;</span><br>
 	</div>
 	<br>
 	<div class="tc_general">
@@ -27,11 +29,12 @@
 	</div>
 	<br>
 	<div class="tc_destination_account">
-		Recipient Account ID:<span  th:value="'Recipient Account ID: ' + ${recipientAccount.ID}"> 2</span><br>
-		Owner ID:<span  th:value="'Ownwe ID: ' + ${recipientAccount.userID}"> 2</span><br>
-		Account name:<span  th:value="'Account name: ' + ${recipientAccount.name}"> conto2</span><br>
-		Old Balance:<span  th:value="'Old balance: ' + ${oldBalanceRecipientAccount}"> 300&euro;</span><br>
-		New Balance:<span  th:value="'New balance: ' + ${recipientAccount.balance}"> 400&euro;</span><br>
+		Recipient Account ID:<span th:value="'Recipient Account ID: ' + ${recipientAccount.ID}"> 2</span><br>
+		Owner ID:<span th:value="'Ownwe ID: ' + ${recipientAccount.userID}"> 2</span><br>
+		Account name:<span th:value="'Account name: ' + ${recipientAccount.name}"> conto2</span><br>
+		Old Balance:<span th:value="'Old balance: ' + ${oldBalanceRecipientAccount}"> 300&euro;</span><br>
+		New Balance:<span th:value="'New balance: ' + ${recipientAccount.balance}"> 400&euro;</span><br>
 	</div>
 </body>
+
 </html>

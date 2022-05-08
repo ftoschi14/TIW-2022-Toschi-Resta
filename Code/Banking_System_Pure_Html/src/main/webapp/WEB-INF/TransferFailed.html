@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Transfer failed</title>
+	<meta charset="UTF-8">
+	<title>Transfer failed</title>
 </head>
+
 <body>
 	<div class="logout">
 		<a th:href="@{/Logout}">Logout</a>
@@ -13,9 +15,10 @@
 		<a th:href="@{/SelectAccount(bankAccountID = ${senderid})}">Go back to your account</a>
 	</div>
 	<br>
-	
+
 	<div class="tf_reason">
 		Failure reason: <span th:value="${reason}">The destination account doesn't exist</span>
 	</div>
 </body>
+
 </html>
