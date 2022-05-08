@@ -120,9 +120,9 @@ public class Register extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error during account creation");
 		}
 		
-		HttpSession session = request.getSession();
-		session.setAttribute("user", user);
-		response.sendRedirect(Paths.pathToGoToHomeServlet);
+		//HttpSession session = request.getSession();
+		//session.setAttribute("user", user);
+		response.sendRedirect(Paths.pathToLoginPage);
 	}
 
 }
