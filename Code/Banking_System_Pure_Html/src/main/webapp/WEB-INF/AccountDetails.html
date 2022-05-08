@@ -18,7 +18,7 @@
 	<h1 class="account_details">Account Details</h1>
 	<div class="account_name" th:text="${account.name}">Conto di default</div>
 	<div class="account_code">Your account code is: <span th:text="${account.ID}">1</span></div>
-	<div class="account_balance">Your balance is: <span th:text="${account.ID}">2000 </span>&euro;</div>
+	<div class="account_balance">Your balance is: <span th:text="${account.balance}">2000 </span>&euro;</div>
 
 	<div class="require_transfer">
 		<h1 class="require_transfer_form_title">Require Transfer</h1>
@@ -26,26 +26,26 @@
 		<form action="#" th:action="@{/MakeTransfer}" name="require_transfer_form" method="post">
 			<fieldset form="require_transfer_form">
 				<div class="input_form">
-					<label for="recipientID" form="require_transfer_form">Recipient Account ID</label>
-					<input type="number" name="recipientID" placeholder="Enter the code of the destination account" min=1 form="require_transfer_form" required /><br>
+					<label for="recipientID">Recipient Account ID</label>
+					<input type="number" name="recipientID" placeholder="Enter the code of the destination account" min=1 required /><br>
 				</div>
 
 				<div class="input_form">
-					<label for="recipientUserID" form="require_transfer_form">Recipient User ID</label>
-					<input type="number" name="recipientUserID" placeholder="Enter the code of the owner of the destination account" min=1 form="require_transfer_form" required /><br>
+					<label for="recipientUserID">Recipient User ID</label>
+					<input type="number" name="recipientUserID" placeholder="Enter the code of the owner of the destination account" min=1 required /><br>
 				</div>
 
 				<div class="input_form">
-					<label for="amount" form="require_transfer_form">Amount</label>
-					<input type="number" name="amount" placeholder="Enter the amount you want to transfer" min=0.01 step=0.01 form="require_transfer_form" required /><br>
+					<label for="amount">Amount</label>
+					<input type="number" name="amount" placeholder="Enter the amount you want to transfer" min=0.01 step=0.01 required /><br>
 				</div>
 
 				<div class="input_form">
-					<label for="reason" form="require_transfer_form">Reason</label>
-					<input type="text" name="reason" placeholder="Enter the reason of your transfer" form="require_transfer_form" maxlength=255 required /><br>
+					<label for="reason">Reason</label>
+					<input type="text" name="reason" placeholder="Enter the reason of your transfer" maxlength=255 required /><br>
 				</div>
 
-				<input type="hidden" name="senderID" th:value="${account.id}" form="require_transfer_form" required />
+				<input type="hidden" name="senderID" th:value="${account.id}" required />
 
 				<button type="submit" name="action" value="sendtransfer">Sumbit</button><br>
 

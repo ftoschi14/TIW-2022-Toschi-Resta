@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Home</title>
+  <link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
 </head>
 
 <body>
@@ -42,10 +44,10 @@
   <div class="home_right">
     <h1 class="bank_accounts_title">Your Accounts</h1>
     <div class="account_list">
-      <div class="bank_account" th:each="acc : ${accounts}">
+      <div class="clickable bank_account" th:each="acc : ${accounts}">
         <span class="acc_name" th:text="${acc.name}">Default</span>
         <span class="acc_balance" th:text="${acc.balance}">1000</span>&euro;
-        <a th:href="@{/SelectAccount(bankAccountID=${acc.id})}" class="fill_div"></a>
+        <a th:href="@{/SelectAccount(bankAccountID=${acc.id})}"><span class="fill_div"></span></a>
       </div> <br>
     </div>
   </div>
