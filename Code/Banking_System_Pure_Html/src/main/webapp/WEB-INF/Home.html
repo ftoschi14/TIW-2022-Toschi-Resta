@@ -49,6 +49,7 @@
       <div class="bank_account" th:each="acc : ${accounts}">
         <span class="acc_name" th:text="${acc.name}">Default</span>
         <span class="acc_balance" th:text="${acc.balance}">1000</span>&euro;
+        <a th:href="@{/SelectAccount(bankAccountID=${acc.id})}" class="fill_div"></a>
       </div> <br>
     </div>
   </div>
