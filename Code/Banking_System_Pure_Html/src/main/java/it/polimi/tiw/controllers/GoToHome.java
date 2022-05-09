@@ -58,12 +58,6 @@ public class GoToHome extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		
-		// If no session is found or no User is found, then redirect to login page
-		if(session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(getServletContext().getContextPath() + Paths.pathToLoginServlet);
-		}
-		
 		User user = (User) session.getAttribute("user");
 		List<BankAccount> accounts = new ArrayList<>();
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);

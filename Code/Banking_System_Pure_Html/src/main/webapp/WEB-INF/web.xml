@@ -23,6 +23,10 @@
   <filter-name>NotLoggedFilter</filter-name>
   <filter-class>it.polimi.tiw.filters.NotLoggedFilter</filter-class>
 </filter>
+<filter>
+  <filter-name>LoginFilter</filter-name>
+  <filter-class>it.polimi.tiw.filters.LoginFilter</filter-class>
+</filter>
 
 <filter-mapping>
   <filter-name>NotLoggedFilter</filter-name>
@@ -31,6 +35,14 @@
   <url-pattern>/CreateAccount</url-pattern>
   <url-pattern>/SelectAccount</url-pattern>
   <url-pattern>/MakeTransfer</url-pattern>
+</filter-mapping>
+
+<filter-mapping>
+  <filter-name>LoginFilter</filter-name>
+  <url-pattern>/</url-pattern>
+  <url-pattern>/GoToLogin</url-pattern>
+  <url-pattern>/Login</url-pattern>
+  <url-pattern>/Register</url-pattern>
 </filter-mapping>
 
 

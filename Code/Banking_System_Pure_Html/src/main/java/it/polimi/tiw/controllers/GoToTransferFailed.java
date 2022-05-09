@@ -39,14 +39,7 @@ public class GoToTransferFailed extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
-		// TO-DO: FILTER TO CHECK IF THE USER IS LOGGED
-		String loginpath = getServletContext().getContextPath() + Paths.pathToGoToLoginServlet;
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
 		
 		String reason = (String)request.getAttribute("failReason");
 		Integer senderid = (Integer)request.getAttribute("senderid");

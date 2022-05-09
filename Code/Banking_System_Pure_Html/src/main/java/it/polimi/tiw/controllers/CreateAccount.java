@@ -57,12 +57,7 @@ public class CreateAccount extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String loginpath = getServletContext().getContextPath() + Paths.pathToLoginServlet;
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
 		
 		User user = (User) session.getAttribute("user");
 		
