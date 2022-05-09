@@ -122,7 +122,7 @@ public class Register extends HttpServlet {
 		
 		//HttpSession session = request.getSession();
 		//session.setAttribute("user", user);
-		response.sendRedirect(Paths.pathToGoToLoginServlet);
+		response.sendRedirect(getServletContext().getContextPath()+Paths.pathToGoToLoginServlet);
 	}
 
 }
