@@ -28,7 +28,7 @@ import it.polimi.tiw.utils.EngineHandler;
 import org.thymeleaf.context.WebContext;
 
 
-@WebServlet("/GoToTransactionConfirmed")
+@WebServlet("/GoToTransferConfirmed")
 public class GoToTransferConfirmed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
