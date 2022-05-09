@@ -58,6 +58,17 @@ public class MakeTransfer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
+	
+	@Override
+	public void destroy() {
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e){
+				
+			}
+		}
+	}
 
 	/**
 	 * Makes the transfer
@@ -129,21 +140,21 @@ public class MakeTransfer extends HttpServlet {
 				request.setAttribute("failReason", "No recipient account selected");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
-				response.sendRedirect(path);
+				forwardToTransferDetails(request, response, path);
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "The user selected is not the owner of the recipient account selected");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
-				response.sendRedirect(path);
+				forwardToTransferDetails(request, response, path);
 			}
 			else if(amount.compareTo(senderAccount.getBalance()) == 1) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "Your account can't afford this transfer");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferFailedServlet;
-				response.sendRedirect(path);
+				forwardToTransferDetails(request, response, path);
 			}
 			else {
 				TransferDAO transferDAO = new TransferDAO(connection);
@@ -155,22 +166,20 @@ public class MakeTransfer extends HttpServlet {
 				request.setAttribute("reason", reason);
 				
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferConfirmedServlet;
-				response.sendRedirect(path);
+				forwardToTransferDetails(request, response, path);
 			}
 			
 		}catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to make the transfer");
+			e.printStackTrace();
 			return;
 		}
 	}
-	@Override
-	public void destroy() {
-		if (connection != null) {
-			try {
-				connection.close();
-			} catch (SQLException e){
-				
-			}
-		}
+	
+	private void forwardToTransferDetails(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+		ServletContext servletContext = getServletContext();
+		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());		
+		engine.process(path, context, response.getWriter());
 	}
+	
 }
