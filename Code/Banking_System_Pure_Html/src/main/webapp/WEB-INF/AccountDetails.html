@@ -59,12 +59,16 @@
 			<div th:case="0">
 				<div class="no_transfers">You don't have any transfer in this account</div>
 			</div>
-			<div th:case="*" th:each="t : ${transfers}" th:class="${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer'">
-				<span class="t_transferID" th:text="${ID: + t.ID}"> 1</span><br>
-				<span class="t_otherAccountID" th:text="${account.ID}==${t.senderID} ? 'Recipient Account ID: ' + ${t.recipient} : 'Sender Account ID ' + ${t.senderID}">transfer source or sender ID: 1</span><br>
-				<span class="t_amount" th:text="${Amount: + t.amount}">amount: 100</span>&euro;<br>
-				<span class="t_reason" th:text="${Reason: + t.reason}">transfer reason: my reason</span><br>
-				<span class="t_timestamp" th:text="${Timestamp: + t.timestamp}">transfer timestamp: timestamp</span><br>
+			<div th:case="*">
+			<div th:each="t : ${transfers}">
+			<div th:class="(${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer')">
+				<div>ID: <span class="t_transferID" th:text="${t.ID}"> 1</span><br></div>
+				<div><span th:text="(${t.senderID} == ${account.ID}) ? 'Destination account: ' : 'Source account: '">Source account: </span><span th:text="(${t.senderID} == ${account.ID}) ? ${t.recipientID} : ${t.senderID}">00000</span></div>
+				<div>Amount: <span class="t_amount" th:text="${t.amount}">amount: 100</span>&euro;<br></div>
+				<div>Reason: <span class="t_reason" th:text="${t.reason}">transfer reason: my reason</span><br></div>
+				<div>Timestamp: <span class="t_timestamp" th:text="${t.timestamp}">transfer timestamp: timestamp</span><br></div>
+			</div>
+			</div>
 			</div>
 		</div>
 	</div>
