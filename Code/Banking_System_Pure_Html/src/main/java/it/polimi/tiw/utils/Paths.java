@@ -16,8 +16,8 @@ public class Paths {
 	public static String pathToGoToHomeServlet = "/GoToHome";
 	public static String pathToGoToCreateAccountServlet = "/CreateAccount";
 	public static String pathToSelectAccountServlet = "/SelectAccount";
-	public static String pathToGoToTransferConfirmedServlet = "/GoTransferConfirmed";
-	public static String pathToGoToTransferFailedServlet = "/GoTransferFailed";
+	public static String pathToGoToTransferConfirmedServlet = "/GoToTransferConfirmed";
+	public static String pathToGoToTransferFailedServlet = "/GoToTransferFailed";
 	
 
 }
