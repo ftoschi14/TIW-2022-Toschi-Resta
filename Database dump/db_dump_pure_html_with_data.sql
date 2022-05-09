@@ -103,7 +103,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'sara.resta@mail.polimi.it','pw001','Sara','Resta'),(2,'federico.toschi@mail.polimi.it','pw002','Federico','Toschi'),(3,'alessia.rossi@gmail.com','pw003','Alessia','Rossi'),(4,'giulio.verdi@gmail.com','pw004','Giulio','Verdi'),(5,'gianfilippo.bianchi@libero.it','pw005','Gianfilippo','Bianchi'),(6,'giuseppina.rosa@libero.it','pw006','Giuseppina','Rosa');
+INSERT INTO `user` VALUES (1,'sara.resta@mail.polimi.it','password001','Sara','Resta'),(2,'federico.toschi@mail.polimi.it','password002','Federico','Toschi'),(3,'alessia.rossi@gmail.com','password003','Alessia','Rossi'),(4,'giulio.verdi@gmail.com','password004','Giulio','Verdi'),(5,'gianfilippo.bianchi@libero.it','password005','Gianfilippo','Bianchi'),(6,'giuseppina.rosa@libero.it','password006','Giuseppina','Rosa');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
