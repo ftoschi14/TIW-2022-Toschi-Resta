@@ -85,21 +85,25 @@ public class Register extends HttpServlet {
 		if(email == null || password == null || passwordRep == null || name == null || surname == null
 		|| email.isEmpty() || password.isEmpty() || name.isEmpty() || surname.isEmpty()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please fill out all the required fields");
+			return;
 		}
 		
 		// Email validity check
 		Matcher matcher = pattern.matcher(email);
 		if(!matcher.matches()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid email format");
+			return;
 		}
 		
 		// Passwords match check
 		if(!password.equals(passwordRep)) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Passwords do not match!");
+			return;
 		}
 		
 		if(password.length() < 8) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please use a stronger password (at least 8 characters)");
+			return;
 		}
 		
 		UserDAO userDAO = new UserDAO(connection);
@@ -107,9 +111,11 @@ public class Register extends HttpServlet {
 		try {
 			if(userDAO.isEmailTaken(email)) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Email " + email + " is already taken");
+				return;
 			}
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error connecting to database");
+			return;
 		}
 		
 		// Proceed with user registration, and creation of default bank account
@@ -118,6 +124,7 @@ public class Register extends HttpServlet {
 			userDAO.registerUser(email, password, name, surname);	
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error during account creation");
+			return;
 		}
 		
 		//HttpSession session = request.getSession();

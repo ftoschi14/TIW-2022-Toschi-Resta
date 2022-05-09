@@ -83,7 +83,6 @@ public class MakeTransfer extends HttpServlet {
 			return;
 		}
 		
-
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		BankAccount senderAccount = null;
 		BankAccount recipientAccount = null;
@@ -137,7 +136,7 @@ public class MakeTransfer extends HttpServlet {
 			senderAccount = bankAccountDAO.findAccountByID(senderID);
 			if(recipientAccount == null) {
 				//TO-DO REDIRECT TransactionFailed
-				request.setAttribute("failReason", "No recipient account selected");
+				request.setAttribute("failReason", "The recipient account doesn't exist");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = Paths.pathToTransferFailedPage;
 				forwardToTransferDetails(request, response, path);
@@ -145,6 +144,13 @@ public class MakeTransfer extends HttpServlet {
 			else if(recipientAccount.getUserID() != recipientUserID) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "The user selected is not the owner of the recipient account selected");
+				request.setAttribute("senderid", senderAccount.getID());
+				path = Paths.pathToTransferFailedPage;
+				forwardToTransferDetails(request, response, path);
+			}
+			else if(recipientAccount.getUserID() == senderAccount.getID()) {
+				//TO-DO REDIRECT TransactionFailed
+				request.setAttribute("failReason", "sender account ID = recipient account ID");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = Paths.pathToTransferFailedPage;
 				forwardToTransferDetails(request, response, path);
