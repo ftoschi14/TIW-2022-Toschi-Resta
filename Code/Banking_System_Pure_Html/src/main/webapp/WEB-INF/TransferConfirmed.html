@@ -16,24 +16,24 @@
 	</div>
 	<br>
 	<div class="tc_sender_account">
-		Sender Account ID:<span th:text="'Sender Account ID: ' + ${sender.ID}"> 1</span><br>
-		Owner ID:<span th:text="'Ownwe ID: ' + ${sender.userID}"> 1</span><br>
-		Account name:<span th:text="'Account name: ' + ${sender.name}"> conto1</span><br>
-		Old Balance:<span th:text="'Old balance: ' + ${oldBalanceSenderAccount}"> 500&euro;</span><br>
-		New Balance:<span th:text="'New balance: ' + ${sender.balance}"> 400&euro;</span><br>
+		<span th:text="'Sender Account ID: ' + ${sender.ID}">Sender Account ID: 1</span><br>
+		<span th:text="'Owner ID: ' + ${sender.userID}">Owner ID: 1</span><br>
+		<span th:text="'Account name: ' + ${sender.name}">Account name: conto1</span><br>
+		<span th:text="'Old balance: ' + ${sender.balance}">Old Balance: 500&euro;</span><br>
+		<span th:text="'New balance: ' + ${newBalanceSenderAccount}">New Balance: 400&euro;</span><br>
 	</div>
 	<br>
 	<div class="tc_general">
-		Reason:<span class="tc_general" th:text="'Reason: ' + ${reason}"> shopping</span><br>
-		Amount:<span class="tc_general" th:text="'Amount ' + ${amount}"> 100&euro;</span><br>
+		<span class="tc_general" th:text="'Reason: ' + ${reason}"> Reason: shopping</span><br>
+		<span class="tc_general" th:text="'Amount ' + ${amount}">Amount: 100&euro;</span><br>
 	</div>
 	<br>
 	<div class="tc_destination_account">
-		Recipient Account ID:<span th:text="'Recipient Account ID: ' + ${recipien.ID}"> 2</span><br>
-		Owner ID:<span th:text="'Ownwe ID: ' + ${recipient.userID}"> 2</span><br>
-		Account name:<span th:text="'Account name: ' + ${recipient.name}"> conto2</span><br>
-		Old Balance:<span th:text="'Old balance: ' + ${oldBalanceRecipientAccount}"> 300&euro;</span><br>
-		New Balance:<span th:text="'New balance: ' + ${recipient.balance}"> 400&euro;</span><br>
+		<span th:text="'Recipient Account ID: ' + ${recipient.ID}"> Recipient Account ID: 2</span><br>
+		<span th:text="'Owner ID: ' + ${recipient.userID}"> Owner ID: 2</span><br>
+		<span th:text="'Account name: ' + ${recipient.name}">Account name: conto2</span><br>
+		<span th:text="'Old balance: ' + ${recipient.balance}">Old Balance: 300&euro;</span><br>
+		<span th:text="'New balance: ' + ${newBalanceRecipientAccount}">New Balance: 400&euro;</span><br>
 	</div>
 </body>
 

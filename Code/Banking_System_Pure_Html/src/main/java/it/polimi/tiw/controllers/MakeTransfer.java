@@ -170,8 +170,8 @@ public class MakeTransfer extends HttpServlet {
 				request.setAttribute("recipient", recipientAccount);
 				request.setAttribute("amount", amount);
 				request.setAttribute("reason", reason);
-				request.setAttribute("oldBalanceSenderAccount", senderAccount.getBalance().add(amount));
-				request.setAttribute("oldBalanceRecipientAccount", recipientAccount.getBalance().subtract(amount));
+				request.setAttribute("newBalanceSenderAccount", senderAccount.getBalance().subtract(amount));
+				request.setAttribute("newBalanceRecipientAccount", recipientAccount.getBalance().add(amount));
 				
 				path = Paths.pathToTransferConfirmedPage;
 				forwardToTransferDetails(request, response, path);
