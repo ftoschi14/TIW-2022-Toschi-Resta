@@ -2,77 +2,115 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Account details</title>
 </head>
 
 <body>
-	<div class="logout">
-		<a th:href="@{/Logout}">Logout</a>
-	</div>
+	<div class="container-fluid">
+		<div class="row page_box">
 
-	<div class="go_back">
-		<a th:href="@{/GoToHome}">Go back to Home</a>
-	</div>
+			<div class="col-md-6 page_box">
+				<div class="row">
+					<div class="col-md-2">
+						<a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+					</div>
+					<div class="col-md-2 go_back">
+						<a class="btn btn-lg active yellow-button" role="button" th:href="@{/GoToHome}">&#129092;</a>
+					</div>
+				</div>
+				<br><br>
 
-	<h1 class="account_details">Account Details</h1>
-	<div class="account_name" th:text="${account.name}">Conto di default</div>
-	<div class="account_code">Your account code is: <span th:text="${account.ID}">1</span></div>
-	<div class="account_balance">Your balance is: <span th:text="${account.balance}">2000 </span>&euro;</div>
-
-	<div class="require_transfer">
-		<h1 class="require_transfer_form_title">Require Transfer</h1>
-		<p>Complete the form to make a transfer</p>
-		<form action="#" th:action="@{/MakeTransfer}" name="require_transfer_form" method="post">
-			<fieldset form="require_transfer_form">
-				<div class="input_form">
-					<label for="recipientID">Recipient Account ID</label>
-					<input type="number" name="recipientID" placeholder="Enter the code of the destination account" min=1 required /><br>
+				<div class="row account_details page_box">
+					<div class="col-md-12 title"><h1>Account Details</h1></div>
+					<div class="col-md-12 account_name" th:text="${account.name}">Conto di default</div>
+					<div class="col-md-12 account_code">Your account code is: <span th:text="${account.ID}">1</span></div>
+					<div class="col-md-12 account_balance">Your balance is: <span th:text="${account.balance}">2000 </span>&euro;</div>
 				</div>
 
-				<div class="input_form">
-					<label for="recipientUserID">Recipient User ID</label>
-					<input type="number" name="recipientUserID" placeholder="Enter the code of the owner of the destination account" min=1 required /><br>
+				<br><br>
+
+				<div class="row require_transfer page_box">
+						<div class="col-md-12 title"><h1>Require Transfer</h1></div>
+						<p>Complete the form to make a transfer</p>
+
+						<form class="horizontal-form" action="#" th:action="@{/MakeTransfer}" name="require_transfer_form" method="post">
+							<div class="row form-group">
+									<label class="col-md-3 control-label" for="recipientID">Recipient Account ID</label>
+									<div class="col-md-9">
+										<input class="form-control" type="number" name="recipientID" id="recipientID" placeholder="Enter the code of the destination account" min=1 required /><br>
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-md-3 control-label" for="recipientUserID">Recipient User ID</label>
+									<div class="col-md-9">
+										<input class="form-control" type="number" name="recipientUserID" id="recipientUserID" placeholder="Enter the code of the owner of the destination account" min=1 required /><br>
+									</div>
+							</div>
+
+								<div class="row form-group">
+									<label class="col-md-3 control-label" for="amount">Amount</label>
+									<div class="col-md-9">
+										<input class="form-control" type="number" name="amount" id="amount" placeholder="Enter the amount you want to transfer" min=0.01 step=0.01 required /><br>
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-md-3 control-label" for="reason">Reason</label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" name="reason" id="reason" placeholder="Enter the reason of your transfer" maxlength=255 required /><br>
+									</div>
+								</div>
+
+
+								<input type="hidden" name="senderID" id="senderID" th:value="${account.id}" required />
+
+								<div class="row form-group">
+									<div class="col-md-offset-3 col-md-3">
+										<button class="btn btn-default" type="submit" name="action" value="sendtransfer">Sumbit</button><br>
+									</div>
+								</div>
+
+
+					</form>
 				</div>
-
-				<div class="input_form">
-					<label for="amount">Amount</label>
-					<input type="number" name="amount" placeholder="Enter the amount you want to transfer" min=0.01 step=0.01 required /><br>
-				</div>
-
-				<div class="input_form">
-					<label for="reason">Reason</label>
-					<input type="text" name="reason" placeholder="Enter the reason of your transfer" maxlength=255 required /><br>
-				</div>
-
-				<input type="hidden" name="senderID" th:value="${account.id}" required />
-
-				<button type="submit" name="action" value="sendtransfer">Sumbit</button><br>
-
-			</fieldset>
-		</form>
-	</div>
-
-	<div class="account_transfers">
-		<h1 class="account_transfers_title">Your Transfers</h1>
-		<div th:switch="${transfers.size}">
-			<div th:case="0">
-				<div class="no_transfers">You don't have any transfer in this account</div>
+		</div>
+		<div class="col-md-6 transfer_list page_box">
+			<div class="col-md-12 title ">
+				<h1 class="account_transfers_title">Your Transfers</h1>
 			</div>
-			<div th:case="*">
-			<div th:each="t : ${transfers}">
-			<div th:class="(${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer')">
-				<div>ID: <span class="t_transferID" th:text="${t.ID}"> 1</span><br></div>
-				<div><span th:text="(${t.senderID} == ${account.ID}) ? 'Destination account: ' : 'Source account: '">Source account: </span><span th:text="(${t.senderID} == ${account.ID}) ? ${t.recipientID} : ${t.senderID}">00000</span></div>
-				<div>Amount: <span class="t_amount" th:text="${t.amount}">amount: 100</span>&euro;<br></div>
-				<div>Reason: <span class="t_reason" th:text="${t.reason}">transfer reason: my reason</span><br></div>
-				<div>Timestamp: <span class="t_timestamp" th:text="${t.timestamp}">transfer timestamp: timestamp</span><br></div>
-			</div>
-			</div>
+			<div class="col-md-12" th:switch="${transfers.size}">
+				<div th:case="0">
+					<div class="col-md-12 no_transfers">You don't have any transfer in this account</div>
+				</div>
+				<div th:case="*">
+					<div th:each="t : ${transfers}">
+						<div class="row transfer">
+							<div class="row">
+								<div class="col-md-6">ID: <span class="t_transferID" th:text="${t.ID}"> 1</span><br></div>
+								<div class="col-md-6"><span th:text="(${t.senderID} == ${account.ID}) ? 'Destination account: ' : 'Source account: '">Source account: </span><span th:text="(${t.senderID} == ${account.ID}) ? ${t.recipientID} : ${t.senderID}">00000</span></div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">Amount: <span class="t_amount" th:text="${t.amount}" th:class="(${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer')">amount: 100</span>&euro;<br></div>
+								<div class="col-md-6">Reason: <span class="t_reason" th:text="${t.reason}">transfer reason: my reason</span><br></div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">Timestamp: <span class="t_timestamp" th:text="${t.timestamp}">transfer timestamp: timestamp</span><br></div>
+							</div>
+							<br>
+							<br>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
+</div>
 </body>
 
 </html>
