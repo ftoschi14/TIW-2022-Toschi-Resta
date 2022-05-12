@@ -8,52 +8,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="all"
   	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+    <link rel="stylesheet" type="text/css" media="all"
+  	href="../CSS/home.css" th:href="@{/CSS/home.css}" />
 </head>
 
 <body>
+  <div class="container-fluid">
+    <div class="row page_box">
+      <div class="col-md-4 page_box home_left">
+      <div class="logout">
+        <a class="btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+      </div>
 
-  <div class="home_left">
+      <div class="user_data">
+        <h1>
+          <span class="user_fullname title" th:text="${session.user.surname + ', ' + session.user.name}">Surname, Name</span><br>
+          <small class="welcome_msg title">Welcome back!</small>
+        </h1><br>
+        <span>Your summary: 0</span>&euro;<br><br>
+      </div>
 
-    <div class="logout">
-      <a th:href="@{/Logout}">Logout</a>
+      <div class="add_account">
+        <form class="horizontal-form" action="#" th:action="@{/CreateAccount}" name="newacc_form" method="post">
+            <div class="row form-group input_form">
+              <label  class="col-md-4 control-label" for="accountName">New Account</label>
+              <div class="col-md-8">
+                <input class="form-control" type="text" name="accountName" placeholder="Bank account" maxlength=40 required />
+              </div><br><br>
+            </div>
+
+
+          <button class="btn blue-button" type="submit" name="action" value="createaccount">Create</button><br>
+
+        </form>
+      </div>
     </div>
 
-    <div class="user_data">
-      <h1>
-        <span class="user_fullname" th:text="${session.user.surname + ', ' + session.user.name}">Surname, Name</span><br>
-        <small class="welcome_msg">Welcome back!</small>
-      </h1><br>
-      <span>Your summary: 0</span>&euro;<br>
-    </div>
-
-    <div class="add_account">
-      <form action="#" th:action="@{/CreateAccount}" name="newacc_form" method="post">
-        <fieldset form="newacc_form">
-
-          <div class="input_form">
-            <label for="accountName">New Account</label><br>
-            <input type="text" name="accountName" placeholder="Bank account" maxlength=40 required /><br>
+    <div class="col-md-8  home_right">
+      <div class="row account_list page_box">
+      <h1 class="bank_accounts_title title">Your Accounts</h1>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="clickable col-md-3 bank_account" th:each="acc : ${accounts}">
+              <div><span class="acc_name" th:text="${acc.name}">Default</span></div>
+              <div><span class="acc_balance" th:text="${acc.balance}">1000</span>&euro;</div>
+              <a th:href="@{/SelectAccount(bankAccountID=${acc.id})}"><span class="fill_div"></span></a>
+            </div> <br>
           </div>
-
-        </fieldset>
-
-        <button type="submit" name="action" value="createaccount">Create</button><br>
-
-      </form>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="home_right">
-    <h1 class="bank_accounts_title">Your Accounts</h1>
-    <div class="account_list">
-      <div class="clickable bank_account" th:each="acc : ${accounts}">
-        <span class="acc_name" th:text="${acc.name}">Default</span>
-        <span class="acc_balance" th:text="${acc.balance}">1000</span>&euro;
-        <a th:href="@{/SelectAccount(bankAccountID=${acc.id})}"><span class="fill_div"></span></a>
-      </div> <br>
-    </div>
   </div>
-
 </body>
 
 </html>

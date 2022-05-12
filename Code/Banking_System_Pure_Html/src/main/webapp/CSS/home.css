@@ -1,0 +1,10 @@
+.bank_account{
+	border-radius: 0.5em;
+	background-color: rgba(0, 168, 232, 0.1);
+	padding: 2% 2% 2% 2%;
+	margin:2% 2% 2% 2%;
+}
+.bank_account:hover{
+	/*border: 0.1em solid #00a8e8;*/
+	background-color: rgb(255, 177, 64, 0.1);
+}

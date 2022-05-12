@@ -12,11 +12,11 @@
 
 <body>
 	<div class="logout">
-		<a th:href="@{/Logout}">Logout</a>
+		<a class="btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
 	</div>
 	<br>
 	<div class="go_back">
-		<a th:href="@{/SelectAccount(bankAccountID = ${senderid})}">Go back to your account</a>
+		<a class="btn btn-lg active yellow-button" role="button" th:href="@{/SelectAccount(bankAccountID = ${senderid})}">Go back to your account</a>
 	</div>
 	<br>
 
