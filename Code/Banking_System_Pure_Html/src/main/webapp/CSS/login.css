@@ -1,0 +1,9 @@
+.login_box{
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 15%;
+  padding-bottom: 15%
+}
+.bank_name,.bank_presentation{
+  text-align: center;
+}

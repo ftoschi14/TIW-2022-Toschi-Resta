@@ -8,43 +8,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="all"
     	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+      <link rel="stylesheet" type="text/css" media="all"
+      	href="../CSS/login.css" th:href="@{/CSS/login.css}" />
 </head>
 
 <body>
 
-  <div class="login_box">
-    <div class="login_box_credentials">
+  <div class="container-fluid login_box">
+    <div class="row">
+      <h1 class="bank_name title">PolimiBank</h1>
+      <div class="col-md-6 login_box_credentials">
 
-      <form th:action="@{/Login}" name="login_form" method="POST">
-        <fieldset form="login_form">
+          <form class="horizontal-form" th:action="@{/Login}" name="login_form" method="POST">
 
-          <div class="input_form">
-            <label for="email">E-mail</label><br>
-            <input type="email" placeholder="E-mail address" maxlength=50 name="email" required /><br>
-          </div>
+              <div class="row form-group input_form">
+                <label class="col-md-3 control-label" for="email">E-mail</label><br>
+                <div class="col-md-9">
+                  <input class="form-control" type="email" placeholder="E-mail address" maxlength=50 name="email" required />
+                </div><br>
+              </div>
 
-          <div class="input_form">
-            <label for="password">Password</label><br>
-            <input type="password" placeholder="*****" minlength=8 maxlength=50 name="password" required /><br>
-          </div>
+              <div class="row">
+                <br>
+              </div>
 
-        </fieldset>
+              <div class="row form-group input_form">
+                <label class="col-md-3 control-label" for="password">Password</label><br>
+                <div class="col-md-9">
+                  <input class="form-control" type="password" placeholder="*****" minlength=8 maxlength=50 name="password" required />
+                </div><br>
+              </div>
+            <input type="submit" id="submit-form" class="hidden"/>
 
-        <input type="submit" id="submit-form" class="hidden"/>
-
-      </form>
+        </form>
 
     </div>
 
-    <div class="login_box_right">
-
-      <h1 class="bank_name">PolimiBank</h1>
-      <p>Noi siamo la PolimiBank</p>
-
-      <label class="button login" for="submit-form" tabindex="0">Submit</label></br>
-      <a class="button register" th:href="@{/Register}">Register</a>
+      <div class="col-md-6 login_box_right">
+        <div class="row">
+            <h2 class="title bank_presentation">We are PolimiBank</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+            </div><br>
+            <div class="col-md-2">
+              <label class="btn blue-button login" for="submit-form" tabindex="0">Submit</label>
+            </div><br>
+            <div class="col-md-2">
+              <a class="btn blue-button register" role="button" th:href="@{/Register}">Register</a>
+            </div>
+        </div>
+      </div>
+      </div>
     </div>
-
   </div>
 
 </body>

@@ -6,54 +6,98 @@
 	 <meta charset="utf-8">
    <link rel="stylesheet" type="text/css" media="all"
 	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+  <link rel="stylesheet" type="text/css" media="all"
+ href="../CSS/register.css" th:href="@{/CSS/register.css}" />
   <title>Register</title>
 </head>
 
 <body>
 
-  <div class="go_back">
-		<a class="btn btn-lg active yellow-button" role="button" th:href="@{/GoToLogin}">Back</a>
-	</div>
+  <div class="row sticky_row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-2">
+          <a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+        </div>
+        <div class="col-md-2 go_back">
+          <a class="btn btn-lg active yellow-button" role="button" th:href="@{/GoToHome}">&#129092;</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="registration_box">
 
     <div class="registration_info">
-      <h1 class="registration_title">PolimiBank - Account creation</h1>
-      <small class="registration_subtitle">Please fill out all the required fields</small>
+      <h1 class="registration_title title">PolimiBank - Account creation</h1>
+      <h5 class="registration_subtitle title">Please fill out all the required fields</h5>
     </div>
 
-    <form action="#" th:action="@{/Register}" name="register_account_form" method="post">
+    <form class="horizontal-form" action="#" th:action="@{/Register}" name="register_account_form" method="post">
 
-			<fieldset form="register_account_form">
-
-        <div class="input_form">
-          <label for="email">E-mail</label><br>
-          <input type="email" name="email" placeholder="E-mail address" maxlength=50 required /><br>
+        <div class="row form-group input_form">
+          <label class="col-md-3 control-label" for="email">E-mail</label><br>
+          <div class="col-md-9">
+            <input class="form-control" type="email" name="email" placeholder="E-mail address" maxlength=50 required />
+          </div><br>
         </div>
 
-        <div class="input_form">
-          <label for="password">Password</label><br>
-          <input type="password" name="password" placeholder="Password" minlength=8 maxlength=50 required /><br>
+        <div class="row form-group input_form">
+          <br>
         </div>
 
-        <div class="input_form">
-          <label for="passwordRep">Repeat Password</label><br>
-          <input type="password" name="passwordRep" placeholder="Repeat Password" minlength=8 maxlength=50 required /><br>
+        <div class="row form-group input_form">
+          <label class="col-md-3 control-label" for="password">Password</label><br>
+          <div class="col-md-9">
+            <input class="form-control" type="password" name="password" placeholder="Password" minlength=8 maxlength=50 required />
+          </div><br>
         </div>
 
-        <div class="input_form">
-          <label for="name">First Name</label><br>
-          <input type="text" name="name" placeholder="First Name" maxlength=50 required /><br>
+        <div class="row form-group input_form">
+          <br>
         </div>
 
-        <div class="input_form">
-          <label for="surname">Surname</label><br>
-          <input type="text" name="surname" placeholder="Surname" maxlength=50 required /><br>
+        <div class="row form-group input_form">
+          <label class="col-md-3 control-label" for="passwordRep">Repeat Password</label><br>
+          <div class="col-md-9">
+            <input class="form-control" type="password" name="passwordRep" placeholder="Repeat Password" minlength=8 maxlength=50 required />
+          </div><br>
         </div>
 
-      </fieldset>
+        <div class="row form-group input_form">
+          <br>
+        </div>
 
-      <button type="submit" name="action" value="registeraccount">Register</button><br>
+        <div class="row form-group input_form">
+          <label class="col-md-3 control-label" for="name">First Name</label><br>
+          <div class="col-md-9">
+            <input class="form-control" type="text" name="name" placeholder="First Name" maxlength=50 required />
+          </div><br>
+        </div>
+
+        <div class="row form-group input_form">
+          <br>
+        </div>
+
+        <div class="row form-group input_form">
+          <label class="col-md-3 control-label" for="surname">Surname</label><br>
+          <div class="col-md-9">
+            <input class="form-control" type="text" name="surname" placeholder="Surname" maxlength=50 required />
+          </div><br>
+        </div>
+
+        <div class="row form-group input_form">
+          <br>
+        </div>
+
+        <div class="row form-group input_form">
+          <div class="col-md-6">
+          </div><br>
+          <div class="col-md-2">
+            <button class="btn blue-button register" type="submit" name="action" value="registeraccount">Register</button>
+          </div><br>
+        </div>
+
 
     </form>
 

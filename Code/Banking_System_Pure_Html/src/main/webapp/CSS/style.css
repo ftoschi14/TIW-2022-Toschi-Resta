@@ -18,6 +18,7 @@
 
 .container-fluid,body{
 	background-color: #F0F6F6;
+	padding: 0.5% 0.5% 0.5% 0.5%;
 }
 
 .yellow-button{
@@ -45,6 +46,9 @@
 }
 .title{
 	color: #084b83;
+}
+.sticky_row{
+	position: sticky;
 }
 
 

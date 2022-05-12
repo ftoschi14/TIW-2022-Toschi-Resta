@@ -8,3 +8,8 @@
 	/*border: 0.1em solid #00a8e8;*/
 	background-color: rgb(255, 177, 64, 0.1);
 }
+.add_account{
+	background-color: rgba(0, 168, 232, 0.1);
+	border-radius: 0.5em;
+	padding: 2% 2% 2% 2%;
+}

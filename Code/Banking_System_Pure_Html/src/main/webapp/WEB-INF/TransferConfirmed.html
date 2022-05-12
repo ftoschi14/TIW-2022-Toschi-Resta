@@ -12,13 +12,16 @@
 
 <body>
 	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-3 logout">
-				<a class="btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
-			</div>
-			<br>
-			<div class="col-md-3 go_back">
-				<a class="btn btn-lg active yellow-button" role="button" th:href="@{/SelectAccount(bankAccountID = ${sender.ID})}">Go back to your account</a>
+		<div class="row sticky_row">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-2">
+						<a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+					</div>
+					<div class="col-md-2 go_back">
+						<a class="btn btn-lg active yellow-button" role="button" th:href="@{/SelectAccount(bankAccountID = ${sender.ID})}">&#129092;</a>
+					</div>
+				</div>
 			</div>
 		</div>
 				<br>

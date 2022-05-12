@@ -15,11 +15,16 @@
 <body>
   <div class="container-fluid">
     <div class="row page_box">
-      <div class="col-md-4 page_box home_left">
-      <div class="logout">
-        <a class="btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+      <div class="row sticky_row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-2">
+              <a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+            </div>
+          </div>
+        </div>
       </div>
-
+      <div class="col-md-4 page_box home_left">
       <div class="user_data">
         <h1>
           <span class="user_fullname title" th:text="${session.user.surname + ', ' + session.user.name}">Surname, Name</span><br>
@@ -36,10 +41,14 @@
                 <input class="form-control" type="text" name="accountName" placeholder="Bank account" maxlength=40 required />
               </div><br><br>
             </div>
+          <div class="row form-group">
+            <div class="col-md-4">
 
-
-          <button class="btn blue-button" type="submit" name="action" value="createaccount">Create</button><br>
-
+            </div>
+            <div class="col-md-offset-4 col-md-8">
+              <button class="btn blue-button" type="submit" name="action" value="createaccount">Create</button><br>
+            </div>
+          </div>
         </form>
       </div>
     </div>
