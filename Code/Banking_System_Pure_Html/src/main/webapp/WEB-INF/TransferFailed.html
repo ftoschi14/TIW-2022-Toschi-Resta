@@ -2,22 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	 <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+	<link rel="stylesheet" type="text/css" media="all"
+href="../CSS/transfer_failed.css" th:href="@{/CSS/transfer_failed.css}" />
 	<title>Transfer failed</title>
 </head>
 
 <body>
-	<div class="logout">
-		<a th:href="@{/Logout}">Logout</a>
-	</div>
-	<br>
-	<div class="go_back">
-		<a th:href="@{/SelectAccount(bankAccountID = ${senderid})}">Go back to your account</a>
-	</div>
-	<br>
+	<div class="container-fluid">
+		<div class="transfer_failed_box">
+			<div class="row sticky_row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-2">
+							<a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+						</div>
+						<div class="col-md-2 go_back">
+							<a class="btn btn-lg active yellow-button" role="button" th:href="@{/SelectAccount(bankAccountID = ${senderid})}">&#129092;</a>
+						</div>
+					</div>
+				</div>
+			</div>
 
-	<div class="tf_reason">
-		Failure reason: <span th:text="${failReason}">The destination account doesn't exist</span>
+			<div class="row image_box">
+				<br>
+			</div>
+
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-10 tf_reason">
+					Failure reason: <span th:text="${failReason}">The destination account doesn't exist</span>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 

@@ -7,44 +7,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" media="all"
 	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+	<link rel="stylesheet" type="text/css" media="all"
+href="../CSS/transfer_confirmed.css" th:href="@{/CSS/transfer_confirmed.css}" />
 	<title>Transfer Confirmed</title>
 </head>
 
 <body>
 	<div class="container-fluid">
-		<div class="row sticky_row">
-			<div class="col-md-6">
-				<div class="row">
-					<div class="col-md-2">
-						<a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
-					</div>
-					<div class="col-md-2 go_back">
-						<a class="btn btn-lg active yellow-button" role="button" th:href="@{/SelectAccount(bankAccountID = ${sender.ID})}">&#129092;</a>
+		<div class="transfer_confirmed_box">
+			<div class="row sticky_row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-2">
+							<a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+						</div>
+						<div class="col-md-2 go_back">
+							<a class="btn btn-lg active yellow-button" role="button" th:href="@{/SelectAccount(bankAccountID = ${sender.ID})}">&#129092;</a>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+					<br>
+			<div class="row image_box">
 				<br>
-		<div class="row">
-			<div class="col-md-4 tc_sender_account">
-				<span th:text="'Sender Account ID: ' + ${sender.ID}">Sender Account ID: 1</span><br>
-				<span th:text="'Owner ID: ' + ${sender.userID}">Owner ID: 1</span><br>
-				<span th:text="'Account name: ' + ${sender.name}">Account name: conto1</span><br>
-				<span th:text="'Old balance: ' + ${sender.balance}">Old Balance: 500&euro;</span><br>
-				<span th:text="'New balance: ' + ${newBalanceSenderAccount}">New Balance: 400&euro;</span><br>
 			</div>
-			<br>
-			<div class="col-md-4 tc_general">
-				<span class="tc_general" th:text="'Reason: ' + ${reason}"> Reason: shopping</span><br>
-				<span class="tc_general" th:text="'Amount ' + ${amount}">Amount: 100&euro;</span><br>
-			</div>
-			<br>
-			<div class="col-md-4 tc_destination_account">
-				<span th:text="'Recipient Account ID: ' + ${recipient.ID}"> Recipient Account ID: 2</span><br>
-				<span th:text="'Owner ID: ' + ${recipient.userID}"> Owner ID: 2</span><br>
-				<span th:text="'Account name: ' + ${recipient.name}">Account name: conto2</span><br>
-				<span th:text="'Old balance: ' + ${recipient.balance}">Old Balance: 300&euro;</span><br>
-				<span th:text="'New balance: ' + ${newBalanceRecipientAccount}">New Balance: 400&euro;</span><br>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="tc_sender_account">
+						<span th:text="'Sender Account ID: ' + ${sender.ID}">Sender Account ID: 1</span><br>
+						<span th:text="'Owner ID: ' + ${sender.userID}">Owner ID: 1</span><br>
+						<span th:text="'Account name: ' + ${sender.name}">Account name: conto1</span><br>
+						<span th:text="'Old balance: ' + ${sender.balance}">Old Balance: 500&euro;</span><br>
+						<span th:text="'New balance: ' + ${newBalanceSenderAccount}">New Balance: 400&euro;</span><br>
+					</div>
+				</div>
+				<br>
+				<div class="col-md-4">
+					<div class="tc_general">
+						<span th:text="'Reason: ' + ${reason}"> Reason: shopping</span><br>
+						<span th:text="'Amount ' + ${amount}">Amount: 100&euro;</span><br>
+					</div>
+				</div>
+				<br>
+				<div class="col-md-4">
+					<div class="tc_destination_account">
+						<span th:text="'Recipient Account ID: ' + ${recipient.ID}"> Recipient Account ID: 2</span><br>
+						<span th:text="'Owner ID: ' + ${recipient.userID}"> Owner ID: 2</span><br>
+						<span th:text="'Account name: ' + ${recipient.name}">Account name: conto2</span><br>
+						<span th:text="'Old balance: ' + ${recipient.balance}">Old Balance: 300&euro;</span><br>
+						<span th:text="'New balance: ' + ${newBalanceRecipientAccount}">New Balance: 400&euro;</span><br>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
