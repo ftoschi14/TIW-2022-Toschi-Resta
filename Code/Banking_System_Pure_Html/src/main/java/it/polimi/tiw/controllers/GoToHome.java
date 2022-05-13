@@ -78,6 +78,7 @@ public class GoToHome extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		context.setVariable("accounts", accounts);
+		context.setVariable("cashSum", accounts.stream().map( (a) -> a.getBalance()).reduce( (sum, bal) -> sum.add(bal) ).get());;
 		
 		engine.process(path, context, response.getWriter());
 		
