@@ -54,18 +54,18 @@ public class MakeTransfer extends HttpServlet {
 		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 	}
 
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
-	
+
 	@Override
 	public void destroy() {
 		if (connection != null) {
 			try {
 				connection.close();
 			} catch (SQLException e){
-				
+
 			}
 		}
 	}
@@ -75,11 +75,11 @@ public class MakeTransfer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		BankAccount senderAccount = null;
 		BankAccount recipientAccount = null;
-		
+
 		//get, sanitize and checks params
 		Integer recipientID = null;
 		try {
@@ -88,7 +88,7 @@ public class MakeTransfer extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect recipient id");
 			return;
 		}
-		
+
 		Integer recipientUserID = null;
 		try {
 			recipientUserID = Integer.parseInt(request.getParameter("recipientUserID"));
@@ -96,7 +96,7 @@ public class MakeTransfer extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect recipient user id");
 			return;
 		}
-		
+
 		Integer senderID = null;
 		try {
 			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("senderID")));
@@ -104,7 +104,7 @@ public class MakeTransfer extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect sender id");
 			return;
 		}
-		
+
 		BigDecimal amount = null;
 		String amountString = StringEscapeUtils.escapeJava(request.getParameter("amount"));
 		if(amountString == null) {
@@ -114,13 +114,13 @@ public class MakeTransfer extends HttpServlet {
 		else {
 			amount = new BigDecimal(amountString.replace(",","."));
 		}
-		
+
 		String reason = StringEscapeUtils.escapeJava(request.getParameter("reason"));
 		if(reason == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect reason");
 			return;
 		}
-		
+
 		//If the recipient account exists for the recipient user selected
 		//and amount <= sender account balance make the transfer
 		String path;
@@ -141,7 +141,7 @@ public class MakeTransfer extends HttpServlet {
 				path = Paths.pathToTransferFailedPage;
 				forwardToTransferDetails(request, response, path);
 			}
-			else if(recipientAccount.getUserID() == senderAccount.getID()) {
+			else if(recipientAccount.getID() == senderAccount.getID()) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "sender account ID = recipient account ID");
 				request.setAttribute("senderid", senderAccount.getID());
@@ -165,22 +165,22 @@ public class MakeTransfer extends HttpServlet {
 				request.setAttribute("reason", reason);
 				request.setAttribute("newBalanceSenderAccount", senderAccount.getBalance().subtract(amount));
 				request.setAttribute("newBalanceRecipientAccount", recipientAccount.getBalance().add(amount));
-				
+
 				path = Paths.pathToTransferConfirmedPage;
 				forwardToTransferDetails(request, response, path);
 			}
-			
+
 		}catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to make the transfer");
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	private void forwardToTransferDetails(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
 		ServletContext servletContext = getServletContext();
-		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());		
+		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		engine.process(path, context, response.getWriter());
 	}
-	
+
 }
