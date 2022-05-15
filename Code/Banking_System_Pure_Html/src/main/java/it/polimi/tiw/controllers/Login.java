@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
@@ -62,7 +64,8 @@ public class Login extends HttpServlet {
 		
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
 			System.out.println("email: " + request.getParameter("email") + ", password: " + request.getParameter("password"));
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please type your username and password");
+			errorRedirect(request, response, "Please type your username and password");
+			//response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please type your username and password");
 			return;
 		}
 		
@@ -74,7 +77,7 @@ public class Login extends HttpServlet {
 			user = dao.findUser(email, password);
 		} catch (SQLException e) {
 			// Redirect to error page -> Unable to check credentials
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to check credentials");
+			errorRedirect(request, response, "Database connection error: Unable to check credentials");
 			return;
 		}
 		
@@ -86,9 +89,19 @@ public class Login extends HttpServlet {
 			path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
 			response.sendRedirect(path);
 		} else {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
+			errorRedirect(request, response, "Invalid credentials");
 		}
 		
+	}
+	
+	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("backPath", Paths.pathToGoToLoginServlet);
+		req.setAttribute("error", error);
+		
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+				
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }

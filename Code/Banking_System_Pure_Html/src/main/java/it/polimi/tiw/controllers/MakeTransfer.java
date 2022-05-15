@@ -85,7 +85,7 @@ public class MakeTransfer extends HttpServlet {
 		try {
 			recipientID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("recipientID")));
 		}catch(NumberFormatException | NullPointerException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect recipient id");
+			errorRedirect(request, response, "Incorrect recipient id");
 			return;
 		}
 
@@ -93,7 +93,7 @@ public class MakeTransfer extends HttpServlet {
 		try {
 			recipientUserID = Integer.parseInt(request.getParameter("recipientUserID"));
 		}catch(NumberFormatException | NullPointerException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect recipient user id");
+			errorRedirect(request, response, "Incorrect recipient user id");
 			return;
 		}
 
@@ -101,14 +101,14 @@ public class MakeTransfer extends HttpServlet {
 		try {
 			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("senderID")));
 		}catch(NumberFormatException | NullPointerException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect sender id");
+			errorRedirect(request, response, "Invalid sender id");
 			return;
 		}
 
 		BigDecimal amount = null;
 		String amountString = StringEscapeUtils.escapeJava(request.getParameter("amount"));
 		if(amountString == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect amount");
+			errorRedirect(request, response, "Please specify a valid amount");
 			return;
 		}
 		else {
@@ -116,8 +116,8 @@ public class MakeTransfer extends HttpServlet {
 		}
 
 		String reason = StringEscapeUtils.escapeJava(request.getParameter("reason"));
-		if(reason == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect reason");
+		if(reason == null || reason.isEmpty()) {
+			errorRedirect(request, response, "Please specify a valid reason");
 			return;
 		}
 
@@ -171,7 +171,7 @@ public class MakeTransfer extends HttpServlet {
 			}
 
 		}catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to make the transfer");
+			errorRedirect(request, response, "Unable to submit this transfer, please try again");
 			e.printStackTrace();
 			return;
 		}
@@ -181,6 +181,18 @@ public class MakeTransfer extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		engine.process(path, context, response.getWriter());
+	}
+	
+	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		int senderID = Integer.parseInt(StringEscapeUtils.escapeJava(req.getParameter("senderID")));
+		req.setAttribute("bankAccountID", senderID);
+		req.setAttribute("backPath", Paths.pathToSelectAccountServlet);
+		req.setAttribute("error", error);
+		
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+				
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }

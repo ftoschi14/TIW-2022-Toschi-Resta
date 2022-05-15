@@ -66,7 +66,7 @@ public class SelectAccount extends HttpServlet {
 		try {
 			bankAccountID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("bankAccountID")));
 		}catch(NumberFormatException | NullPointerException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
+			errorRedirect(request, response, "Incorrect param values");
 			return;
 		}
 		
@@ -74,16 +74,16 @@ public class SelectAccount extends HttpServlet {
 		try {
 			bankAccount = bankAccountDAO.findAccountByID(bankAccountID);
 			if (bankAccount == null) {
-				response.sendError(HttpServletResponse.SC_NOT_FOUND, "This bank account doesn't exist");
+				errorRedirect(request, response, "This bank account doesn't exist");
 				return;
 			}
 			else if (bankAccount.getUserID() != user.getID()){
-				response.sendError(HttpServletResponse.SC_NOT_FOUND, "This bank account is not yours");
+				errorRedirect(request, response, "This bank account is not yours");
 				return;
 			}
 			
 		}catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get this bank account");
+			errorRedirect(request, response, "Unable to fetch information about this Bank account, please try again");
 			return;
 		}
 		
@@ -91,12 +91,12 @@ public class SelectAccount extends HttpServlet {
 		try {
 			transfers = transferDAO.getTransferByAccountID(bankAccountID);
 		}catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get the transfers of the selected bank account");
+			errorRedirect(request, response, "Unable to fetch transfers for this Bank account, please try again");
 			return;
 		}
 		
 		//redirect to the page with the account details
-		String path = "/WEB-INF/AccountDetails.html";
+		String path = Paths.pathToAccountDetailsPage;
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		context.setVariable("account", bankAccount);
@@ -115,6 +115,16 @@ public class SelectAccount extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
+		req.setAttribute("error", error);
+		
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+				
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }

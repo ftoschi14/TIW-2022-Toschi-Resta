@@ -66,11 +66,13 @@ public class GoToHome extends HttpServlet {
 			accounts = bankAccountDAO.findAllAccountsByUserID(user.getID());
 		
 		} catch(SQLException exc) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't find any bank account associated to user: " + user.getEmail());
+			errorRedirect(request, response, "Couldn't fetch bank accounts associated to user: " + user.getEmail());
+			return;
 		}
 		
 		if(accounts.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "No Bank accounts found");
+			errorRedirect(request, response, "No Bank accounts found associated to user: " + user.getEmail());
+			return;
 		}
 		
 		//Redirect to page with Account list
@@ -87,6 +89,19 @@ public class GoToHome extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("backPath", Paths.pathToGoToLoginServlet);
+		req.setAttribute("error", error);
+		
+		HttpSession session = req.getSession(false);
+		session.removeAttribute("user"); //Remove user from session so filters don't mess up redirection
+		
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+				
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }

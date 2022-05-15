@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	 <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+	<title>Error</title>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="transfer_failed_box">
+			<div class="row sticky_row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-2 go_back">
+							<a class="btn btn-lg active yellow-button" role="button" th:href="@{${backPath}}">&#129092;</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row image_box">
+				<br>
+			</div>
+
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-10">
+          <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <p>There was an error executing the requested command.</p>
+            <hr>
+            <span class="mb-0" th:text="${error}">This is an error message.</span>
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

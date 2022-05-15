@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
+import it.polimi.tiw.utils.EngineHandler;
 import it.polimi.tiw.utils.Paths;
 
 /**
@@ -28,6 +32,7 @@ import it.polimi.tiw.utils.Paths;
 public class CreateAccount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
+	private TemplateEngine engine;
 	private String regex = "^\\w+[\\w|\\s]*"; //Match first character as word, then allow whitespace
 	private Pattern pattern;
        
@@ -39,6 +44,7 @@ public class CreateAccount extends HttpServlet {
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
 		pattern = Pattern.compile(regex);
+		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
     }
     
     @Override
@@ -65,14 +71,14 @@ public class CreateAccount extends HttpServlet {
 		
 		// Basic nullcheck
 		if(accountName == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Account name");
+			errorRedirect(request, response, "Bad Account name");
 			return;
 		}
 		
 		// Check for valid account name (at least one non-whitespace character)
 		Matcher matcher = pattern.matcher(accountName);
 		if(!matcher.matches()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Account name (At least one non-whitespace required)");
+			errorRedirect(request, response, "Bad Account name (At least one non-whitespace required)");
 			return;
 		}
 		
@@ -82,12 +88,22 @@ public class CreateAccount extends HttpServlet {
 		try {
 			bankAccountDAO.createAccount(user.getID(), accountName, new BigDecimal(0));
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to create Bank Account");
+			errorRedirect(request, response, "Unable to create Bank Account, please try again");
 			return;
 		}
 		
 		String path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
 		response.sendRedirect(path);
+	}
+	
+	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
+		req.setAttribute("error", error);
+		
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+				
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }

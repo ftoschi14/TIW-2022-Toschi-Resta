@@ -84,25 +84,25 @@ public class Register extends HttpServlet {
 		// Basic param nullcheck
 		if(email == null || password == null || passwordRep == null || name == null || surname == null
 		|| email.isEmpty() || password.isEmpty() || name.isEmpty() || surname.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please fill out all the required fields");
+			errorRedirect(request, response, "Please fill out all the required fields");
 			return;
 		}
 		
 		// Email validity check
 		Matcher matcher = pattern.matcher(email);
 		if(!matcher.matches()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid email format");
+			errorRedirect(request, response, "Invalid email format");
 			return;
 		}
 		
 		// Passwords match check
 		if(!password.equals(passwordRep)) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Passwords do not match!");
+			errorRedirect(request, response, "Passwords do not match!");
 			return;
 		}
 		
 		if(password.length() < 8) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please use a stronger password (at least 8 characters)");
+			errorRedirect(request, response, "Please use a stronger password (at least 8 characters)");
 			return;
 		}
 		
@@ -110,11 +110,11 @@ public class Register extends HttpServlet {
 		// Check if email is already taken
 		try {
 			if(userDAO.isEmailTaken(email)) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Email " + email + " is already taken");
+				errorRedirect(request, response, "Email " + email + " is already taken");
 				return;
 			}
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error connecting to database");
+			errorRedirect(request, response, "Error connecting to database");
 			return;
 		}
 		
@@ -123,13 +123,23 @@ public class Register extends HttpServlet {
 		try {
 			userDAO.registerUser(email, password, name, surname);	
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error during account creation");
+			errorRedirect(request, response, "Error during account creation, please try again in a few minutes");
 			return;
 		}
 		
 		//HttpSession session = request.getSession();
 		//session.setAttribute("user", user);
 		response.sendRedirect(getServletContext().getContextPath()+Paths.pathToGoToLoginServlet);
+	}
+	
+	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("backPath", Paths.pathToRegistrationServlet);
+		req.setAttribute("error", error);
+		
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+				
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }

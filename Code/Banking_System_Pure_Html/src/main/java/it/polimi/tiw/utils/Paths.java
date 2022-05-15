@@ -8,7 +8,7 @@ public class Paths {
 	public static String pathToAccountDetailsPage = "/WEB-INF/AccountDetails.html";
 	public static String pathToTransferConfirmedPage = "/WEB-INF/TransferConfirmed.html";
 	public static String pathToTransferFailedPage = "/WEB-INF/TransferFailed.html";
-	public static String pathToErrorPage = "/WEB-INF/ErrorPage.html";
+	public static String pathToErrorPage = "/WEB-INF/Error.html";
 	
 	public static String pathToLoginServlet = "/Login";
 	public static String pathToGoToLoginServlet = "/GoToLogin";
