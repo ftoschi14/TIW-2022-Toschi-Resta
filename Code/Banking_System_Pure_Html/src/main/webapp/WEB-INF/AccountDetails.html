@@ -85,7 +85,7 @@
 					</form>
 				</div>
 		</div>
-		<div class="col-md-6 transfer_list page_box">
+		<div class="col-md-6 page_box">
 			<div class="col-md-12 title ">
 				<h1 class="account_transfers_title">Your Transfers</h1>
 			</div>
@@ -93,7 +93,7 @@
 				<div th:case="0">
 					<div class="col-md-12 no_transfers">You don't have any transfer in this account</div>
 				</div>
-				<div th:case="*">
+				<div class="transfer_list" th:case="*">
 					<div th:each="t : ${transfers}">
 						<div class="row transfer" th:class="(${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer')">
 							<div class="row">
