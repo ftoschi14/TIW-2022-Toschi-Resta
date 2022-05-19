@@ -14,21 +14,22 @@
 
 <body>
 	<div class="container-fluid">
-		<div class="row page_box">
 
-				<div class="row sticky_row">
-					<div class="col-md-6">
-						<div class="row">
-							<div class="col-md-2">
-								<a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
-							</div>
-							<div class="col-md-2 go_back">
-								<a class="btn btn-lg active yellow-button" role="button" th:href="@{/GoToHome}">&#129092;</a>
-							</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-2">
+							<a class="logout btn btn-lg active yellow-button" role="button" th:href="@{/Logout}">Logout</a>
+						</div>
+						<div class="col-md-2 go_back">
+							<a class="btn btn-lg active yellow-button" role="button" th:href="@{/GoToHome}">&#129092;</a>
 						</div>
 					</div>
 				</div>
+			</div>
 
+
+		<div class="row page_box">
 			<div class="col-md-6 left-side page_box">
 				<div class="row account_details page_box">
 					<div class="col-md-12 title"><h1>Account Details</h1></div>
@@ -37,7 +38,7 @@
 					<div class="col-md-12 account_balance">Your balance is: <span th:text="${account.balance}">2000 </span>&euro;</div>
 				</div>
 
-				<br>
+
 
 				<div class="row require_transfer page_box">
 						<div class="col-md-12 title"><h1>Require Transfer</h1></div>
@@ -86,14 +87,14 @@
 				</div>
 		</div>
 		<div class="col-md-6 page_box">
-			<div class="col-md-12 title ">
+			<div class="row title">
 				<h1 class="account_transfers_title">Your Transfers</h1>
 			</div>
-			<div class="col-md-12" th:switch="${transfers.size}">
+			<div class="row" th:switch="${transfers.size}">
 				<div th:case="0">
 					<div class="col-md-12 no_transfers">You don't have any transfer in this account</div>
 				</div>
-				<div class="transfer_list" th:case="*">
+				<div class="transfer_list overflow-auto" th:case="*">
 					<div th:each="t : ${transfers}">
 						<div class="row transfer" th:class="(${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer')">
 							<div class="row">
