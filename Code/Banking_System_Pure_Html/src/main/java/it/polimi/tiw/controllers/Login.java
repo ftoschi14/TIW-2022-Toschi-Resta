@@ -77,7 +77,7 @@ public class Login extends HttpServlet {
 			user = dao.findUser(email, password);
 		} catch (SQLException e) {
 			// Redirect to error page -> Unable to check credentials
-			errorRedirect(request, response, "Database connection error: Unable to check credentials");
+			showWarning(request, response, "Database connection error: Unable to check credentials");
 			return;
 		}
 		
@@ -89,7 +89,7 @@ public class Login extends HttpServlet {
 			path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
 			response.sendRedirect(path);
 		} else {
-			errorRedirect(request, response, "Invalid credentials");
+			showWarning(request, response, "Invalid credentials");
 		}
 		
 	}
@@ -102,6 +102,15 @@ public class Login extends HttpServlet {
 		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
 				
 		engine.process(Paths.pathToErrorPage, context, res.getWriter());
+	}
+	
+	private void showWarning(HttpServletRequest req, HttpServletResponse res, String warning) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("warning", warning);
+		
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+				
+		engine.process(Paths.pathToLoginPage, context, res.getWriter());
 	}
 
 }

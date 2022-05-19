@@ -1,8 +1,12 @@
+body, html {
+  height: 100%;
+}
 .login_box{
   padding-left: 10%;
   padding-right: 10%;
   padding-top: 15%;
-  padding-bottom: 15%
+  padding-bottom: 15%;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px
 }
 .bank_name,.bank_presentation{
   text-align: center;

@@ -129,7 +129,11 @@ public class Register extends HttpServlet {
 		
 		//HttpSession session = request.getSession();
 		//session.setAttribute("user", user);
-		response.sendRedirect(getServletContext().getContextPath()+Paths.pathToGoToLoginServlet);
+		
+		request.setAttribute("result", "Successfully registered");
+		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
+				
+		engine.process(Paths.pathToLoginPage, context, response.getWriter());
 	}
 	
 	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
