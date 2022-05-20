@@ -135,7 +135,6 @@ public class MakeTransfer extends HttpServlet {
 			senderAccount = bankAccountDAO.findAccountByID(senderID);
 			if(senderAccount == null){
 				request.setAttribute("failReason", "The sender account doesn't exist");
-				request.setAttribute("senderid", senderAccount.getID());
 				path = Paths.pathToTransferFailedPage;
 			}
 			else if(senderAccount.getUserID() != user.getID()){
