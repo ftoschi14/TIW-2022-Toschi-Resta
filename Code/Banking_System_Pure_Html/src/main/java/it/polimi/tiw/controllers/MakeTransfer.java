@@ -75,12 +75,20 @@ public class MakeTransfer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-
+		User user = (User)session.getAttribute("user");
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		BankAccount senderAccount = null;
 		BankAccount recipientAccount = null;
 
 		//get, sanitize and checks params
+		Integer senderID = null;
+		try {
+			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("senderID")));
+		}catch(NumberFormatException | NullPointerException e) {
+			errorRedirect(request, response, "Invalid sender id");
+			return;
+		}
+
 		Integer recipientID = null;
 		try {
 			recipientID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("recipientID")));
@@ -97,14 +105,6 @@ public class MakeTransfer extends HttpServlet {
 			return;
 		}
 
-		Integer senderID = null;
-		try {
-			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("senderID")));
-		}catch(NumberFormatException | NullPointerException e) {
-			errorRedirect(request, response, "Invalid sender id");
-			return;
-		}
-
 		BigDecimal amount = null;
 		String amountString = StringEscapeUtils.escapeJava(request.getParameter("amount"));
 		if(amountString == null) {
@@ -112,7 +112,13 @@ public class MakeTransfer extends HttpServlet {
 			return;
 		}
 		else {
-			amount = new BigDecimal(amountString.replace(",","."));
+			try{
+				amount = new BigDecimal(amountString.replace(",","."));
+			}catch(NumberFormatException e){
+				errorRedirect(request, response, "Incorrect amount format");
+				return;
+			}
+
 		}
 
 		String reason = StringEscapeUtils.escapeJava(request.getParameter("reason"));
@@ -127,12 +133,22 @@ public class MakeTransfer extends HttpServlet {
 		try {
 			recipientAccount = bankAccountDAO.findAccountByID(recipientID);
 			senderAccount = bankAccountDAO.findAccountByID(senderID);
-			if(recipientAccount == null) {
+			if(senderAccount == null){
+				request.setAttribute("failReason", "The sender account doesn't exist");
+				request.setAttribute("senderid", senderAccount.getID());
+				path = Paths.pathToTransferFailedPage;
+			}
+			else if(senderAccount.getUserID() != user.getID()){
+				request.setAttribute("failReason", "You can't make a transfer from this account because it's not yours");
+				request.setAttribute("senderid", senderAccount.getID());
+				path = Paths.pathToTransferFailedPage;
+			}
+			else if(recipientAccount == null) {
 				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "The recipient account doesn't exist");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = Paths.pathToTransferFailedPage;
-				
+
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
 				//TO-DO REDIRECT TransactionFailed
@@ -173,7 +189,7 @@ public class MakeTransfer extends HttpServlet {
 
 		}catch (SQLException e) {
 			errorRedirect(request, response, "Unable to submit this transfer, please try again");
-			e.printStackTrace();
+			//e.printStackTrace();
 			return;
 		}
 	}
@@ -186,11 +202,26 @@ public class MakeTransfer extends HttpServlet {
 
 	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
 		ServletContext servletContext = getServletContext();
-		int senderID = Integer.parseInt(StringEscapeUtils.escapeJava(req.getParameter("senderID")));
+		Integer senderID = null;
+		try{
+			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(req.getParameter("senderID")));
+		}catch(NumberFormatException | NullPointerException e) {
+			curruptedDataErrorRedirect(req,res,error);
+			return;
+		}
 		req.setAttribute("bankAccountID", senderID);
 		req.setAttribute("backPath", Paths.pathToSelectAccountServlet);
 		req.setAttribute("error", error);
 
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
+	}
+
+	private void curruptedDataErrorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
+		req.setAttribute("error", error + "; corrupted data, click the yellow button to go back to your home");
 		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
 
 		engine.process(Paths.pathToErrorPage, context, res.getWriter());

@@ -16,11 +16,19 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="row">
-						<div class="col-md-2 go_back">
+						<div class="col-md-2 go_back" th:if="${bankAccountID}">
+							<a class="btn btn-lg active yellow-button" role="button" th:href="@{/SelectAccount(bankAccountID = ${bankAccountID})}">&#129092;</a>
+						</div>
+						<div class="col-md-2 go_back" th:unless="${bankAccountID}">
 							<a class="btn btn-lg active yellow-button" role="button" th:href="@{${backPath}}">&#129092;</a>
 						</div>
+
 					</div>
 				</div>
+			</div>
+
+			<div class="alert alert-warning" role="alert" th:if="${warning}">
+				<span class="mb-0" th:text="${warning}">This is an error message.</span>
 			</div>
 
 			<div class="row image_box">
