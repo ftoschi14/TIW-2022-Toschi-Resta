@@ -34,10 +34,11 @@ public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
 	private TemplateEngine engine;
-	private Pattern pattern;
+	private Pattern emailRegexPattern, nameRegexPattern;
 
 	// Regex for email address validation
-	private final String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+	private final String emailRegex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+	private final String nameRegex = "^([A-Za-z\\u00C0-\\u024F])+([A-Za-z\\u00C0-\\u024F]|\\s)*";
 
     public Register() {
         super();
@@ -47,7 +48,8 @@ public class Register extends HttpServlet {
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
     	engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
-		pattern = Pattern.compile(regex);
+		emailRegexPattern = Pattern.compile(emailRegex);
+		nameRegexPattern = Pattern.compile(nameRegex);
     }
 
     @Override
@@ -73,13 +75,14 @@ public class Register extends HttpServlet {
 	 * Handles User creation and redirection to Homepage
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
 
 		String password = StringEscapeUtils.escapeJava(request.getParameter("password"));
 		String passwordRep = StringEscapeUtils.escapeJava(request.getParameter("passwordRep"));
 
-		String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
-		String surname = StringEscapeUtils.escapeJava(request.getParameter("surname"));
+		String name = request.getParameter("name");
+		String surname = request.getParameter("surname");
 
 		// Basic param nullcheck
 		if(email == null || password == null || passwordRep == null || name == null || surname == null
@@ -89,7 +92,7 @@ public class Register extends HttpServlet {
 		}
 
 		// Email validity check
-		Matcher matcher = pattern.matcher(email);
+		Matcher matcher = emailRegexPattern.matcher(email);
 		if(!matcher.matches()) {
 			errorRedirect(request, response, "Invalid email format");
 			return;
@@ -103,6 +106,15 @@ public class Register extends HttpServlet {
 
 		if(password.length() < 8) {
 			errorRedirect(request, response, "Please use a stronger password (at least 8 characters)");
+			return;
+		}
+
+		Matcher nameMatcher = nameRegexPattern.matcher(name);
+		Matcher surnameMatcher = nameRegexPattern.matcher(surname);
+		if(!nameMatcher.matches() || !surnameMatcher.matches()) {
+			errorRedirect(request, response, "Please do not use special characters in your name (only accented characters are allowed)");
+			System.out.print(nameMatcher.matches() + ", " + name);
+			System.out.print(surnameMatcher.matches() + ", " + surname);
 			return;
 		}
 
@@ -123,7 +135,7 @@ public class Register extends HttpServlet {
 		try {
 			userDAO.registerUser(email, password, name, surname);
 		} catch (SQLException e) {
-			errorRedirect(request, response, "Error during account creation, please try again in a few minutes");
+			errorRedirect(request, response, "Error during account creation: " + e.getSQLState() + "\n please try again");
 			return;
 		}
 
