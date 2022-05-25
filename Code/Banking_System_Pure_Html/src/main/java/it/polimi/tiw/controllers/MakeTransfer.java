@@ -173,16 +173,9 @@ public class MakeTransfer extends HttpServlet {
 			else {
 				TransferDAO transferDAO = new TransferDAO(connection);
 				transferDAO.makeTransfer(amount, reason, senderID, recipientID);
-				//TO-DO REDIRECT TransactionConfirmed
-				request.setAttribute("sender", senderAccount);
-				request.setAttribute("recipient", recipientAccount);
-				request.setAttribute("amount", amount);
-				request.setAttribute("reason", reason);
-				request.setAttribute("newBalanceSenderAccount", senderAccount.getBalance().subtract(amount));
-				request.setAttribute("newBalanceRecipientAccount", recipientAccount.getBalance().add(amount));
-
-				path = Paths.pathToTransferConfirmedPage;
-
+				path = getServletContext().getContextPath() + Paths.pathToGoToTransferConfirmedServlet;
+				response.sendRedirect(path);
+				return;
 			}
 			forwardToTransferDetails(request, response, path);
 

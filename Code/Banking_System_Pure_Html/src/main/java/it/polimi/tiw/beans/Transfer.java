@@ -1,10 +1,11 @@
 package it.polimi.tiw.beans;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Transfer {
 	private int ID, senderID, recipientID;
-	private double amount;
+	private BigDecimal amount;
 	private Timestamp timestamp;
 	private String reason;
 	
@@ -24,7 +25,7 @@ public class Transfer {
 		return recipientID;
 	}
 	
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 	
@@ -52,7 +53,7 @@ public class Transfer {
 		this.recipientID = recipientID;
 	}
 	
-	public void setAmount(double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 	

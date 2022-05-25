@@ -35,6 +35,7 @@
   <url-pattern>/CreateAccount</url-pattern>
   <url-pattern>/SelectAccount</url-pattern>
   <url-pattern>/MakeTransfer</url-pattern>
+  <url-pattern>/GoToTransferConfirmed</url-pattern>
 </filter-mapping>
 
 <filter-mapping>

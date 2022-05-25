@@ -19,7 +19,10 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.BankAccount;
+import it.polimi.tiw.beans.Transfer;
 import it.polimi.tiw.beans.User;
+import it.polimi.tiw.dao.BankAccountDAO;
+import it.polimi.tiw.dao.TransferDAO;
 import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import it.polimi.tiw.utils.Paths;
@@ -33,11 +36,11 @@ public class GoToTransferConfirmed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine engine;
-    
+
     public GoToTransferConfirmed() {
         super();
     }
-    
+
     /**
      * Overriding init method to use thymeleaf
      */
@@ -45,53 +48,75 @@ public class GoToTransferConfirmed extends HttpServlet {
 		connection = ConnectionHandler.getConnection(getServletContext());
 		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 	}
-    
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
-		User recipientUser = null;
-		BankAccount sender = null;
-		BankAccount recipient = null;
-		UserDAO userDAO = new UserDAO(connection);
+		User user = (User)session.getAttribute("user");
+		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
+		TransferDAO transferDAO = new TransferDAO(connection);
+		BankAccount sender;
+		BankAccount recipient;
+		Transfer transfer;
 		BigDecimal amount;
-		String reason = (String)request.getAttribute("reason");
-		
-		sender = (BankAccount)request.getAttribute("sender");
-		recipient = (BankAccount)request.getAttribute("recipient");
-		amount = (BigDecimal)request.getAttribute("amount");
-		
-		try {
-			recipientUser = userDAO.findUserByID(recipient.getUserID());
-		}catch(SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database connection error: Unable to find the user");
+		String reason;
+
+		try{
+			transfer = transferDAO.getLastTransferByUserID(user.getID());
+			if(transfer == null){
+				errorRedirect(request, response, "Unable to get the transfer from the server");
+				return;
+			}
+
+			sender = bankAccountDAO.findAccountByID(transfer.getSenderID());
+			if(sender == null){
+				errorRedirect(request, response,"Unable to get the details of the sender account from the server");
+				return;
+			}
+
+			recipient = bankAccountDAO.findAccountByID(transfer.getRecipientID());
+			if(recipient == null){
+				errorRedirect(request, response,"Unable to get the details of the recipient account from the server");
+				return;
+			}
+
+			amount = transfer.getAmount();
+			if(amount == null){
+				errorRedirect(request, response,"Unable to get the details of the transfer from the server");
+				return;
+			}
+
+			reason = transfer.getReason();
+			if(reason == null){
+				errorRedirect(request, response,"Unable to get the details of the transfer from the server");
+				return;
+			}
+		}catch(SQLException e){
+			errorRedirect(request, response,"Database error, unable to get data");
+			e.printStackTrace();
 			return;
 		}
-		
-		if(sender == null || recipient == null || recipientUser == null || amount == null || reason == null) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Wrong parameters");
-			return;
-		}
-		
+
+
 		//redirect to the page with the account details
 		String path = Paths.pathToTransferConfirmedPage;
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-		context.setVariable("senderAccount", sender);
-		context.setVariable("recipientAccount", recipient);
+		context.setVariable("sender", sender);
+		context.setVariable("recipient", recipient);
 		context.setVariable("oldBalanceSenderAccount", sender.getBalance().add(amount));
 		context.setVariable("oldBalanceRecipientAccount", recipient.getBalance().subtract(amount));
 		context.setVariable("reason", reason);
 		context.setVariable("amount", amount);
-		context.setVariable("recipientAccountUser", recipientUser);
+		//context.setVariable("recipientAccountUser", recipient.getUserID());
 		engine.process(path, context, response.getWriter());
-		
+
 	}
 
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
+
 	@Override
     public void destroy() {
 	    	try {
@@ -100,4 +125,14 @@ public class GoToTransferConfirmed extends HttpServlet {
 				e.printStackTrace();
 			}
     }
+
+	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+		ServletContext servletContext = getServletContext();
+		req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
+		req.setAttribute("error", error);
+
+		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
+
+		engine.process(Paths.pathToErrorPage, context, res.getWriter());
+	}
 }
