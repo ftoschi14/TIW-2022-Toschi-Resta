@@ -96,6 +96,7 @@ public class SelectAccount extends HttpServlet {
 		}
 		
 		//redirect to the page with the account details
+		response.setCharacterEncoding("UTF-8");
 		String path = Paths.pathToAccountDetailsPage;
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());

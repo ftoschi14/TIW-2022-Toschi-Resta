@@ -76,6 +76,7 @@ public class GoToHome extends HttpServlet {
 		}
 		
 		//Redirect to page with Account list
+		response.setCharacterEncoding("UTF-8"); //Ensure correct accented characters visualization
 		String path = Paths.pathToHomePage;
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());

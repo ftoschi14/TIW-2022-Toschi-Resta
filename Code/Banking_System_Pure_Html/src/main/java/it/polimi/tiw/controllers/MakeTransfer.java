@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -38,6 +40,8 @@ public class MakeTransfer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine engine;
+	private Pattern reasonPattern;
+	private final String reasonRegex = "^([A-Za-z\\u00C0-\\u024F])+([A-Za-z\\u00C0-\\u024F]|\\s)*";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -52,6 +56,7 @@ public class MakeTransfer extends HttpServlet {
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
 		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
+		reasonPattern = Pattern.compile(reasonRegex);
 	}
 
 
@@ -74,6 +79,7 @@ public class MakeTransfer extends HttpServlet {
 	 * Makes the transfer
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
@@ -121,9 +127,10 @@ public class MakeTransfer extends HttpServlet {
 
 		}
 
-		String reason = StringEscapeUtils.escapeJava(request.getParameter("reason"));
-		if(reason == null || reason.isEmpty()) {
-			errorRedirect(request, response, "Please specify a valid reason");
+		String reason = request.getParameter("reason");
+		Matcher reasonMatcher = reasonPattern.matcher(reason);
+		if(reason == null || reason.isEmpty() || !reasonMatcher.matches()) {
+			errorRedirect(request, response, "Please specify a valid reason (No special characters allowed)");
 			return;
 		}
 
