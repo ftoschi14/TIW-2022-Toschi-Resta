@@ -50,6 +50,7 @@ public class GoToTransferConfirmed extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
@@ -69,13 +70,13 @@ public class GoToTransferConfirmed extends HttpServlet {
 
 			sender = bankAccountDAO.findAccountByID(transfer.getSenderID());
 			if(sender == null){
-				errorRedirect(request, response,"Unable to get the details of the sender account from the server");
+				errorRedirect(request, response,"Unable to get the details about the sender account from the server");
 				return;
 			}
 
 			recipient = bankAccountDAO.findAccountByID(transfer.getRecipientID());
 			if(recipient == null){
-				errorRedirect(request, response,"Unable to get the details of the recipient account from the server");
+				errorRedirect(request, response,"Unable to get the details about the recipient account from the server");
 				return;
 			}
 

@@ -184,7 +184,7 @@ public class MakeTransfer extends HttpServlet {
 				response.sendRedirect(path);
 				return;
 			}
-			forwardToTransferDetails(request, response, path);
+			forwardToTransferFailedDetails(request, response, path);
 
 		}catch (SQLException e) {
 			errorRedirect(request, response, "Unable to submit this transfer, please try again");
@@ -193,7 +193,7 @@ public class MakeTransfer extends HttpServlet {
 		}
 	}
 
-	private void forwardToTransferDetails(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+	private void forwardToTransferFailedDetails(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
 		ServletContext servletContext = getServletContext();
 		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
 		engine.process(path, context, response.getWriter());
