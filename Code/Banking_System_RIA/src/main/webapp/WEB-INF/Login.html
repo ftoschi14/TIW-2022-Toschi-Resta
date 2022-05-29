@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="all" href="../CSS/style.css" th:href="@{/CSS/style.css}" />
+  <link rel="stylesheet" type="text/css" media="all" href="../CSS/login.css" th:href="@{/CSS/login.css}" />
+</head>
+
+<body>
+  <div class="container h-100 d-flex flex-column">
+  <div class="row flex-grow-1">
+  </div>
+  <div class="row align-items-center flex-grow-1">
+    <div class="col-md-2">
+    </div>
+
+
+    <div class="col-md-8 container-fluid login_box">
+      <div class="row h-75">
+        <h1 class="bank_name title">PolimiBank</h1>
+        <div class="col-md-6 login_box_credentials">
+
+          <form class="horizontal-form" th:action="@{/Login}" name="login_form" method="POST">
+
+            <div class="row form-group input_form">
+              <label class="col-md-3 control-label" for="email">E-mail</label><br>
+              <div class="col-md-9">
+                <input class="form-control" type="email" placeholder="E-mail address" maxlength=50 name="email" required />
+              </div><br>
+            </div>
+
+            <div class="row">
+              <br>
+            </div>
+
+            <div class="row form-group input_form">
+              <label class="col-md-3 control-label" for="password">Password</label><br>
+              <div class="col-md-9">
+                <input class="form-control" type="password" placeholder="*****" minlength=8 maxlength=50 name="password" required />
+              </div><br>
+            </div>
+            <input type="submit" id="submit-form" class="hidden" />
+
+          </form>
+
+        </div>
+
+        <div class="col-md-6 login_box_right">
+          <div class="row">
+            <h4 class="title bank_presentation">Log in, or create a new account</h4>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+              <label class="btn blue-button login" for="submit-form" tabindex="0">Login</label>
+            </div>
+              <div class="col-md-2">
+              </div>
+            <div class="col-md-2">
+              <a class="btn blue-button register" role="button" th:href="@{/Register}">Register</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row h-25">
+        <div class="row">
+          <br>
+        </div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-7">
+
+          <div class="alert alert-warning" role="alert" th:if="${warning}">
+            <span class="mb-0" th:text="${warning}">This is an error message.</span>
+          </div>
+          <div class="alert alert-primary" role="alert" th:if="${result}">
+            <span class="mb-0" th:text="${result}">This is an info message.</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+    </div>
+  </div>
+
+
+  <div class="row flex-grow-1">
+  </div>
+
+  </div>
+</body>
+
+</html>
