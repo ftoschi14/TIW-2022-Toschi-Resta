@@ -2,12 +2,34 @@ body, html {
   height: 100%;
 }
 .login_box{
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  border-radius: 15px;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  /*border: 2px solid rgba(8,75,131,0.5);*/
+}
+.login_box_right{
+  text-align: center;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+.login_box_credentials{
+  border-right: 3px solid #084b83;
   padding-left: 10%;
-  padding-right: 10%;
-  padding-top: 15%;
-  padding-bottom: 15%;
-  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px
+  padding-right: 5%;
+  padding-top: 10%;
+  padding-bottom: 10%;
 }
 .bank_name,.bank_presentation{
   text-align: center;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+.registration_title,.registration_subtitle{
+  text-align:center;
+}
+.spacer {
+  padding: 0 3%;
 }
