@@ -1,15 +1,13 @@
-CREATE DATABASE  IF NOT EXISTS `bank` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `bank`;
 -- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: bank
+-- Host: localhost    Database: bank_ria
 -- ------------------------------------------------------
 -- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET nameS utf8 */;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -26,13 +24,12 @@ DROP TABLE IF EXISTS `bank_account`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bank_account` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `userID` int NOT NULL,
-  `name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
-  `balance` decimal(10,2) NOT NULL,
+  `UserID` int NOT NULL,
+  `Name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `Balance` decimal(10,2) NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `UID` (`userID`),
-  CONSTRAINT `UID` FOREIGN KEY (`userID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  constraint `NoNegativebalance` check(`balance`>=0)
+  KEY `UID` (`UserID`),
+  CONSTRAINT `UID` FOREIGN KEY (`UserID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -47,6 +44,33 @@ INSERT INTO `bank_account` VALUES (1,1,'myAccount',15000.00),(2,2,'myAccount',15
 UNLOCK TABLES;
 
 --
+-- Table structure for table `contacts`
+--
+
+DROP TABLE IF EXISTS `contacts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contacts` (
+  `OwnerID` int NOT NULL,
+  `ContactID` int NOT NULL,
+  PRIMARY KEY (`OwnerID`,`ContactID`),
+  KEY `ContactID` (`ContactID`),
+  CONSTRAINT `ContactID` FOREIGN KEY (`ContactID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `OwnerID` FOREIGN KEY (`OwnerID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contacts`
+--
+
+LOCK TABLES `contacts` WRITE;
+/*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
+INSERT INTO `contacts` VALUES (2,1),(4,1),(1,2),(1,3),(2,3),(1,4),(2,4),(3,5);
+/*!40000 ALTER TABLE `contacts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `transfer`
 --
 
@@ -55,15 +79,17 @@ DROP TABLE IF EXISTS `transfer`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transfer` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `amount` decimal(8,2) NOT NULL,
-  `Timestamp` timestamp NOT NULL default current_timestamp,
-  `reason` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `senderID` int NOT NULL,
-  `recipientID` int NOT NULL,
-  PRIMARY KEY (`ID`,`senderID`,`recipientID`),
-  CONSTRAINT `DAccount` FOREIGN KEY (`recipientID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `OAccount` FOREIGN KEY (`senderID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Positiveamount` CHECK ((`amount` >= 0))
+  `Amount` decimal(8,2) NOT NULL,
+  `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Reason` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `SenderID` int NOT NULL,
+  `RecipientID` int NOT NULL,
+  PRIMARY KEY (`ID`,`SenderID`,`RecipientID`),
+  KEY `OAccount` (`SenderID`),
+  KEY `DAccount` (`RecipientID`),
+  CONSTRAINT `DAccount` FOREIGN KEY (`RecipientID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `OAccount` FOREIGN KEY (`SenderID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `PositiveAMount` CHECK ((`Amount` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -86,12 +112,12 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `Username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `Password` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `surname` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `Name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `Surname` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `Username` (`Username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,14 +130,6 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'sara.resta@mail.polimi.it','password001','Sara','Resta'),(2,'federico.toschi@mail.polimi.it','password002','Federico','Toschi'),(3,'alessia.rossi@gmail.com','password003','Alessia','Rossi'),(4,'giulio.verdi@gmail.com','password004','Giulio','Verdi'),(5,'gianfilippo.bianchi@libero.it','password005','Gianfilippo','Bianchi'),(6,'giuseppina.rosa@libero.it','password006','Giuseppina','Rosa');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'bank'
---
-
---
--- Dumping routines for database 'bank'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -122,4 +140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-12 13:02:09
+-- Dump completed on 2022-06-03 21:04:34

@@ -1,10 +1,15 @@
 CREATE DATABASE  IF NOT EXISTS `bank` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `bank`;
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: bank
+-- ------------------------------------------------------
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!50503 SET nameS utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -12,50 +17,67 @@ USE `bank`;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Table USER
+--
+-- Table structure for table `bank_account`
+--
+
+DROP TABLE IF EXISTS `bank_account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bank_account` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `userID` int NOT NULL,
+  `name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `balance` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `UID` (`userID`),
+  CONSTRAINT `UID` FOREIGN KEY (`userID`) REFERENCES `user` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  constraint `NoNegativebalance` check(`balance`>=0)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `transfer`
+--
+
+DROP TABLE IF EXISTS `transfer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transfer` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `amount` decimal(8,2) NOT NULL,
+  `Timestamp` timestamp NOT NULL default current_timestamp,
+  `reason` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `senderID` int NOT NULL,
+  `recipientID` int NOT NULL,
+  PRIMARY KEY (`ID`,`senderID`,`recipientID`),
+  CONSTRAINT `DAccount` FOREIGN KEY (`recipientID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `OAccount` FOREIGN KEY (`senderID`) REFERENCES `bank_account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Positiveamount` CHECK ((`amount` >= 0))
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `user`
+--
+
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-	`ID` integer AUTO_INCREMENT,
-	`Username` varchar(50) not null,
-	`Password` varchar(50) not null,
-	`Name` varchar(20) not null,
-	`Surname` varchar(30) not null,
-	primary key(`ID`),
-	unique(`Username`)
-	)engine=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `Password` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `surname` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `BankAccount`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `BankAccount`(
-	`ID` integer AUTO_INCREMENT primary key,
-	`UserID` integer not null,
-	`Name` varchar(40) not null,
-	`Balance` decimal(10,2) not null,
-	constraint `UID` foreign key(`UserID`) references `User`(`ID`) on update cascade on delete cascade,
-	constraint `NoNegativeBalance` check(`Balance`>=0)
-	)engine=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-	
-DROP TABLE IF EXISTS `Transfer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Transfer`(
-	`ID` integer AUTO_INCREMENT primary key,
-	`Amount` decimal(8,2) not null,
-	`Timestamp` timestamp not null default current_timestamp,
-	`Reason` varchar(255) not null,
-	`IDOriginAccount` integer not null,
-	`IDDestinationAccount` integer not null,
-	constraint `OAccount`foreign key(`IDOriginAccount`) references `BankAccount`(`ID`) on update cascade on delete cascade,
-	constraint `DAccount` foreign key(`IDDestinationAccount`) references BankAccount(`ID`) on update cascade on delete cascade,
-	constraint `PositiveAMount` check (`Amount`>=0))engine=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
-/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -65,3 +87,5 @@ CREATE TABLE `Transfer`(
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-04-12 13:02:09
