@@ -1,6 +1,6 @@
 package it.polimi.tiw.beans;
 
-public class Contact{
+public class Contact {
 
   private int ownerID;
   private int contactID;
@@ -28,5 +28,4 @@ public class Contact{
   public void setContactID(int contactID){
     this.contactID = contactID;
   }
-
 }
