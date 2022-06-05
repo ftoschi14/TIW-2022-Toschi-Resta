@@ -27,10 +27,10 @@ CREATE TABLE `user` (
 	)engine=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `BankAccount`;
+DROP TABLE IF EXISTS `bank_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `BankAccount`(
+CREATE TABLE `bank_account`(
 	`ID` integer AUTO_INCREMENT primary key,
 	`UserID` integer not null,
 	`Name` varchar(40) not null,
@@ -50,8 +50,8 @@ CREATE TABLE `Transfer`(
 	`SenderID` integer not null,
 	`RecipientID` integer not null,
 	primary key(`ID`,`SenderID`,`RecipientID`),
-	constraint `OAccount`foreign key(`IDOriginAccount`) references `BankAccount`(`ID`) on update cascade on delete cascade,
-	constraint `DAccount` foreign key(`IDDestinationAccount`) references `BankAccount`(`ID`) on update cascade on delete cascade,
+	constraint `OAccount`foreign key(`SenderID`) references `bank_account`(`ID`) on update cascade on delete cascade,
+	constraint `DAccount` foreign key(`RecipientID`) references `bank_account`(`ID`) on update cascade on delete cascade,
 	constraint `PositiveAMount` check (`Amount`>=0))engine=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Contacts`;
