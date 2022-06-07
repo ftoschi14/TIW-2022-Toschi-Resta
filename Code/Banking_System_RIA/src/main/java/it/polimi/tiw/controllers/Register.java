@@ -16,15 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
-import it.polimi.tiw.utils.EngineHandler;
-import it.polimi.tiw.utils.Paths;
 
 /**
  * Servlet implementation class Register
@@ -33,7 +29,6 @@ import it.polimi.tiw.utils.Paths;
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
-	private TemplateEngine engine;
 	private Pattern emailRegexPattern, nameRegexPattern;
 
 	// Regex for email address validation
@@ -47,7 +42,6 @@ public class Register extends HttpServlet {
     @Override
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
-    	engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 		emailRegexPattern = Pattern.compile(emailRegex);
 		nameRegexPattern = Pattern.compile(nameRegex);
     }
@@ -65,10 +59,7 @@ public class Register extends HttpServlet {
      * Redirects to Register page
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext servletContext = getServletContext();
-		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-
-		engine.process(Paths.pathToRegistrationPage, context, response.getWriter());
+		doPost(request, response);
 	}
 
 	/**
@@ -87,34 +78,37 @@ public class Register extends HttpServlet {
 		// Basic param nullcheck
 		if(email == null || password == null || passwordRep == null || name == null || surname == null
 		|| email.isEmpty() || password.isEmpty() || name.isEmpty() || surname.isEmpty()) {
-			errorRedirect(request, response, "Please fill out all the required fields");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Please fill out all the required fields");
 			return;
 		}
 
 		// Email validity check
 		Matcher matcher = emailRegexPattern.matcher(email);
 		if(!matcher.matches()) {
-			errorRedirect(request, response, "Invalid email format");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Invalid email format");
 			return;
 		}
 
 		// Passwords match check
 		if(!password.equals(passwordRep)) {
-			errorRedirect(request, response, "Passwords do not match!");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Passwords do not match");
 			return;
 		}
 
 		if(password.length() < 8) {
-			errorRedirect(request, response, "Please use a stronger password (at least 8 characters)");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Please use a stronger password (at least 8 characters)");
 			return;
 		}
 
 		Matcher nameMatcher = nameRegexPattern.matcher(name);
 		Matcher surnameMatcher = nameRegexPattern.matcher(surname);
 		if(!nameMatcher.matches() || !surnameMatcher.matches()) {
-			errorRedirect(request, response, "Please do not use special characters in your name (only accented characters are allowed)");
-			System.out.print(nameMatcher.matches() + ", " + name);
-			System.out.print(surnameMatcher.matches() + ", " + surname);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Please do not use special characters in your name (only accented characters are allowed)");
 			return;
 		}
 
@@ -122,11 +116,13 @@ public class Register extends HttpServlet {
 		// Check if email is already taken
 		try {
 			if(userDAO.isEmailTaken(email)) {
-				errorRedirect(request, response, "Email " + email + " is already taken");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println("Email " + email + " is already taken");
 				return;
 			}
 		} catch (SQLException e) {
-			errorRedirect(request, response, "Error connecting to database");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Error connecting to database");
 			return;
 		}
 
@@ -135,27 +131,17 @@ public class Register extends HttpServlet {
 		try {
 			userDAO.registerUser(email, password, name, surname);
 		} catch (SQLException e) {
-			errorRedirect(request, response, "Error during account creation: " + e.getSQLState() + "\n please try again");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Error during account creation: " + e.getSQLState() + "\n please try again");
 			return;
 		}
 
 		//HttpSession session = request.getSession();
 		//session.setAttribute("user", user);
 
-		request.setAttribute("result", "Successfully registered");
-		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 
-		engine.process(Paths.pathToLoginPage, context, response.getWriter());
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().println("Successfully registered with user " + email);
 	}
-
-	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
-		ServletContext servletContext = getServletContext();
-		req.setAttribute("backPath", Paths.pathToRegistrationServlet);
-		req.setAttribute("error", error);
-
-		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
-
-		engine.process(Paths.pathToErrorPage, context, res.getWriter());
-	}
-
 }
