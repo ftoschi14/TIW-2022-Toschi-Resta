@@ -148,30 +148,37 @@ public class MakeTransfer extends HttpServlet {
 			if(senderAccount == null){
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("The sender account doesn't exist");
+				return;
 			}
 			else if(senderAccount.getUserID() != user.getID()){
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("You can't make a transfer from this account because it's not yours");
+				return;
 			}
 			else if(recipientAccount == null) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("The recipient account doesn't exist");
+				return;
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("The user selected is not the owner of the recipient account selected");
+				return;
 			}
 			else if(recipientAccount.getID() == senderAccount.getID()) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("Sender account ID must be different from recipient account ID");
+				return;
 			}
 			else if(amount.compareTo(senderAccount.getBalance()) == 1) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("Your account can't afford this transfer");
+				return;
 			}
 			else if(amount.compareTo(new BigDecimal(0)) >= 0){
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("The amount must be positive");
+				return;
 			}
 			else {
 				//makes the transfer
@@ -185,7 +192,7 @@ public class MakeTransfer extends HttpServlet {
 		}
 
 		try{
-			//extrancts the transfer from the database
+			//extracts the transfer from the database
 			Transfer transfer = transferDAO.getLastTransferByUserID(user.getID());
 
 			//prepares the response
