@@ -82,6 +82,7 @@ public class MakeTransfer extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
+		TransferDAO transferDAO = new TransferDAO(connection);
 		BankAccount senderAccount = null;
 		BankAccount recipientAccount = null;
 
@@ -141,7 +142,6 @@ public class MakeTransfer extends HttpServlet {
 
 		//If the recipient account exists for the recipient user selected
 		//and amount <= sender account balance make the transfer
-		String path;
 		try {
 			recipientAccount = bankAccountDAO.findAccountByID(recipientID);
 			senderAccount = bankAccountDAO.findAccountByID(senderID);
@@ -175,7 +175,6 @@ public class MakeTransfer extends HttpServlet {
 			}
 			else {
 				//makes the transfer
-				TransferDAO transferDAO = new TransferDAO(connection);
 				transferDAO.makeTransfer(amount, reason, senderID, recipientID);
 			}
 
@@ -187,7 +186,6 @@ public class MakeTransfer extends HttpServlet {
 
 		try{
 			//extrancts the transfer from the database
-			TransferDAO transferDAO = new TransferDAO(connection);
 			Transfer transfer = transferDAO.getLastTransferByUserID(user.getID());
 
 			//prepares the response
