@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import it.polimi.tiw.beans.User;
-import it.polimi.tiw.utils.Paths;
-
 /**
  * Servlet Filter implementation class LoginFilter
  */
@@ -39,7 +37,7 @@ public class LoginFilter extends HttpFilter implements Filter {
 		if(session != null) {
 			User user = (User)session.getAttribute("user");
 			if(user != null) {
-				res.sendRedirect(req.getServletContext().getContextPath() + Paths.pathToGoToHomeServlet);
+				//res.sendRedirect(req.getServletContext().getContextPath() + Paths.pathToGoToHomeServlet);
 				return;
 			}
 		}

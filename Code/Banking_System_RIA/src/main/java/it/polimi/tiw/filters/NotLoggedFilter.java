@@ -1,6 +1,7 @@
 package it.polimi.tiw.filters;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import it.polimi.tiw.utils.Paths;
 
 /**
  * Servlet Filter implementation class LoginFilter
@@ -38,7 +38,7 @@ public class NotLoggedFilter extends HttpFilter implements Filter {
 		
 		// If no session is found or no User is found, then redirect to login page
 		if(session == null || session.isNew() || session.getAttribute("user") == null) {
-			res.sendRedirect(req.getServletContext().getContextPath() + Paths.pathToGoToLoginServlet);
+			//res.sendRedirect(req.getServletContext().getContextPath() + Paths.pathToGoToLoginServlet);
 			return;
 		}
 		// pass the request along the filter chain

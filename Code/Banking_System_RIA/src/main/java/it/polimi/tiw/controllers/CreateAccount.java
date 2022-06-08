@@ -22,8 +22,7 @@ import org.thymeleaf.context.WebContext;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
-import it.polimi.tiw.utils.EngineHandler;
-import it.polimi.tiw.utils.Paths;
+
 
 /**
  * Servlet implementation class CreateAccount
@@ -44,7 +43,6 @@ public class CreateAccount extends HttpServlet {
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
 		pattern = Pattern.compile(regex);
-		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
     }
     
     @Override
@@ -92,18 +90,18 @@ public class CreateAccount extends HttpServlet {
 			return;
 		}
 		
-		String path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
-		response.sendRedirect(path);
+		//String path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
+		//response.sendRedirect(path);
 	}
 	
 	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
 		ServletContext servletContext = getServletContext();
-		req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
+		//req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
 		req.setAttribute("error", error);
 		
 		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
 				
-		engine.process(Paths.pathToErrorPage, context, res.getWriter());
+		//engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }
