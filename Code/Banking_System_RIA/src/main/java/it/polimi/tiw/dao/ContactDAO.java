@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import it.polimi.tiw.beans.Contact;
+
 public class ContactDAO{
   private Connection connection;
 
@@ -54,7 +56,7 @@ public class ContactDAO{
 			//Preparing the statement
 
 			preparedStatement.setInt(1, ownerID);
-			preparedStatement.setString(2, contactID);
+			preparedStatement.setInt(2, contactID);
 
 			//Executing update
 			result = preparedStatement.executeUpdate();
