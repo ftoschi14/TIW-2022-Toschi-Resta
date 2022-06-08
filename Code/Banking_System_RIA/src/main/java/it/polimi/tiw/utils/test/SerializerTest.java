@@ -3,6 +3,7 @@ package it.polimi.tiw.utils.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.mysql.cj.result.SqlTimestampValueFactory;
+
 import it.polimi.tiw.beans.BankAccount;
+import it.polimi.tiw.beans.Transfer;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.Serializer;
 
@@ -55,6 +59,18 @@ class SerializerTest {
 		
 		String accountsString = Serializer.serializeAll(accs, "accounts").toString();
 		System.out.println(accountsString);
+	}
+	
+	@Test
+	void testSerializeTransfer() {
+		Transfer t1 = new Transfer();
+		t1.setAmount(new BigDecimal(7500));
+		t1.setID(33);
+		t1.setReason("testttest");
+		t1.setRecipientID(15);
+		t1.setSenderID(2);
+		t1.setTimestamp(new Timestamp(0));
+		System.out.println(Serializer.serialize(t1).toString());
 	}
 
 }

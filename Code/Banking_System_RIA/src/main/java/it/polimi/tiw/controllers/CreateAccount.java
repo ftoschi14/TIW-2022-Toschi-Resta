@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
@@ -31,7 +28,6 @@ import it.polimi.tiw.utils.ConnectionHandler;
 public class CreateAccount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
-	private TemplateEngine engine;
 	private String regex = "^\\w+[\\w|\\s]*"; //Match first character as word, then allow whitespace
 	private Pattern pattern;
        
@@ -69,14 +65,16 @@ public class CreateAccount extends HttpServlet {
 		
 		// Basic nullcheck
 		if(accountName == null) {
-			errorRedirect(request, response, "Bad Account name");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Please type a name for the new account");
 			return;
 		}
 		
 		// Check for valid account name (at least one non-whitespace character)
 		Matcher matcher = pattern.matcher(accountName);
 		if(!matcher.matches()) {
-			errorRedirect(request, response, "Bad Account name (At least one non-whitespace required)");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Bad Account name: No special characters allowed");
 			return;
 		}
 		
@@ -86,22 +84,13 @@ public class CreateAccount extends HttpServlet {
 		try {
 			bankAccountDAO.createAccount(user.getID(), accountName, new BigDecimal(0));
 		} catch (SQLException e) {
-			errorRedirect(request, response, "Unable to create Bank Account, please try again");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Unable to create Bank Account: " + e.getSQLState());
 			return;
 		}
 		
 		//String path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
 		//response.sendRedirect(path);
-	}
-	
-	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
-		ServletContext servletContext = getServletContext();
-		//req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
-		req.setAttribute("error", error);
-		
-		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
-				
-		//engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
 }

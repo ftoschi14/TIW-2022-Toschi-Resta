@@ -91,7 +91,7 @@
           </div>
       </div>
 
-      <div class="col-md-8 flex-fill bank_account_data d-flex align-items-center justify-content-evenly">
+      <div class="col-md-9 flex-fill bank_account_data d-flex align-items-center justify-content-evenly">
 
         <div id="noAccSelected" class="hidden row noAccDiv justify-content-evenly align-items-center"> <!-- No account selected DIV -->
           <img src="resources/noAcc.png" alt="" />
@@ -195,6 +195,33 @@
         </div>
 
       </div>
+
+      <div class="transfer_box hidden"> <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
+        <div class="transfer_msg"> <!-- ACTUAL MSG BOX -->
+          <div class="h3">
+            Transfer <span id="transfer_status">Accepted</span>
+          </div>
+          <div class="transfer_details">
+            <div class="sender_details">
+              Sender ID: <span id="senderID">7</span>
+              Account ID: <span id="accID">14</span>
+              Account name: <span id="accName">Bartic</span>
+              Old Balance: <span id="oldBalSND">15</span>&euro;
+              New Balance: <span id="newBalSND">9</span>&euro;
+            </div>
+            <div class="transfer_data">
+
+            </div>
+            <div class="recipient_details"> <!-- CONTAINS ADDCONTACT  BUTTON -->
+
+            </div>
+          </div>
+          <div class="close_box">
+
+          </div>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>
