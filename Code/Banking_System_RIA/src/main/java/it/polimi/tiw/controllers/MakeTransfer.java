@@ -21,14 +21,16 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import it.polimi.tiw.beans.BankAccount;
 import it.polimi.tiw.beans.Transfer;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.BankAccountDAO;
 import it.polimi.tiw.dao.TransferDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
-import it.polimi.tiw.utils.Paths;
-import it.polimi.tiw.utils.EngineHandler;
+import it.polimi.tiw.utils.Serializer;
 
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -50,12 +52,9 @@ public class MakeTransfer extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * Overriding init method to use thymeleaf
-     */
+
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
-		engine = EngineHandler.getHTMLTemplateEngine(getServletContext());
 		reasonPattern = Pattern.compile(reasonRegex);
 	}
 
@@ -91,7 +90,8 @@ public class MakeTransfer extends HttpServlet {
 		try {
 			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("senderID")));
 		}catch(NumberFormatException | NullPointerException e) {
-			errorRedirect(request, response, "Invalid sender id");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Invalid sender id");
 			return;
 		}
 
@@ -99,7 +99,8 @@ public class MakeTransfer extends HttpServlet {
 		try {
 			recipientID = Integer.parseInt(StringEscapeUtils.escapeJava(request.getParameter("recipientID")));
 		}catch(NumberFormatException | NullPointerException e) {
-			errorRedirect(request, response, "Incorrect recipient id");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Invalid recipient id");
 			return;
 		}
 
@@ -107,21 +108,24 @@ public class MakeTransfer extends HttpServlet {
 		try {
 			recipientUserID = Integer.parseInt(request.getParameter("recipientUserID"));
 		}catch(NumberFormatException | NullPointerException e) {
-			errorRedirect(request, response, "Incorrect recipient user id");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Invalid recipient user id");
 			return;
 		}
 
 		BigDecimal amount = null;
 		String amountString = StringEscapeUtils.escapeJava(request.getParameter("amount"));
 		if(amountString == null) {
-			errorRedirect(request, response, "Please specify a valid amount");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Please specify a valid amount");
 			return;
 		}
 		else {
 			try{
 				amount = new BigDecimal(amountString.replace(",","."));
 			}catch(NumberFormatException e){
-				errorRedirect(request, response, "Incorrect amount format");
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("Incorrect amount format");
 				return;
 			}
 
@@ -130,7 +134,8 @@ public class MakeTransfer extends HttpServlet {
 		String reason = request.getParameter("reason");
 		Matcher reasonMatcher = reasonPattern.matcher(reason);
 		if(reason == null || reason.isEmpty() || !reasonMatcher.matches()) {
-			errorRedirect(request, response, "Please specify a valid reason (No special characters allowed)");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Please specify a valid reason (No special characters allowed)");
 			return;
 		}
 
@@ -141,89 +146,78 @@ public class MakeTransfer extends HttpServlet {
 			recipientAccount = bankAccountDAO.findAccountByID(recipientID);
 			senderAccount = bankAccountDAO.findAccountByID(senderID);
 			if(senderAccount == null){
-				request.setAttribute("failReason", "The sender account doesn't exist");
-				path = Paths.pathToTransferFailedPage;
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("The sender account doesn't exist");
 			}
 			else if(senderAccount.getUserID() != user.getID()){
-				request.setAttribute("failReason", "You can't make a transfer from this account because it's not yours");
-				request.setAttribute("senderid", senderAccount.getID());
-				path = Paths.pathToTransferFailedPage;
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("You can't make a transfer from this account because it's not yours");
 			}
 			else if(recipientAccount == null) {
-				//TO-DO REDIRECT TransactionFailed
-				request.setAttribute("failReason", "The recipient account doesn't exist");
-				request.setAttribute("senderid", senderAccount.getID());
-				path = Paths.pathToTransferFailedPage;
-
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("The recipient account doesn't exist");
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
-				//TO-DO REDIRECT TransactionFailed
-				request.setAttribute("failReason", "The user selected is not the owner of the recipient account selected");
-				request.setAttribute("senderid", senderAccount.getID());
-				path = Paths.pathToTransferFailedPage;
-
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("The user selected is not the owner of the recipient account selected");
 			}
 			else if(recipientAccount.getID() == senderAccount.getID()) {
-				//TO-DO REDIRECT TransactionFailed
-				request.setAttribute("failReason", "sender account ID = recipient account ID");
-				request.setAttribute("senderid", senderAccount.getID());
-				path = Paths.pathToTransferFailedPage;
-
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("Sender account ID must be different from recipient account ID");
 			}
 			else if(amount.compareTo(senderAccount.getBalance()) == 1) {
-				//TO-DO REDIRECT TransactionFailed
-				request.setAttribute("failReason", "Your account can't afford this transfer");
-				request.setAttribute("senderid", senderAccount.getID());
-				path =  Paths.pathToTransferFailedPage;
-
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("Your account can't afford this transfer");
+			}
+			else if(amount.compareTo(new BigDecimal(0)) >= 0){
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("The amount must be positive");
 			}
 			else {
+				//makes the transfer
 				TransferDAO transferDAO = new TransferDAO(connection);
 				transferDAO.makeTransfer(amount, reason, senderID, recipientID);
-				path = getServletContext().getContextPath() + Paths.pathToGoToTransferConfirmedServlet;
-				response.sendRedirect(path);
-				return;
 			}
-			forwardToTransferDetails(request, response, path);
 
 		}catch (SQLException e) {
-			errorRedirect(request, response, "Unable to submit this transfer, please try again");
-			//e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Unable to submit this transfer, please try again");
 			return;
 		}
-	}
 
-	private void forwardToTransferDetails(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
-		ServletContext servletContext = getServletContext();
-		final WebContext context = new WebContext(request, response, servletContext, request.getLocale());
-		engine.process(path, context, response.getWriter());
-	}
-
-	private void errorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
-		ServletContext servletContext = getServletContext();
-		Integer senderID = null;
 		try{
-			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(req.getParameter("senderID")));
-		}catch(NumberFormatException | NullPointerException e) {
-			curruptedDataErrorRedirect(req,res,error);
+			//extrancts the transfer from the database
+			TransferDAO transferDAO = new TransferDAO(connection);
+			Transfer transfer = transferDAO.getLastTransferByUserID(user.getID());
+
+			//prepares the response
+			JsonObject transferObj = new JsonObject();
+			transferObj.add("transfer",Serializer.serialize(transfer));
+
+			BigDecimal senderOldBal, senderNewBal, recipientOldBal, recipientNewBal;
+			senderOldBal = senderAccount.getBalance();
+			senderNewBal = senderAccount.getBalance().subtract(amount);
+			JsonObject senderObj = new JsonObject();
+			senderObj.add("oldBal", new JsonPrimitive(senderOldBal));
+			senderObj.add("newBal", new JsonPrimitive(senderNewBal));
+			transferObj.add("sender", senderObj);
+
+			JsonObject recipientObj = new JsonObject();
+			recipientOldBal = recipientAccount.getBalance();
+			recipientNewBal = recipientAccount.getBalance().add(amount);
+			recipientObj.add("oldBal", new JsonPrimitive(recipientOldBal));
+			recipientObj.add("newBal", new JsonPrimitive(recipientNewBal));
+			transferObj.add("recipient", senderObj);
+
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().println(transferObj.toString());
+			return;
+		}catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Unable to fetch details about your last transfer");
 			return;
 		}
-		req.setAttribute("bankAccountID", senderID);
-		req.setAttribute("backPath", Paths.pathToSelectAccountServlet);
-		req.setAttribute("error", error);
-
-		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
-
-		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
-
-	private void curruptedDataErrorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
-		ServletContext servletContext = getServletContext();
-		req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
-		req.setAttribute("error", error + "; corrupted data, click the yellow button to go back to your home");
-		final WebContext context = new WebContext(req, res, servletContext, req.getLocale());
-
-		engine.process(Paths.pathToErrorPage, context, res.getWriter());
-	}
-
 }
