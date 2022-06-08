@@ -25,22 +25,23 @@ import it.polimi.tiw.utils.ConnectionHandler;
  * Servlet implementation class CreateAccount
  */
 @WebServlet("/CreateAccount")
+@MultipartConfig
 public class CreateAccount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
 	private String regex = "^\\w+[\\w|\\s]*"; //Match first character as word, then allow whitespace
 	private Pattern pattern;
-       
+
     public CreateAccount() {
         super();
     }
-    
+
     @Override
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
 		pattern = Pattern.compile(regex);
     }
-    
+
     @Override
     public void destroy() {
     	try {
@@ -50,26 +51,26 @@ public class CreateAccount extends HttpServlet {
 		}
     }
 
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+
 		User user = (User) session.getAttribute("user");
-		
+
 		String accountName = StringEscapeUtils.escapeJava(request.getParameter("accountName"));
-		
+
 		// Basic nullcheck
 		if(accountName == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Please type a name for the new account");
 			return;
 		}
-		
+
 		// Check for valid account name (at least one non-whitespace character)
 		Matcher matcher = pattern.matcher(accountName);
 		if(!matcher.matches()) {
@@ -77,10 +78,10 @@ public class CreateAccount extends HttpServlet {
 			response.getWriter().println("Bad Account name: No special characters allowed");
 			return;
 		}
-		
+
 		// Proceed with BankAccount creation
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
-		
+
 		try {
 			bankAccountDAO.createAccount(user.getID(), accountName, new BigDecimal(0));
 		} catch (SQLException e) {
@@ -88,7 +89,7 @@ public class CreateAccount extends HttpServlet {
 			response.getWriter().println("Unable to create Bank Account: " + e.getSQLState());
 			return;
 		}
-		
+
 		//String path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
 		//response.sendRedirect(path);
 	}

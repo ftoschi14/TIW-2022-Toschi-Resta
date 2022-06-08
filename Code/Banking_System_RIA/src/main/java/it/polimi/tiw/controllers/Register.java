@@ -22,6 +22,7 @@ import it.polimi.tiw.utils.ConnectionHandler;
  * Servlet implementation class Register
  */
 @WebServlet("/Register")
+@MultipartConfig
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;

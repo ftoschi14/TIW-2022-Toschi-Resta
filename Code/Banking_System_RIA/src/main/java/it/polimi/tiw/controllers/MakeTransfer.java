@@ -31,6 +31,7 @@ import org.apache.commons.text.StringEscapeUtils;
  * Servlet implementation class MakeTransfer
  */
 @WebServlet("/MakeTransfer")
+@MultipartConfig
 public class MakeTransfer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;

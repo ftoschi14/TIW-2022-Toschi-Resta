@@ -22,6 +22,7 @@ import it.polimi.tiw.utils.ConnectionHandler;
  * Servlet implementation class AddContact
  */
 @WebServlet("/AddContact")
+@MultipartConfig
 public class AddContact extends HttpServlet {
 	private static final long serialVersionUID = 1L;
   private Connection connection = null;
