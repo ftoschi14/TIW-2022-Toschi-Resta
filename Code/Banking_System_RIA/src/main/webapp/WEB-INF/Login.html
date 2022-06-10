@@ -80,14 +80,21 @@
 
             <div class="row flex-grow-1 mt-auto d-flex justify-content-evenly align-items-center">
 
-              <div class="col-md-6">
-                <label id="loginBtn" class="btn blue-button login" for="submit-form" tabindex="0">Login</label>
+              <div id="form_buttons" class="row mb-3">
+                <div class="col-md-6">
+                  <label id="loginBtn" class="btn blue-button login" for="submit-form" tabindex="0">Login</label>
+                </div>
+
+                <div class="col-md-6">
+                  <a id="registerBtn" class="btn blue-button register" role="button">Register</a>
+                </div>
               </div>
 
-              <div class="col-md-6">
-                <a id="registerBtn" class="btn blue-button register" role="button">Register</a>
+              <div id="message_div" class="row hidden">
+                <div class="col-md-12 alert alert-warning" role="alert"> <!--ALERT WARNING if login/registration failed, ALERT PRIMARY if registration successful-->
+                  <span id="message" class="mb-0">This is an error message.</span>
+                </div>
               </div>
-
             </div>
 
           </div>
