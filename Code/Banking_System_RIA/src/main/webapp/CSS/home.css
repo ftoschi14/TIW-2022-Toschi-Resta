@@ -18,8 +18,8 @@
 	background-color: #50514F;
 	color: #FFFFFF;
 	position: relative;
-	max-height: 100%;
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+	margin: 0;
 }
 body {
 	padding: 0;
@@ -159,6 +159,35 @@ body {
   right:0px;
   bottom:0px;
   left:0px;
-	background-color: black;
-	opacity: 0.4;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+.transfer_msg {
+	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+	background-color: rgba(240, 246, 246, 1);
+	padding: 5% 3%;
+	border-radius: 0.6em;
+}
+.transfer_title {
+	padding: 2% 5%;
+	text-align: center;
+}
+.transfer_details {
+	padding: 2% 5%;
+	text-align: center;
+}
+.transfer_data {
+	padding: 3% 2%;
+	text-align: center;
+}
+.accepted {
+	color: rgba(8,75,131,1);
+}
+.accepted_btn {
+	background-color: rgba(8,75,131,1);
+}
+.failed {
+	color: #A22C29;
+}
+.failed_btn {
+	background-color: #A22C29;
 }

@@ -6,6 +6,8 @@ body, html {
   border-radius: 15px;
   padding-top: 3%;
   padding-bottom: 3%;
+  height: 100vh;
+  max-height: 100%;
   /*border: 2px solid rgba(8,75,131,0.5);*/
 }
 .login_box_right{

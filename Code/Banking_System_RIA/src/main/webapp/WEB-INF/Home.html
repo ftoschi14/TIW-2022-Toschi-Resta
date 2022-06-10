@@ -196,28 +196,33 @@
 
       </div>
 
-      <div class="transfer_box hidden"> <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
-        <div class="transfer_msg"> <!-- ACTUAL MSG BOX -->
-          <div class="h3">
-            Transfer <span id="transfer_status">Accepted</span>
+      <div class="transfer_box d-flex align-items-center justify-content-evenly"> <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
+        <div class="transfer_msg col-md-8 mb-5 container-fluid"> <!-- ACTUAL MSG BOX -->
+          <div class="row h3 transfer_title accepted">
+            <span id="transfer_status">Transfer Accepted</span>
           </div>
-          <div class="transfer_details">
-            <div class="sender_details">
-              Sender ID: <span id="senderID">7</span>
-              Account ID: <span id="accID">14</span>
-              Account name: <span id="accName">Bartic</span>
-              Old Balance: <span id="oldBalSND">15</span>&euro;
+          <div class="transfer_details mb-3 row">
+            <div class="sender_details col-md-4">
+              Sender ID: <span id="senderID">7</span> <br>
+              Account ID: <span id="sndAccID">14</span> <br>
+              Account name: <span id="sndAccName">Bartic</span> <br>
+              Old Balance: <span id="oldBalSND">15</span>&euro; <br>
               New Balance: <span id="newBalSND">9</span>&euro;
             </div>
-            <div class="transfer_data">
-
+            <div class="transfer_data col-md-4">
+              Amount: <span id="transferAMT mb-3">15</span>&euro; <br>
+              Reason: <span id="transferReason">Bartic</span>
             </div>
-            <div class="recipient_details"> <!-- CONTAINS ADDCONTACT  BUTTON -->
-
+            <div class="recipient_details col-md-4"> <!-- CONTAINS ADDCONTACT  BUTTON -->
+                Recipient ID: <span id="recipientID">7</span> <br>
+                Account ID: <span id="recAccID">14</span> <br>
+                Account name: <span id="recAccName">Bartic</span> <br>
+                Old Balance: <span id="oldBalREC">15</span>&euro; <br>
+                New Balance: <span id="newBalREC">9</span>&euro;
             </div>
           </div>
-          <div class="close_box">
-
+          <div class="row close_box d-flex justify-content-evenly align-items-center">
+            <span id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</span>
           </div>
         </div>
       </div>
