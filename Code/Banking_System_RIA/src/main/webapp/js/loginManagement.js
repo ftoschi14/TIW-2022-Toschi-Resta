@@ -68,7 +68,7 @@
                     if(self.loginForm.checkValidity()){
                         //POST to Login servlet
                         makeCall("POST", 'Login', self.loginForm, (req) => {
-                            if(req.readyState == XMLHttpRequest.DONE){
+                            if(req.readyState === XMLHttpRequest.DONE){
                                 let messageStr = req.responseText;
                                 self.messageDiv.innerHTML = "";
                                 if(req.status !== 200){
@@ -85,7 +85,7 @@
                                 }
 
                             }
-                        });
+                        }, false);
                     }
 
                 },false);
@@ -108,6 +108,7 @@
                         //Check if passwords are matching
                         if(self.passwordInput.value !== self.repeatPasswordInput.value) {
                             self.messageDiv.innerHTML = "";
+                            self.messageDiv.className = "col-md-12 alert alert-warning";
                             self.messageDiv.textContent = "Passwords do not match!";
                             self.messageDiv.style.visibility = "visible";
                             return;
@@ -134,7 +135,7 @@
 
                                 self.messageDiv.style.visibility = "visible";
                             }
-                        });
+                        }, false);
                     }
                 });
                 //Define ChangeForm button behaviour
