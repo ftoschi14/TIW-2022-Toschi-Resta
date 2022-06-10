@@ -21,6 +21,7 @@
      * @constructor
      */
     function PageOrchestrator() {
+        var login_box = document.getElementById("login_box");
         var login_container = document.getElementById("login_container");
         var registration_container = document.getElementById("registration_container");
         var login_form = document.getElementById("login_form");
@@ -32,6 +33,8 @@
         this.start = () => {
             wizard = new Wizard(submit_div, change_form_div, login_container, registration_container, login_form, register_form, message_div);
             wizard.show(true);
+
+            registerImplicitSubmission(login_box);
         }
     }
 
@@ -56,6 +59,7 @@
              */
             submit_button = document.createElement("button");
             submit_button.className = "btn blue-button login";
+            submit_button.id = "submit_button";
             changeform_button = document.createElement("button");
             changeform_button.className = "btn blue-button register";
             submit_button.textContent = "Submit";
@@ -155,5 +159,16 @@
             registerForm.reset();
             loginForm.reset();
         }
+    }
+
+    function registerImplicitSubmission(container) {
+        container.addEventListener('keydown', (e) => {
+            if(e.key === "Enter") {
+                e.preventDefault();
+                let button = document.getElementById("submit_button");
+                let click = new Event("click");
+                button.dispatchEvent(click);
+            }
+        })
     }
 }

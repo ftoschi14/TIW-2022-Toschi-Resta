@@ -22,7 +22,7 @@
 
           <div class="row sidebar_row"> <!-- PERSONAL INFORMATION ROWS -->
               <h2>
-                <span class="user_welcome">Surname, Name</span><br>
+                <span class="user_welcome" id="user_welcome">Surname, Name</span><br>
                 <small class="user_welcome small">Welcome back!</small>
               </h2><br>
           </div>
@@ -43,7 +43,7 @@
                 </div>
           </div>
 
-          <div class="row sidebar_row accounts_list overflow-auto justify-content-evenly">
+          <div class="row sidebar_row accounts_list overflow-auto justify-content-evenly" id="accountList">
 
             <div id="accID" class="account_entry d-flex align-items-center mb-3"> <!-- Account entry on list -->
               <div class="row entry_data">
@@ -112,7 +112,7 @@
               </div>
             </div>
 
-            <div class="row transfers_box overflow-auto justify-content-center align-items-center mb-3">
+            <div class="row transfers_box overflow-auto justify-content-center align-items-center mb-3" id="transferList">
               <div class="row transfer mb-3">
                 <div class="row transfer_up">
                   <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
@@ -154,7 +154,7 @@
             <div class="row make_transfer_form d-flex justify-content-center align-items-center"> <!-- Transfer request form -->
               <div class="transfer_form">
                 <div class="h3 d-flex justify-content-center center_data">Request a Transfer</div>
-                <form class="row g-3 d-flex justify-content-evenly" action="#">
+                <form class="row g-3 d-flex justify-content-evenly" action="#" id="makeTransferForm">
 
                   <div class="col-md-3">
                     <div class="row">
@@ -196,10 +196,10 @@
 
       </div>
 
-      <div class="transfer_box d-flex align-items-center justify-content-evenly"> <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
+      <div class="transfer_box d-flex align-items-center justify-content-evenly" id="transferBox"> <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
         <div class="transfer_msg col-md-8 mb-5 container-fluid"> <!-- ACTUAL MSG BOX -->
-          <div class="row h3 transfer_title accepted">
-            <span id="transfer_status">Transfer Accepted</span>
+          <div class="row h3 transfer_title accepted" id="transferStatus">
+            <span>Transfer Accepted</span>
           </div>
           <div class="transfer_details mb-3 row">
             <div class="sender_details col-md-4">
@@ -210,10 +210,10 @@
               New Balance: <span id="newBalSND">9</span>&euro;
             </div>
             <div class="transfer_data col-md-4">
-              Amount: <span id="transferAMT mb-3">15</span>&euro; <br>
+              Amount: <span id="transferAMT" class ="mb-3">15</span>&euro; <br>
               Reason: <span id="transferReason">Bartic</span>
             </div>
-            <div class="recipient_details col-md-4"> <!-- CONTAINS ADDCONTACT  BUTTON -->
+            <div class="recipient_details col-md-4">
                 Recipient ID: <span id="recipientID">7</span> <br>
                 Account ID: <span id="recAccID">14</span> <br>
                 Account name: <span id="recAccName">Bartic</span> <br>
@@ -222,7 +222,8 @@
             </div>
           </div>
           <div class="row close_box d-flex justify-content-evenly align-items-center">
-            <span id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</span>
+            <button id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</button>
+            <button id="addContactBtn" class="col-md-3 btn blue-button accepted_btn">Add</button>
           </div>
         </div>
       </div>
