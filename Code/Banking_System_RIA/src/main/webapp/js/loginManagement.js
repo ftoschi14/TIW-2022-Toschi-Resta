@@ -45,7 +45,6 @@
         this.messageDiv = messageDiv;
         this.passwordInput = registerForm.querySelector('input[name="password"]');
         this.repeatPasswordInput = registerForm.querySelector('input[name="passwordRep"]');
-        this.messageDiv.style.visibility = "hidden";
 
         this.show = (isLogin) => {
             var self = this;
@@ -69,12 +68,13 @@
                     if(self.loginForm.checkValidity()){
                         //POST to Login servlet
                         makeCall("POST", 'Login', self.loginForm, (req) => {
-                            if(req.readyState === XMLHttpRequest.DONE){
-                                let messageStr = JSON.parse(req.responseText);
+                            if(req.readyState == XMLHttpRequest.DONE){
+                                let messageStr = req.responseText;
                                 self.messageDiv.innerHTML = "";
                                 if(req.status !== 200){
                                     self.messageDiv.className = "col-md-12 alert alert-warning";
                                     messageDiv.textContent = messageStr;
+                                    self.messageDiv.style.visibility = "visible";
                                 }
                                 else{
                                     var respStr = JSON.parse(req.responseText);
