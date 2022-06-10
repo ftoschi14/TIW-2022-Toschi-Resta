@@ -21,26 +21,31 @@
      * @constructor
      */
     function PageOrchestrator() {
+        var login_container = document.getElementById("login_container");
+        var registration_container = document.getElementById("registration_container");
         var login_form = document.getElementById("login_form");
-        var register_form = document.getElementById("registration_form");
+        var register_form = document.getElementById("register_form");
         var submit_div = document.getElementById("login_button_div");
         var change_form_div = document.getElementById("register_button_div");
         var message_div = document.getElementById("message_div");
 
         this.start = () => {
-            wizard = new Wizard(submit_div, change_form_div, login_form, register_form, message_div);
+            wizard = new Wizard(submit_div, change_form_div, login_container, registration_container, login_form, register_form, message_div);
             wizard.show(true);
         }
     }
 
-    function Wizard(submitDiv, changeFormDiv, loginForm, registerForm, messageDiv) {
+    function Wizard(submitDiv, changeFormDiv, loginContainer, registrationContainer, loginForm, registerForm, messageDiv) {
         this.submitDiv = submitDiv;
         this.changeFormDiv = changeFormDiv;
+        this.loginContainer = loginContainer;
+        this.registrationContainer = registrationContainer;
         this.loginForm = loginForm;
         this.registerForm = registerForm;
         this.messageDiv = messageDiv;
         this.passwordInput = registerForm.querySelector('input[name="password"]');
         this.repeatPasswordInput = registerForm.querySelector('input[name="passwordRep"]');
+        this.messageDiv.style.visibility = "hidden";
 
         this.show = (isLogin) => {
             var self = this;
@@ -65,7 +70,7 @@
                         //POST to Login servlet
                         makeCall("POST", 'Login', self.loginForm, (req) => {
                             if(req.readyState === XMLHttpRequest.DONE){
-                                let messageStr = req.responseText;
+                                let messageStr = JSON.parse(req.responseText);
                                 self.messageDiv.innerHTML = "";
                                 if(req.status !== 200){
                                     self.messageDiv.className = "col-md-12 alert alert-warning";
@@ -92,8 +97,8 @@
                 },false);
 
                 //shows the login form
-                this.registerForm.style.visibility = "hidden";
-                this.loginForm.style.visibility = "visible";
+                this.registrationContainer.className = "hidden";
+                this.loginContainer.className = "";
 
             } else {
                 // Register events for new submit button (Submit registration form)
@@ -138,12 +143,11 @@
                     self.show(true);
                 }, false);
 
-                this.registerForm.style.visibility = "visible";
-                this.loginForm.style.visibility = "hidden";
+                this.registrationContainer.className = "";
+                this.loginContainer.className = "hidden";
             }
             this.submitDiv.appendChild(submit_button);
             this.changeFormDiv.appendChild(changeform_button);
-            this.messageDiv.style.visibility = "hidden";
         }
 
         this.reset = () => {
