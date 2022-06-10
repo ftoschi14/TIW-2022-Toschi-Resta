@@ -6,7 +6,7 @@
     window.addEventListener("load", () => {
         if(sessionStorage.getItem("id") !== null &&
             sessionStorage.getItem("name") !== null &&
-            sessionStorage.getItem("name") !== null) {
+            sessionStorage.getItem("surname") !== null) {
             window.location.href = "Home.html";
         } else {
             pageOrchestrator.start();
@@ -38,16 +38,17 @@
         }
     }
 
-    function Wizard(submitDiv, changeFormDiv, loginContainer, registrationContainer, loginForm, registerForm, messageDiv) {
-        this.submitDiv = submitDiv;
-        this.changeFormDiv = changeFormDiv;
-        this.loginContainer = loginContainer;
-        this.registrationContainer = registrationContainer;
-        this.loginForm = loginForm;
-        this.registerForm = registerForm;
-        this.messageDiv = messageDiv;
-        this.passwordInput = registerForm.querySelector('input[name="password"]');
-        this.repeatPasswordInput = registerForm.querySelector('input[name="passwordRep"]');
+    function Wizard(_submitDiv, _changeFormDiv, _loginContainer, _registrationContainer, _loginForm, _registerForm, _messageDiv) {
+        this.submitDiv = _submitDiv;
+        this.changeFormDiv = _changeFormDiv;
+        this.loginContainer = _loginContainer;
+        this.registrationContainer = _registrationContainer;
+        this.loginForm = _loginForm;
+        this.registerForm = _registerForm;
+        this.messageDiv = _messageDiv;
+
+        this.passwordInput = this.registerForm.querySelector('input[name="password"]');
+        this.repeatPasswordInput = this.registerForm.querySelector('input[name="passwordRep"]');
 
         this.show = (isLogin) => {
             var self = this;
@@ -169,6 +170,6 @@
                 let click = new Event("click");
                 button.dispatchEvent(click);
             }
-        })
+        });
     }
 }
