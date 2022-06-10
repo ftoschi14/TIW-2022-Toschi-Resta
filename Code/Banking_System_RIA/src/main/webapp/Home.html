@@ -89,6 +89,11 @@
             </div>
 
           </div>
+          <div class="row">
+            <div class="col-md-12 alert alert-warning" role="alert"  id="alertBox" style="visibility: hidden;">
+              This is an error message.
+            </div>
+          </div>
       </div>
 
       <div class="col-md-9 flex-fill bank_account_data d-flex align-items-center justify-content-evenly">
@@ -197,7 +202,7 @@
       </div>
 
       <div class="transfer_box d-flex align-items-center justify-content-evenly" id="transferBox"> <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
-        <div class="transfer_msg col-md-8 mb-5 container-fluid"> <!-- ACTUAL MSG BOX -->
+        <div class="hidden transfer_msg col-md-8 mb-5 container-fluid"> <!-- ACTUAL MSG BOX -->
           <div class="row h3 transfer_title accepted" id="transferStatus">
             <span>Transfer Accepted</span>
           </div>
@@ -224,6 +229,26 @@
           <div class="row close_box d-flex justify-content-evenly align-items-center">
             <button id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</button>
             <button id="addContactBtn" class="col-md-3 btn blue-button accepted_btn">Add</button>
+          </div>
+        </div>
+        <div class="transfer_msg col-md-5 mb-5 container-fluid">
+          <div class="row h3 transfer_title accepted">
+            <span>Create a new Bank Account</span>
+          </div>
+          <form class="account_form mb-2" action="#">
+            <div class="mb-2 form-group input_form">
+              <label class="form-label" for="name">Name:</label><br>
+              <input class="form-control" type="text" placeholder="Account name" maxlength=50 name="name" required />
+            </div>
+          </form>
+          <div class="row justify-content-evenly align-items-center">
+          <div class="col-md-8 alert alert-warning" role="alert"  id="message_div" style="visibility: hidden;">
+            This is an error message
+          </div>
+          <div class="row close_box d-flex justify-content-evenly align-items-center">
+            <button id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</button>
+            <button id="addContactBtn" class="col-md-3 btn blue-button accepted_btn">Submit</button>
+          </div>
           </div>
         </div>
       </div>
