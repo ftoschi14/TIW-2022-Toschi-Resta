@@ -200,14 +200,12 @@ public class MakeTransfer extends HttpServlet {
 
 			BigDecimal senderNewBal, recipientNewBal;
 			senderNewBal = senderAccount.getBalance().subtract(amount);
-			JsonObject senderObj = new JsonObject();
-			senderObj.add("senderDetails", Serializer.serialize(senderAccount));
+			JsonObject senderObj = Serializer.serialize(senderAccount);
 			senderObj.add("newBal", new JsonPrimitive(senderNewBal));
 			respObj.add("sender", senderObj);
 
-			JsonObject recipientObj = new JsonObject();
 			recipientNewBal = recipientAccount.getBalance().add(amount);
-			recipientObj.add("recipientDetails", Serializer.serialize(recipientAccount));
+			JsonObject recipientObj = Serializer.serialize(recipientAccount);
 			recipientObj.add("newBal", new JsonPrimitive(recipientNewBal));
 			respObj.add("recipient", recipientObj);
 
