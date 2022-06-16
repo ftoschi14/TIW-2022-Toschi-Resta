@@ -190,28 +190,30 @@ public class MakeTransfer extends HttpServlet {
 			Transfer transfer = transferDAO.getLastTransferByUserID(user.getID());
 
 			//prepares the response
+			JsonObject respObj = new JsonObject();
 			JsonObject transferObj = new JsonObject();
 			transferObj.add("transfer",Serializer.serialize(transfer));
+			transferObj.remove("senderID");
+			transferObj.remove("recipientID");
+			respObj.add("transfer",transferObj);
 
-			BigDecimal senderOldBal, senderNewBal, recipientOldBal, recipientNewBal;
-			senderOldBal = senderAccount.getBalance();
+			BigDecimal senderNewBal, recipientNewBal;
 			senderNewBal = senderAccount.getBalance().subtract(amount);
 			JsonObject senderObj = new JsonObject();
-			senderObj.add("oldBal", new JsonPrimitive(senderOldBal));
+			senderObj.add("senderDetails", Serializer.serialize(senderAccount));
 			senderObj.add("newBal", new JsonPrimitive(senderNewBal));
-			transferObj.add("sender", senderObj);
+			respObj.add("sender", senderObj);
 
 			JsonObject recipientObj = new JsonObject();
-			recipientOldBal = recipientAccount.getBalance();
 			recipientNewBal = recipientAccount.getBalance().add(amount);
-			recipientObj.add("oldBal", new JsonPrimitive(recipientOldBal));
+			recipientObj.add("recipientDetails", Serializer.serialize(recipientAccount));
 			recipientObj.add("newBal", new JsonPrimitive(recipientNewBal));
-			transferObj.add("recipient", senderObj);
+			respObj.add("recipient", recipientObj);
 
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(transferObj.toString());
+			response.getWriter().println(respObj.toString());
 			return;
 		}catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
