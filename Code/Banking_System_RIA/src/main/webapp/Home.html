@@ -1,208 +1,231 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="all" href="CSS/style.css"/>
-    <link rel="stylesheet" type="text/css" media="all" href="CSS/home.css"/>
-  </head>
-  <body>
-    <div class="row h-100 w-100 d-flex">
 
-      <div class="col-md-3 flex-fill sidebar d-flex flex-column align-items-center">
+<head>
+  <title>Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="all" href="CSS/style.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="CSS/home.css" />
+</head>
 
-          <div class="row sidebar_row login_row"> <!-- LOGOUT BUTTON ROW -->
-            <div class="col-md-5">
-              <a class="logout btn btn-lg active yellow-button" role="button" id="logoutBtn">Logout</a>
+<body>
+  <div class="row h-100 w-100 d-flex">
+
+    <div class="col-md-3 flex-fill sidebar d-flex flex-column align-items-center">
+
+      <div class="row sidebar_row login_row">
+        <!-- LOGOUT BUTTON ROW -->
+        <div class="col-md-5">
+          <a class="logout btn btn-lg active yellow-button" role="button" id="logoutBtn">Logout</a>
+        </div>
+        <div class="col-md-7"></div>
+      </div>
+
+      <div class="row sidebar_row">
+        <!-- PERSONAL INFORMATION ROWS -->
+        <h2>
+          <span class="user_welcome" id="user_welcome">Surname, Name</span><br>
+          <small class="user_welcome small">Welcome back!</small>
+        </h2><br>
+      </div>
+
+      <div class="row sidebar_row user_info">
+        <span id="personalID">Personal ID: 0</span>
+      </div>
+
+      <div class="row sidebar_row user_info">
+        <span id="cashSum">Your summary: 10&euro;</span>
+      </div>
+
+      <div class="row sidebar_row accounts_header">
+        <!-- ACCOUNTS LIST -->
+        <div class="row">
+          <div class="col-md-4">Accounts:</div>
+          <div class="col-md-6"></div>
+          <div id="addAccountBtn" class="btn blue-button add_account col-md-2" tabindex="0">+</div>
+        </div>
+      </div>
+
+      <div class="row sidebar_row accounts_list overflow-auto justify-content-evenly" id="accountList">
+
+        <div id="accID" class="account_entry d-flex align-items-center mb-3">
+          <!-- Account entry on list -->
+          <div class="row entry_data">
+            <div class="col-md-8">Default Account</div>
+            <div class="col-md-2"></div>
+            <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+          </div>
+        </div>
+        <div id="accID" class="account_entry d-flex align-items-center mb-3">
+          <!-- Account entry on list -->
+          <div class="row entry_data">
+            <div class="col-md-8">Default Account</div>
+            <div class="col-md-2"></div>
+            <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+          </div>
+        </div>
+        <div id="accID" class="account_entry d-flex align-items-center mb-3">
+          <!-- Account entry on list -->
+          <div class="row entry_data">
+            <div class="col-md-8">Default Account</div>
+            <div class="col-md-2"></div>
+            <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+          </div>
+        </div>
+        <div id="accID" class="account_entry d-flex align-items-center mb-3">
+          <!-- Account entry on list -->
+          <div class="row entry_data">
+            <div class="col-md-8">Default Account</div>
+            <div class="col-md-2"></div>
+            <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+          </div>
+        </div>
+        <div id="accID" class="account_entry d-flex align-items-center mb-3">
+          <!-- Account entry on list -->
+          <div class="row entry_data">
+            <div class="col-md-8">Default Account</div>
+            <div class="col-md-2"></div>
+            <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+          </div>
+        </div>
+        <div id="accID" class="account_entry d-flex align-items-center mb-3">
+          <!-- Account entry on list -->
+          <div class="row entry_data">
+            <div class="col-md-8">Default Account</div>
+            <div class="col-md-2"></div>
+            <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-12 alert alert-warning" role="alert" id="alertBox" style="visibility: hidden;">
+          This is an error message.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9 flex-fill bank_account_data d-flex align-items-center justify-content-evenly">
+
+      <div id="noAccSelected" class="hidden row noAccDiv justify-content-evenly align-items-center">
+        <!-- No account selected DIV -->
+        <img src="resources/noAcc.png" alt="" />
+        <span>No Bank Account selected!</span>
+      </div>
+
+      <div id="accSelected" class="account_data justify-content-center">
+
+        <div class="h4 account_info d-flex justify-content-center align-items-center mb-3">
+          <!-- Selected account information (ID, BAL, NAME) -->
+          <span class="col-md-4"> Account: <span id="accName">Default account</span></span>
+          <span class="col-md-4">ID: <span id="accID">1</span></span>
+          <span class="col-md-4">Balance: <span id="accBal">10&euro;</span></span>
+        </div> <br>
+
+        <div class="row transfer_list d-flex justify-content-center align-items-center mb-3">
+          <!-- Account transfer list -->
+          <div class="h3 justify-content-center center_data mb-2">
+            Transfers:
+          </div>
+        </div>
+
+        <div class="row transfers_box overflow-auto justify-content-center align-items-center mb-3" id="transferList">
+          <div class="row transfer mb-3">
+            <div class="row transfer_up">
+              <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
+              <div class="col-md-4"></div>
+              <span class="col-md-4 right_data">Apples</span>
             </div>
-            <div class="col-md-7"></div>
+            <div class="row transfer_down">
+              <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
+              <div class="col-md-4"></div>
+              <span class="col-md-4 right_data">+70€</span>
+            </div>
           </div>
-
-          <div class="row sidebar_row"> <!-- PERSONAL INFORMATION ROWS -->
-              <h2>
-                <span class="user_welcome" id="user_welcome">Surname, Name</span><br>
-                <small class="user_welcome small">Welcome back!</small>
-              </h2><br>
+          <div class="row transfer mb-3">
+            <div class="row transfer_up">
+              <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
+              <div class="col-md-4"></div>
+              <span class="col-md-4 right_data">Apples</span>
+            </div>
+            <div class="row transfer_down">
+              <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
+              <div class="col-md-4"></div>
+              <span class="col-md-4 right_data">+70€</span>
+            </div>
           </div>
-
-          <div class="row sidebar_row user_info">
-            <span id="personalID">Personal ID: 0</span>
+          <div class="row transfer mb-3">
+            <div class="row transfer_up">
+              <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
+              <div class="col-md-4"></div>
+              <span class="col-md-4 right_data">Apples</span>
+            </div>
+            <div class="row transfer_down">
+              <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
+              <div class="col-md-4"></div>
+              <span class="col-md-4 right_data">+70€</span>
+            </div>
           </div>
+        </div>
 
-          <div class="row sidebar_row user_info">
-            <span id="cashSum">Your summary: 10&euro;</span>
-          </div>
+        <div class="row make_transfer_form d-flex justify-content-center align-items-center">
+          <!-- Transfer request form -->
+          <div class="transfer_form">
+            <div class="h3 d-flex justify-content-center center_data">Request a Transfer</div>
+            <form class="row g-3 d-flex justify-content-evenly" action="#" id="makeTransferForm">
 
-          <div class="row sidebar_row accounts_header"> <!-- ACCOUNTS LIST -->
+              <div class="col-md-3">
                 <div class="row">
-                  <div class="col-md-4">Accounts:</div>
-                  <div class="col-md-6"></div>
-                  <div id="addAccountBtn" class="btn blue-button add_account col-md-2" tabindex="0">+</div>
+                  <label for="recipientID" class="form-label">Recipient ID</label>
+                  <input type="number" class="form-control" id="recipientID">
                 </div>
-          </div>
+                <div class="row">
+                  <label for="recAccountID" class="form-label">Account ID</label>
+                  <input type="number" class="form-control" id="recAccountID">
+                </div>
+              </div>
 
-          <div class="row sidebar_row accounts_list overflow-auto justify-content-evenly" id="accountList">
+              <div class="col-md-3 d-flex align-items-center">
+                <div class="row">
+                  <label for="amount" class="form_label">Amount</label> <br>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">&euro;</span>
+                    <input type="number" class="form-control">
+                  </div>
+                </div>
+              </div>
 
-            <div id="accID" class="account_entry d-flex align-items-center mb-3"> <!-- Account entry on list -->
-              <div class="row entry_data">
-                <div class="col-md-8">Default Account</div>
-                <div class="col-md-2"></div>
-                <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+              <div class="col-md-3 d-flex align-items-center">
+                <div class="row">
+                  <label for="reason" class="form_label">Reason:</label>
+                  <div class="input-group">
+                    <textarea class="form-control" id="reason"></textarea>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div id="accID" class="account_entry d-flex align-items-center mb-3"> <!-- Account entry on list -->
-              <div class="row entry_data">
-                <div class="col-md-8">Default Account</div>
-                <div class="col-md-2"></div>
-                <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
+              <div class="col-md-1 d-flex align-items-center">
+                <button id="requestTransferBtn" class="btn blue-button add_account " tabindex="0">
+                  Submit
+                </button>
               </div>
-            </div>
-            <div id="accID" class="account_entry d-flex align-items-center mb-3"> <!-- Account entry on list -->
-              <div class="row entry_data">
-                <div class="col-md-8">Default Account</div>
-                <div class="col-md-2"></div>
-                <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
-              </div>
-            </div>
-            <div id="accID" class="account_entry d-flex align-items-center mb-3"> <!-- Account entry on list -->
-              <div class="row entry_data">
-                <div class="col-md-8">Default Account</div>
-                <div class="col-md-2"></div>
-                <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
-              </div>
-            </div>
-            <div id="accID" class="account_entry d-flex align-items-center mb-3"> <!-- Account entry on list -->
-              <div class="row entry_data">
-                <div class="col-md-8">Default Account</div>
-                <div class="col-md-2"></div>
-                <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
-              </div>
-            </div>
-            <div id="accID" class="account_entry d-flex align-items-center mb-3"> <!-- Account entry on list -->
-              <div class="row entry_data">
-                <div class="col-md-8">Default Account</div>
-                <div class="col-md-2"></div>
-                <div id="accBal" class="col-md-2 account_balance">10&euro;</div>
-              </div>
-            </div>
-
-          </div>
-          <div class="row">
-            <div class="col-md-12 alert alert-warning" role="alert"  id="alertBox" style="visibility: hidden;">
-              This is an error message.
+            </form>
+            <div class="row flex-row-reverse">
             </div>
           </div>
-      </div>
-
-      <div class="col-md-9 flex-fill bank_account_data d-flex align-items-center justify-content-evenly">
-
-        <div id="noAccSelected" class="hidden row noAccDiv justify-content-evenly align-items-center"> <!-- No account selected DIV -->
-          <img src="resources/noAcc.png" alt="" />
-          <span>No Bank Account selected!</span>
-        </div>
-
-        <div id="accSelected" class="account_data justify-content-center">
-
-            <div class="h4 account_info d-flex justify-content-center align-items-center mb-3"> <!-- Selected account information (ID, BAL, NAME) -->
-              <span class="col-md-4"> Account: <span id="accName">Default account</span></span>
-              <span class="col-md-4">ID: <span id="accID">1</span></span>
-              <span class="col-md-4">Balance: <span id="accBal">10&euro;</span></span>
-            </div> <br>
-
-            <div class="row transfer_list d-flex justify-content-center align-items-center mb-3"> <!-- Account transfer list -->
-              <div class="h3 justify-content-center center_data mb-2">
-                Transfers:
-              </div>
-            </div>
-
-            <div class="row transfers_box overflow-auto justify-content-center align-items-center mb-3" id="transferList">
-              <div class="row transfer mb-3">
-                <div class="row transfer_up">
-                  <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
-                  <div class="col-md-4"></div>
-                  <span class="col-md-4 right_data">Apples</span>
-                </div>
-                <div class="row transfer_down">
-                  <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
-                  <div class="col-md-4"></div>
-                  <span class="col-md-4 right_data">+70€</span>
-                </div>
-              </div>
-              <div class="row transfer mb-3">
-                <div class="row transfer_up">
-                  <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
-                  <div class="col-md-4"></div>
-                  <span class="col-md-4 right_data">Apples</span>
-                </div>
-                <div class="row transfer_down">
-                  <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
-                  <div class="col-md-4"></div>
-                  <span class="col-md-4 right_data">+70€</span>
-                </div>
-              </div>
-              <div class="row transfer mb-3">
-                <div class="row transfer_up">
-                  <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
-                  <div class="col-md-4"></div>
-                  <span class="col-md-4 right_data">Apples</span>
-                </div>
-                <div class="row transfer_down">
-                  <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
-                  <div class="col-md-4"></div>
-                  <span class="col-md-4 right_data">+70€</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="row make_transfer_form d-flex justify-content-center align-items-center"> <!-- Transfer request form -->
-              <div class="transfer_form">
-                <div class="h3 d-flex justify-content-center center_data">Request a Transfer</div>
-                <form class="row g-3 d-flex justify-content-evenly" action="#" id="makeTransferForm">
-
-                  <div class="col-md-3">
-                    <div class="row">
-                        <label for="recipientID" class="form-label">Recipient ID</label>
-                        <input type="number" class="form-control" id="recipientID">
-                    </div>
-                    <div class="row">
-                        <label for="recAccountID" class="form-label">Account ID</label>
-                        <input type="number" class="form-control" id="recAccountID">
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 d-flex align-items-center">
-                    <div class="row">
-                      <label for="amount" class="form_label">Amount</label> <br>
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">&euro;</span>
-                        <input type="number" class="form-control">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4 d-flex align-items-center">
-                    <div class="row">
-                      <label for="reason" class="form_label">Reason:</label>
-                      <div class="input-group">
-                        <textarea class="form-control" id="reason"></textarea>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-                <div class="row d-flex flex-row-reverse">
-                  <div id="requestTransferBtn" class="btn blue-button add_account col-md-1" tabindex="0">Submit</div>
-                </div>
-              </div>
-            </div>
-
         </div>
 
       </div>
 
-      <div class="transfer_box d-flex align-items-center justify-content-evenly" id="transferBox"> <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
-        <div class="hidden transfer_msg col-md-8 mb-5 container-fluid"> <!-- ACTUAL MSG BOX -->
+    </div>
+
+    <div class="hidden messageContainer">
+
+      <div class="transfer_box d-flex align-items-center justify-content-evenly hidden" id="transferBox">
+        <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
+        <div class="hidden transfer_msg col-md-8 mb-5 container-fluid">
+          <!-- ACTUAL MSG BOX -->
           <div class="row h3 transfer_title accepted" id="transferStatus">
             <span>Transfer Accepted</span>
           </div>
@@ -215,15 +238,15 @@
               New Balance: <span id="newBalSND">9</span>&euro;
             </div>
             <div class="transfer_data col-md-4">
-              Amount: <span id="transferAMT" class ="mb-3">15</span>&euro; <br>
+              Amount: <span id="transferAMT" class="mb-3">15</span>&euro; <br>
               Reason: <span id="transferReason">Bartic</span>
             </div>
             <div class="recipient_details col-md-4">
-                Recipient ID: <span id="recipientID">7</span> <br>
-                Account ID: <span id="recAccID">14</span> <br>
-                Account name: <span id="recAccName">Bartic</span> <br>
-                Old Balance: <span id="oldBalREC">15</span>&euro; <br>
-                New Balance: <span id="newBalREC">9</span>&euro;
+              Recipient ID: <span id="recipientID">7</span> <br>
+              Account ID: <span id="recAccID">14</span> <br>
+              Account name: <span id="recAccName">Bartic</span> <br>
+              Old Balance: <span id="oldBalREC">15</span>&euro; <br>
+              New Balance: <span id="newBalREC">9</span>&euro;
             </div>
           </div>
           <div class="row close_box d-flex justify-content-evenly align-items-center">
@@ -231,7 +254,7 @@
             <button id="addContactBtn" class="col-md-3 btn blue-button accepted_btn">Add</button>
           </div>
         </div>
-        <div class="transfer_msg col-md-5 mb-5 container-fluid">
+        <div class="hidden transfer_msg col-md-5 mb-5 container-fluid">
           <div class="row h3 transfer_title accepted">
             <span>Create a new Bank Account</span>
           </div>
@@ -242,17 +265,19 @@
             </div>
           </form>
           <div class="row justify-content-evenly align-items-center">
-          <div class="col-md-8 alert alert-warning" role="alert"  id="message_div" style="visibility: hidden;">
-            This is an error message
-          </div>
-          <div class="row close_box d-flex justify-content-evenly align-items-center">
-            <button id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</button>
-            <button id="addContactBtn" class="col-md-3 btn blue-button accepted_btn">Submit</button>
-          </div>
+            <div class="col-md-8 alert alert-warning" role="alert" id="message_div" style="visibility: hidden;">
+              This is an error message
+            </div>
+            <div class="row close_box d-flex justify-content-evenly align-items-center">
+              <button id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</button>
+              <button id="addContactBtn" class="col-md-3 btn blue-button accepted_btn">Submit</button>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
-  </body>
+
+  </div>
+</body>
+
 </html>
