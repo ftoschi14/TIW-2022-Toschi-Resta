@@ -230,39 +230,46 @@
 
     <div class="hidden messageContainer">
 
-      <div class="transfer_box d-flex align-items-center justify-content-evenly hidden" id="transferBox">
+      <div class="transfer_box d-flex align-items-center justify-content-evenly hidden">
         <!-- OBSCURE EVERYTHING ELSE BUT THE TRANSFER MESSAGE -->
-        <div class="hidden transfer_msg col-md-8 mb-5 container-fluid">
+        <div class="hidden transfer_msg col-md-8 mb-5 container-fluid" id="transferBox">
           <!-- ACTUAL MSG BOX -->
           <div class="row h3 transfer_title accepted" id="transferStatus">
             <span>Transfer Accepted</span>
           </div>
-          <div class="transfer_details mb-3 row">
-            <div class="sender_details col-md-4">
-              Sender ID: <span id="senderID">7</span> <br>
-              Account ID: <span id="sndAccID">14</span> <br>
-              Account name: <span id="sndAccName">Bartic</span> <br>
-              Old Balance: <span id="oldBalSND">15</span>&euro; <br>
-              New Balance: <span id="newBalSND">9</span>&euro;
+          <div class="hidden" id="transferAccepted">
+            <div class="transfer_details mb-3 row">
+              <div class="sender_details col-md-4">
+                Sender ID: <span id="senderID">7</span> <br>
+                Account ID: <span id="sndAccID">14</span> <br>
+                Account name: <span id="sndAccName">Bartic</span> <br>
+                Old Balance: <span id="oldBalSND">15</span>&euro; <br>
+                New Balance: <span id="newBalSND">9</span>&euro;
+              </div>
+              <div class="transfer_data col-md-4">
+                Amount: <span id="transferAMT" class="mb-3">15</span>&euro; <br>
+                Reason: <span id="transferReason">Bartic</span>
+              </div>
+              <div class="recipient_details col-md-4">
+                Recipient ID: <span id="recipientID">7</span> <br>
+                Account ID: <span id="recAccID">14</span> <br>
+                Account name: <span id="recAccName">Bartic</span> <br>
+                Old Balance: <span id="oldBalREC">15</span>&euro; <br>
+                New Balance: <span id="newBalREC">9</span>&euro;
+              </div>
             </div>
-            <div class="transfer_data col-md-4">
-              Amount: <span id="transferAMT" class="mb-3">15</span>&euro; <br>
-              Reason: <span id="transferReason">Bartic</span>
-            </div>
-            <div class="recipient_details col-md-4">
-              Recipient ID: <span id="recipientID">7</span> <br>
-              Account ID: <span id="recAccID">14</span> <br>
-              Account name: <span id="recAccName">Bartic</span> <br>
-              Old Balance: <span id="oldBalREC">15</span>&euro; <br>
-              New Balance: <span id="newBalREC">9</span>&euro;
-            </div>
+          </div>
+          <div class="" id="transferFailed">
+              <div class="transfer_details mb-3 row">
+                  Transfer failed!
+              </div>
           </div>
           <div class="row close_box d-flex justify-content-evenly align-items-center">
             <button id="closeBoxBTN" class="col-md-3 btn blue-button accepted_btn">Close</button>
             <button id="addContactBtn" class="col-md-3 btn blue-button accepted_btn">Add</button>
           </div>
         </div>
-        <div class="hidden transfer_msg col-md-5 mb-5 container-fluid">
+        <div class="hidden transfer_msg col-md-5 mb-5 container-fluid" id="creationBox">
           <div class="row h3 transfer_title accepted">
             <span>Create a new Bank Account</span>
           </div>
