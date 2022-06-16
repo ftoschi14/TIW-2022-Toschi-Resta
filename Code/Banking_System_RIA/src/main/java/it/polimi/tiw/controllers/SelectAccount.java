@@ -24,6 +24,8 @@ import it.polimi.tiw.utils.Serializer;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import com.google.gson.JsonObject;
+
 /**
  * Servlet implementation class SelectAccount
  */
@@ -96,11 +98,12 @@ public class SelectAccount extends HttpServlet {
 		}
 
 		//Preparing the response
-		String responseTransfers = Serializer.serializeAll(transfers,"transfers").toString();
+		JsonObject accountObject = Serializer.serializeAll(transfers,"transfers");
+		accountObject.add("account", Serializer.serialize(bankAccount));
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println(responseTransfers);
+		response.getWriter().println(accountObject.toString());
 	}
 
 

@@ -109,114 +109,122 @@
 
     <div class="col-md-9 flex-fill bank_account_data d-flex align-items-center justify-content-evenly">
 
-      <div id="noAccSelected" class="hidden row noAccDiv justify-content-evenly align-items-center">
-        <!-- No account selected DIV -->
-        <img src="resources/noAcc.png" alt="" />
-        <span>No Bank Account selected!</span>
-      </div>
-
-      <div id="accSelected" class="account_data justify-content-center">
-
-        <div class="h4 account_info d-flex justify-content-center align-items-center mb-3">
-          <!-- Selected account information (ID, BAL, NAME) -->
-          <span class="col-md-4"> Account: <span id="accName">Default account</span></span>
-          <span class="col-md-4">ID: <span id="accID">1</span></span>
-          <span class="col-md-4">Balance: <span id="accBal">10&euro;</span></span>
-        </div> <br>
-
-        <div class="row transfer_list d-flex justify-content-center align-items-center mb-3">
-          <!-- Account transfer list -->
-          <div class="h3 justify-content-center center_data mb-2">
-            Transfers:
+    <div id="noAccSelected" class="">
+        <div class="row noAccDiv justify-content-evenly align-items-center">
+          <!-- No account selected DIV -->
+          <img src="resources/noAcc.png" alt="" />
+          <span>No Bank Account selected!</span>
+          <div class="col-md-8 alert alert-warning" role="alert" id="selection_message_div" style="visibility: hidden;">
+              This is an error message
           </div>
         </div>
+    </div>
 
-        <div class="row transfers_box overflow-auto justify-content-center align-items-center mb-3" id="transferList">
-          <div class="row transfer mb-3">
-            <div class="row transfer_up">
-              <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
-              <div class="col-md-4"></div>
-              <span class="col-md-4 right_data">Apples</span>
-            </div>
-            <div class="row transfer_down">
-              <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
-              <div class="col-md-4"></div>
-              <span class="col-md-4 right_data">+70€</span>
+    <div id="accSelected" class="hidden">
+
+        <div class="account_data justify-content-center">
+
+          <div class="h4 account_info d-flex justify-content-center align-items-center mb-3">
+            <!-- Selected account information (ID, BAL, NAME) -->
+            <span class="col-md-4"> Account: <span id="accName">Default account</span></span>
+            <span class="col-md-4">ID: <span id="accID">1</span></span>
+            <span class="col-md-4">Balance: <span id="accBal">10&euro;</span></span>
+          </div> <br>
+
+          <div class="row transfer_list d-flex justify-content-center align-items-center mb-3">
+            <!-- Account transfer list -->
+            <div class="h3 justify-content-center center_data mb-2">
+              Transfers:
             </div>
           </div>
-          <div class="row transfer mb-3">
-            <div class="row transfer_up">
-              <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
-              <div class="col-md-4"></div>
-              <span class="col-md-4 right_data">Apples</span>
-            </div>
-            <div class="row transfer_down">
-              <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
-              <div class="col-md-4"></div>
-              <span class="col-md-4 right_data">+70€</span>
-            </div>
-          </div>
-          <div class="row transfer mb-3">
-            <div class="row transfer_up">
-              <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
-              <div class="col-md-4"></div>
-              <span class="col-md-4 right_data">Apples</span>
-            </div>
-            <div class="row transfer_down">
-              <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
-              <div class="col-md-4"></div>
-              <span class="col-md-4 right_data">+70€</span>
-            </div>
-          </div>
-        </div>
 
-        <div class="row make_transfer_form d-flex justify-content-center align-items-center">
-          <!-- Transfer request form -->
-          <div class="transfer_form">
-            <div class="h3 d-flex justify-content-center center_data">Request a Transfer</div>
-            <form class="row g-3 d-flex justify-content-evenly" action="#" id="makeTransferForm">
-
-              <div class="col-md-3">
-                <div class="row">
-                  <label for="recipientID" class="form-label">Recipient ID</label>
-                  <input type="number" class="form-control" id="recipientID">
-                </div>
-                <div class="row">
-                  <label for="recAccountID" class="form-label">Account ID</label>
-                  <input type="number" class="form-control" id="recAccountID">
-                </div>
+          <div class="row transfers_box overflow-auto justify-content-center align-items-center mb-3" id="transferList">
+            <div class="row transfer mb-3">
+              <div class="row transfer_up">
+                <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
+                <div class="col-md-4"></div>
+                <span class="col-md-4 right_data">Apples</span>
               </div>
+              <div class="row transfer_down">
+                <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
+                <div class="col-md-4"></div>
+                <span class="col-md-4 right_data">+70€</span>
+              </div>
+            </div>
+            <div class="row transfer mb-3">
+              <div class="row transfer_up">
+                <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
+                <div class="col-md-4"></div>
+                <span class="col-md-4 right_data">Apples</span>
+              </div>
+              <div class="row transfer_down">
+                <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
+                <div class="col-md-4"></div>
+                <span class="col-md-4 right_data">+70€</span>
+              </div>
+            </div>
+            <div class="row transfer mb-3">
+              <div class="row transfer_up">
+                <span class="col-md-4 left_data">Sender ID: <span>5</span></span>
+                <div class="col-md-4"></div>
+                <span class="col-md-4 right_data">Apples</span>
+              </div>
+              <div class="row transfer_down">
+                <span class="col-md-4 left_data">Timestamp: <span>5/6/2017 15:30</span></span>
+                <div class="col-md-4"></div>
+                <span class="col-md-4 right_data">+70€</span>
+              </div>
+            </div>
+          </div>
 
-              <div class="col-md-3 d-flex align-items-center">
-                <div class="row">
-                  <label for="amount" class="form_label">Amount</label> <br>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">&euro;</span>
-                    <input type="number" class="form-control">
+          <div class="row make_transfer_form d-flex justify-content-center align-items-center">
+            <!-- Transfer request form -->
+            <div class="transfer_form">
+              <div class="h3 d-flex justify-content-center center_data">Request a Transfer</div>
+              <form class="row g-3 d-flex justify-content-evenly" action="#" id="makeTransferForm">
+
+                <div class="col-md-3">
+                  <div class="row">
+                    <label for="recipientID" class="form-label">Recipient ID</label>
+                    <input type="number" class="form-control" id="recipientID">
+                  </div>
+                  <div class="row">
+                    <label for="recAccountID" class="form-label">Account ID</label>
+                    <input type="number" class="form-control" id="recAccountID">
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-3 d-flex align-items-center">
-                <div class="row">
-                  <label for="reason" class="form_label">Reason:</label>
-                  <div class="input-group">
-                    <textarea class="form-control" id="reason"></textarea>
+                <div class="col-md-3 d-flex align-items-center">
+                  <div class="row">
+                    <label for="amount" class="form_label">Amount</label> <br>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text">&euro;</span>
+                      <input type="number" class="form-control">
+                    </div>
                   </div>
                 </div>
+
+                <div class="col-md-3 d-flex align-items-center">
+                  <div class="row">
+                    <label for="reason" class="form_label">Reason:</label>
+                    <div class="input-group">
+                      <textarea class="form-control" id="reason"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <button id="requestTransferBtn" class="btn blue-button add_account " tabindex="0">
+                    Submit
+                  </button>
+                </div>
+              </form>
+              <div class="row flex-row-reverse">
               </div>
-              <div class="col-md-1 d-flex align-items-center">
-                <button id="requestTransferBtn" class="btn blue-button add_account " tabindex="0">
-                  Submit
-                </button>
-              </div>
-            </form>
-            <div class="row flex-row-reverse">
             </div>
           </div>
-        </div>
 
-      </div>
+        </div>
+    </div>
 
     </div>
 
