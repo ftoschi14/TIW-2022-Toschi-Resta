@@ -195,6 +195,7 @@ public class MakeTransfer extends HttpServlet {
 			transferObj.add("transfer",Serializer.serialize(transfer));
 			transferObj.remove("senderID");
 			transferObj.remove("recipientID");
+			transferObj.remove("timestamp");
 			respObj.add("transfer",transferObj);
 
 			BigDecimal senderNewBal, recipientNewBal;
