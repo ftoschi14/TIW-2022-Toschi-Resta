@@ -98,18 +98,14 @@
 					<div th:each="t : ${transfers}">
 						<div class="row transfer" th:class="(${account.ID}==${t.senderID} ? 'red_transfer' : 'green_transfer')">
 							<div class="row">
-								<div class="col-md-6">ID: <span class="t_transferID" th:text="${t.ID}"> 1</span><br></div>
 								<div class="col-md-6"><span th:text="(${t.senderID} == ${account.ID}) ? 'Destination account: ' : 'Source account: '">Source account: </span><span th:text="(${t.senderID} == ${account.ID}) ? ${t.recipientID} : ${t.senderID}">00000</span></div>
+								<div class="col-md-6">Timestamp: <span class="t_timestamp" th:text="${t.timestamp}">transfer timestamp: timestamp</span><br></div>
 							</div>
 							<div class="row">
 								<div class="col-md-6">Amount: <span class="t_amount" th:text="${t.amount}">amount: 100</span>&euro;<br></div>
 								<div class="col-md-6">Reason: <span class="t_reason" th:text="${t.reason}">transfer reason: my reason</span><br></div>
 							</div>
-							<div class="row">
-								<div class="col-md-6">Timestamp: <span class="t_timestamp" th:text="${t.timestamp}">transfer timestamp: timestamp</span><br></div>
-							</div>
 						</div>
-						<br>
 						<br>
 					</div>
 				</div>
