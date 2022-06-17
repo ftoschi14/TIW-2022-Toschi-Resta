@@ -14,9 +14,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import it.polimi.tiw.beans.BankAccount;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
-import it.polimi.tiw.dao.ContactDAO;
+import it.polimi.tiw.dao.BankAccountDAO;
+import it.polimi.tiw.dao.ContactsDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
 /**
@@ -46,7 +48,8 @@ public class AddContact extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		UserDAO userDAO = new UserDAO(connection);
-		ContactDAO contactDAO = new ContactDAO(connection);
+		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
+		ContactsDAO contactDAO = new ContactsDAO(connection);
 
 		//get, sanitize and checks params
 		Integer contactID = null;
@@ -57,36 +60,30 @@ public class AddContact extends HttpServlet {
 			response.getWriter().println("Invalid contact id");
 			return;
 		}
+		
+		// Check if the specified account ID exists
+		BankAccount account = null;
+		
+		try {
+			account = bankAccountDAO.findAccountByID(contactID);
+		} catch(SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Unable to find the specified account ID, please try again.");
+			return;
+		}
 
-		//Creates a new user with the contactID given to see if the user exists in the data base
-		User contact = null;
+		if(account.getUserID() == user.getID()){
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("You can't add your account as a contact!");
+			return;
+		}
+		
 		try{
-			contact = userDAO.findUserByID(contactID);
+			contactDAO.insertContact(user.getID(), account.getID());
 		}catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Unable to fetch details about your last transfer");
+			response.getWriter().println("Unable to add the contact, please try again");
 			return;
-		}
-
-		//Checks if the userID exists in the data base
-		if(contact == null){
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("The user doesn't exist");
-			return;
-		}
-		else if(contact.getID() == user.getID()){
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("You can't add your userID in your contact");
-			return;
-		}
-		else{
-			try{
-				contactDAO.insertContact(user.getID(),contact.getID());
-			}catch (SQLException e) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				response.getWriter().println("Unable to add the contact, please try again");
-				return;
-			}
 		}
 		response.setStatus(HttpServletResponse.SC_OK);
 	}

@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import it.polimi.tiw.beans.User;
-import it.polimi.tiw.beans.Contact;
-import it.polimi.tiw.dao.ContactDAO;
+import it.polimi.tiw.beans.Contacts;
+import it.polimi.tiw.dao.ContactsDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 import it.polimi.tiw.utils.Serializer;
 
@@ -38,8 +38,10 @@ public class GetContacts extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		ContactDAO contactDAO = new ContactDAO(connection);
-		List<Contact> contacts = new ArrayList<>();
+		
+		ContactsDAO contactDAO = new ContactsDAO(connection);
+		Contacts contacts = null;
+		
 		try{
 			contacts = contactDAO.getContactsByUserID(user.getID());
 		}catch (SQLException e) {
@@ -49,7 +51,7 @@ public class GetContacts extends HttpServlet {
 		}
 
 		//Preparing the response
-		String contactsResponse = Serializer.serializeAll(contacts,"contacts").toString();
+		String contactsResponse = Serializer.serialize(contacts).toString();
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
