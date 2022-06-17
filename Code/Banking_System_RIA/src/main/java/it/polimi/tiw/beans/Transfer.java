@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Transfer {
-	private int ID, senderID, recipientID;
+	private int senderID, recipientID;
 	private BigDecimal amount;
 	private Timestamp timestamp;
 	private String reason;
@@ -12,10 +12,6 @@ public class Transfer {
 	/*
 	 * Getters
 	 */
-
-	public int getID() {
-		return ID;
-	}
 
 	public int getSenderID() {
 		return senderID;
@@ -40,10 +36,6 @@ public class Transfer {
 	/*
 	 * Setters
 	 */
-
-	public void setID(int ID) {
-		this.ID = ID;
-	}
 
 	public void setSenderID(int senderID) {
 		this.senderID = senderID;
