@@ -65,7 +65,6 @@ class SerializerTest {
 	void testSerializeTransfer() {
 		Transfer t1 = new Transfer();
 		t1.setAmount(new BigDecimal(7500));
-		t1.setID(33);
 		t1.setReason("testttest");
 		t1.setRecipientID(15);
 		t1.setSenderID(2);

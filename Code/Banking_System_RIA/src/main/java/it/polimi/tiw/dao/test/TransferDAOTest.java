@@ -38,7 +38,7 @@ class TransferDAOTest {
 			assertTrue(transfers.size() > 0);
 			
 			for(Transfer t : transfers) {
-				System.out.println("Transfer: " + t.getID() + ", AMT: " + t.getAmount() + ", Reason: " + t.getReason()
+				System.out.println("Transfer: " + ", AMT: " + t.getAmount() + ", Reason: " + t.getReason()
 				 + ", From: " + t.getSenderID() + ", To: " + t.getRecipientID()+ ", Timestamp: " + t.getTimestamp());
 			}
 		} catch (SQLException e) {

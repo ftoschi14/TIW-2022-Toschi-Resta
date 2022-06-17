@@ -18,7 +18,7 @@ private Connection connection;
 
 	public Transfer getLastTransferByUserID(int userID) throws SQLException{
 		Transfer transfer = null;
-		String query = "SELECT id, amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID IN (SELECT id FROM bank_account WHERE userID = ?) ORDER BY timestamp DESC LIMIT 1";
+		String query = "SELECT amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID IN (SELECT id FROM bank_account WHERE userID = ?) ORDER BY timestamp DESC LIMIT 1";
 		ResultSet result = null;
 
 		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -31,7 +31,6 @@ private Connection connection;
 				// Only 1 match expected
 				result.next();
 				transfer = new Transfer();
-				transfer.setID(result.getInt("id"));
 				transfer.setAmount(result.getBigDecimal("amount"));
 				transfer.setReason(result.getString("reason"));
 				transfer.setSenderID(result.getInt("senderID"));
@@ -52,7 +51,7 @@ private Connection connection;
 		List<Transfer> transfers = new ArrayList<>();
 		Transfer transfer = null;
 
-		String query = "SELECT id, amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID = ? or recipientID = ? ORDER BY timestamp DESC";
+		String query = "SELECT amount, timestamp, reason, senderID, recipientID FROM transfer WHERE senderID = ? or recipientID = ? ORDER BY timestamp DESC";
 
 		ResultSet result = null;
 
@@ -67,7 +66,6 @@ private Connection connection;
 
 			while(result.next()) {
 				transfer = new Transfer();
-				transfer.setID(result.getInt("id"));
 				transfer.setAmount(result.getBigDecimal("amount"));
 				transfer.setReason(result.getString("reason"));
 				transfer.setSenderID(result.getInt("senderID"));
