@@ -253,8 +253,8 @@
 
     function TransferForm(_transferForm, _transferButton){
         this.transferForm = _transferForm;
-        this.inputRecipientUserID = this.transferForm.elements["recipientID"];
-        this.inputRecipientAccountID = this.transferForm.elements["recAccountID"];
+        this.inputRecipientUserID = this.transferForm.elements["recipientUserID"];
+        this.inputRecipientAccountID = this.transferForm.elements["recipientID"];
         this.transferButton = _transferButton;
         let self = this;
 
@@ -271,7 +271,6 @@
                             else if(req.status === 403){
                                 transferResult.update(false,messageStr);
                                 pageOrchestrator.refresh(accountDetails.currentAccount);
-                                alert(messageStr);
                             }
                             else{
                                 alert(messageStr);
@@ -306,7 +305,7 @@
     }
 
     function TransferResult(_transferBox, _transferAcceptedBox, _transferFailedBox, _transferStatus, _transferSender,
-                            _transferRecipient, _transferAmount, _transferReason, _failDetails, _closeBoxButton,
+                            _transferRecipient, _transferAmount, _transferReason, _failReason, _closeBoxButton,
                             _addContactButton, _addContactStatus) {
         this.transferBox = _transferBox;
         this.transferAcceptedBox = _transferAcceptedBox;
@@ -318,14 +317,15 @@
 
         this.transferAmount = _transferAmount;
         this.transferReason = _transferReason;
+        this.failReason = _failReason;
         this.closeBoxButton = _closeBoxButton;
         this.addContactButton = _addContactButton;
         this.addContactStatus = _addContactStatus;
         let self = this;
 
         this.reset = () => {
-            self.transferBox.className = "hidden";
-            messageContainer.className += "hidden";
+            self.transferBox.className += " hidden";
+            messageContainer.className += " hidden";
         }
 
         //assigns the behaviour to close button
@@ -341,8 +341,7 @@
                     if(req.readyState === XMLHttpRequest.DONE) {
                         let messageStr = req.responseText;
                         if(req.status !== 200){
-                            self.errorMessageDiv.className = "";
-                            self.errorMessageDiv.textContent = messageStr;
+                            self.addContactStatus.textContent = messageStr;
                         }
                         else{
                             self.addContactButton.className += " hidden"
@@ -355,7 +354,7 @@
 
         this.update = (success,data) => {
             if(success){
-                self.transferStatus = "Transfer Confirmed";
+                self.transferStatus.textContent = "Transfer Confirmed";
                 self.transferBox.innerHTML = "";
                 self.transferFailedBox.className = "hidden";
                 self.transferAcceptedBox.className = "";
@@ -383,13 +382,14 @@
                 }
             }
             else{
-                self.transferStatus = "Transfer Failed";
+                self.transferStatus.textContent = "Transfer Failed";
                 self.transferFailedBox.className = "";
                 self.transferAcceptedBox.className = "hidden";
 
                 //sets the content div
-                self.failDetails.textContent = data;
+                self.failReason.textContent = data;
             }
+            self.transferBox.className = "transfer_msg col-md-8 mb-5 container-fluid";
             messageContainer.className = "messageContainer";
         }
     }
@@ -504,6 +504,10 @@
         this.newBalance = _newBalance;
     }
 
+    function LogoutButton(_logoutButton){
+        this.logoutButton = _logoutButton;
+    }
+
     function PageOrchestrator() {
         //SIDEBAR elements
         let msg = "message_container";
@@ -576,7 +580,7 @@
                 transferRecipient,
                 document.getElementById("transferAMT"),
                 document.getElementById("transferReason"),
-                document.getElementById("transfer_details"),
+                document.getElementById("failReason"),
                 document.getElementById("closeBoxBTN"),
                 document.getElementById("addContactBTN"),
                 document.getElementById("addContactStatus")
@@ -590,6 +594,11 @@
             contacts.load();
 
             messageContainer = document.getElementById("message_container");
+
+            logoutButton = new LogoutButton(
+                document.getElementById("logoutBtn")
+            );
+            logoutButton.load();
         }
 
         this.refresh = (currentAccount) => {
