@@ -35,6 +35,8 @@
   <url-pattern>/SelectAccount</url-pattern>
   <url-pattern>/MakeTransfer</url-pattern>
   <url-pattern>/GetAccounts</url-pattern>
+  <url-pattern>/GetContacts</url-pattern>
+  <url-pattern>/AddContact</url-pattern>
 </filter-mapping>
 
 <filter-mapping>

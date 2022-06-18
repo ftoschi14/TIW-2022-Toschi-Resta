@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import it.polimi.tiw.beans.Contacts;
 import it.polimi.tiw.dao.ContactsDAO;
+import it.polimi.tiw.utils.Serializer;
 
 class ContactsDAOTest {
 	ContactsDAO dao;
@@ -34,6 +35,7 @@ class ContactsDAOTest {
 	void testFetch() {
 		try {
 			Contacts cts = dao.getContactsByUserID(1);
+			System.out.println(Serializer.serialize(cts).toString());
 			
 			System.out.println("Owner: " + cts.getOwnerID());
 			cts.getContacts().keySet().stream().forEach((entry) -> {

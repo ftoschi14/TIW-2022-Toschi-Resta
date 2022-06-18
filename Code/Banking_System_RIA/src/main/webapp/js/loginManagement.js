@@ -78,12 +78,12 @@
                                 self.messageDiv.innerHTML = "";
                                 if(req.status !== 200){
                                     self.messageDiv.className = "col-md-12 alert alert-warning";
-                                    messageDiv.textContent = messageStr;
+                                    self.messageDiv.textContent = messageStr;
                                     self.messageDiv.style.visibility = "visible";
                                 }
                                 else{
                                     var respStr = JSON.parse(req.responseText);
-                                    sessionStorage.setItem('id', respStr.id);
+                                    sessionStorage.setItem("id", respStr.ID);
                                     sessionStorage.setItem("name", respStr.name);
                                     sessionStorage.setItem("surname", respStr.surname);
                                     window.location.href = "Home.html";
