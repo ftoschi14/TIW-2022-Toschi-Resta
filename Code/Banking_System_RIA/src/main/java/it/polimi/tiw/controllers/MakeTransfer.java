@@ -169,7 +169,7 @@ public class MakeTransfer extends HttpServlet {
 				response.getWriter().println("Your account can't afford this transfer");
 				return;
 			}
-			else if(amount.compareTo(new BigDecimal(0)) >= 0){
+			else if(amount.compareTo(new BigDecimal(0)) == -1){
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				response.getWriter().println("The amount must be positive");
 				return;
