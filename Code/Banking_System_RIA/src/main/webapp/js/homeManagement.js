@@ -90,7 +90,7 @@
                 self.accountListContainer.appendChild(accountDiv);
                 cashSum += account.balance;
             });
-            this.summaryContainer.textContent = "Your Summary: ".concat(cashSum).concat("€");
+            this.summaryContainer.textContent = "Your Summary: ".concat(cashSum.toFixed(2)).concat("€");
             this.summaryContainer.style.visibility = "visible";
             this.accountListContainer.style.visibility = "visible";
         }
@@ -383,7 +383,7 @@
 
                 //if not contact, show button, otherwise hide it
                 self.addContactButton.className = "col-md-3 btn blue-button accepted_btn";
-                if(contacts.isContact(data.recipient.userID, data.recipient.ID)) {
+                if(contacts.isContact(String(data.recipient.userID), data.recipient.ID)) {
                     self.addContactButton.className += " hidden";
                 }
             }
