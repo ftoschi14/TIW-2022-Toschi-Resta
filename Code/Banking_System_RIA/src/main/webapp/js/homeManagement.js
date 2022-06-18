@@ -234,7 +234,7 @@
                 //Transfer amount
                 let right_data_LOW = document.createElement("span");
                 right_data_LOW.className = "col-md-4 right_data";
-                right_data_LOW.textContent = (transfer.senderID === userDetails.ID ? "-" : "+").concat(transfer.amount);
+                right_data_LOW.textContent = (transfer.senderID === accountDetails.currentAccount ? "-" : "+").concat(transfer.amount);
 
                 //Build lower row
                 lowerRow.appendChild(left_data_LOW);
