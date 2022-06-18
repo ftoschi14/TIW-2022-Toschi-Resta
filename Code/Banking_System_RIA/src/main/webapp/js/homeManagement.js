@@ -366,6 +366,7 @@
                 self.transferAcceptedBox.className = "";
                 //sets the content of the sender account div
                 self.transferSender.accountID.textContent = data.sender.ID;
+                self.transferSender.userID.textContent = data.sender.userID;
                 self.transferSender.accountName.textContent = data.sender.name;
                 self.transferSender.oldBalance.textContent = data.sender.balance;
                 self.transferSender.newBalance.textContent = data.sender.newBal;
