@@ -118,5 +118,35 @@ public class BankAccountDAO {
 		}
 		return result;
 	}
+	
+	public boolean isNameTaken(int userID, String name) throws SQLException {
+		String query = "SELECT id, name FROM bank_account WHERE userID = ? AND name = ?";
+		ResultSet result = null;
+		boolean taken = false;
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			//Preparing the statement
+
+			preparedStatement.setInt(1, userID);
+			preparedStatement.setString(2, name);
+
+			result = preparedStatement.executeQuery();
+			
+			if(result.next()) {
+				taken = true;
+			}
+
+			//Close the prepared statement
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			
+			if(result != null) {
+				result.close();
+			}
+
+
+		}
+		return taken;
+	}
 
 }

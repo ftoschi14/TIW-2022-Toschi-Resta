@@ -86,6 +86,16 @@ public class CreateAccount extends HttpServlet {
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
 		
 		try {
+			if(bankAccountDAO.isNameTaken(user.getID(), accountName)) {
+				errorRedirect(request, response, "Duplicated account name");
+				return;
+			}
+		} catch (SQLException e) {
+			errorRedirect(request, response, "Unable to create Bank Account, please try again");
+			return;
+		}
+		
+		try {
 			bankAccountDAO.createAccount(user.getID(), accountName, new BigDecimal(0));
 		} catch (SQLException e) {
 			errorRedirect(request, response, "Unable to create Bank Account, please try again");

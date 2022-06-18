@@ -82,7 +82,27 @@ public class CreateAccount extends HttpServlet {
 
 		// Proceed with BankAccount creation
 		BankAccountDAO bankAccountDAO = new BankAccountDAO(connection);
-
+		
+		try {
+			bankAccountDAO.isNameTaken(user.getID(), accountName);
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Unable to create Bank Account: " + e.getSQLState());
+			return;
+		}
+		
+		try {
+			if(bankAccountDAO.isNameTaken(user.getID(), accountName)) {
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				response.getWriter().println("Duplicated account name");
+				return;
+			}
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Unable to create Bank Account: " + e.getSQLState());
+			return;
+		}
+		
 		try {
 			bankAccountDAO.createAccount(user.getID(), accountName, new BigDecimal(0));
 		} catch (SQLException e) {
