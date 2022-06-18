@@ -127,6 +127,12 @@
         }
 
         this.registerEvents = () => {
+            this.createAccountForm.addEventListener("keydown", (e) => {
+                if(e.key === "Enter"){
+                    e.preventDefault();
+                    self.addAccount();
+                }
+            })
             this.showFormButton.addEventListener("click",(e) => {
                 self.createAccountDiv.className = "transfer_msg col-md-5 mb-5 container-fluid";
                 messageContainer.className = "messageContainer";
@@ -359,9 +365,12 @@
         }
 
         this.update = (success,msg) => {
+            self.transferStatus.innerHTML = "";
+            let statusSpan = document.createElement("span");
+            self.transferStatus.appendChild(statusSpan);
             if(success){
                 let data = JSON.parse(msg);
-                self.transferStatus.textContent = "Transfer Confirmed";
+                statusSpan.textContent = "Transfer Confirmed";
                 self.transferFailedBox.className = "hidden";
                 self.transferAcceptedBox.className = "";
                 //sets the content of the sender account div
@@ -389,7 +398,7 @@
                 }
             }
             else{
-                self.transferStatus.textContent = "Transfer Failed";
+                statusSpan.textContent = "Transfer Failed";
                 self.transferFailedBox.className = "";
                 self.transferAcceptedBox.className = "hidden";
                 self.addContactButton.className += " hidden";
