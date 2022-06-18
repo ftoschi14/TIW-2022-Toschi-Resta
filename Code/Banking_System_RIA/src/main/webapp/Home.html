@@ -188,12 +188,12 @@
                 <div class="col-md-3">
                   <div class="row">
                     <label for="recipientID" class="form-label">Recipient ID</label>
-                    <input type="number" class="form-control" id="recipientUserID" list="recipientUserIDs" name="recipientUserID" required/>
+                    <input type="number" class="form-control" id="recipientUserID" list="recipientUserIDs" name="recipientUserID" min=1 required/>
                     <datalist id="recipientUserIDs"></datalist>
                   </div>
                   <div class="row">
                     <label for="recAccountID" class="form-label">Account ID</label>
-                    <input type="number" class="form-control" id="recipientID" list="recipientAccountIDs" name="recipientID" required/>
+                    <input type="number" class="form-control" id="recipientID" list="recipientAccountIDs" name="recipientID" min=1 required/>
                     <datalist id="recipientAccountIDs"></datalist>
                   </div>
                 </div>
@@ -203,7 +203,7 @@
                     <label for="amount" class="form_label">Amount</label> <br>
                     <div class="input-group mb-3">
                       <span class="input-group-text">&euro;</span>
-                      <input type="number" class="form-control" name="amount" required/>
+                      <input type="number" class="form-control" name="amount" min=0.01 step=0.01 required/>
                     </div>
                   </div>
                 </div>
@@ -212,7 +212,7 @@
                   <div class="row">
                     <label for="reason" class="form_label">Reason:</label>
                     <div class="input-group">
-                      <textarea class="form-control" id="reason" name="reason" required></textarea>
+                      <textarea class="form-control" id="reason" name="reason" maxlength=255 required></textarea>
                     </div>
                   </div>
                 </div>
