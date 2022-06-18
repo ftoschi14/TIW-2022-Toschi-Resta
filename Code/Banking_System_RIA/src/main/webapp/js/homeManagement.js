@@ -580,14 +580,14 @@
             transferForm.registerEvents()
 
             let transferSender = new TransferParticipant(
-                document.getElementById("senderID"),
+                document.getElementById("sndID"),
                 document.getElementById("sndAccID"),
                 document.getElementById("sndAccName"),
                 document.getElementById("oldBalSND"),
                 document.getElementById("newBalSND")
             );
             let transferRecipient = new TransferParticipant(
-                document.getElementById("recipientID"),
+                document.getElementById("recID"),
                 document.getElementById("recAccID"),
                 document.getElementById("recAccName"),
                 document.getElementById("oldBalREC"),
