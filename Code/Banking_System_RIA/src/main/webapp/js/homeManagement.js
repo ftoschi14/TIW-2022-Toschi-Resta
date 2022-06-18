@@ -1,6 +1,6 @@
 {// avoid variables ending up in the global scope
     let userDetails, contacts, accountList, accountDetails, transferForm,
-        transferResult, addAccount, pageOrchestrator = new PageOrchestrator();
+        transferResult, addAccount, messageContainer, pageOrchestrator = new PageOrchestrator();
 
     window.addEventListener("load", () => {
         if (sessionStorage.getItem("id") == null ||
@@ -54,9 +54,12 @@
         this.update = (arrayAccounts) => {
             let row,anchor,accountDiv,accountNameDiv,spaceDiv,accountBalanceDiv,cashSum;
             this.accountListContainer.innerHTML = ""; //empty the div
+            cashSum = 0;
             //build the updated list
             let self = this;
             arrayAccounts.forEach((account) => {
+
+                //Builds a div 
                 accountDiv = document.createElement("div");
                 accountDiv.className = "account_entry d-flex align-items-center mb-3";
                 row = document.createElement("div");
@@ -72,20 +75,18 @@
                 accountBalanceDiv = document.createElement("div");
                 accountBalanceDiv.className = "col-md-2 account_balance";
                 accountDiv.appendChild(accountBalanceDiv);
-                //TODO -> capire come stampare gli euro
                 accountBalanceDiv.textContent = account.balance + "€";
-                anchor = document.createElement("a");
-                accountDiv.appendChild(anchor);
-                anchor.setAttribute("accountID",account.ID);
-                anchor.addEventListener("click", (e) => {
+
+                //Registers event on the account div
+                accountDiv.addEventListener("click", (e) => {
                     accountDetails.show(e.target.getAttribute("accountID"));
                 }, false);
-                anchor.href = "#";
-                self.accountListContainer.appendChild(accountDiv);
 
+                self.accountListContainer.appendChild(accountDiv);
                 cashSum += account.balance;
             });
-            this.summaryContainer.textContent = cashSum;
+            this.summaryContainer.textContent = "Your Summary: ".concat(cashSum).concat("€");
+            this.summaryContainer.style.visibility = "visible";
             this.accountListContainer.style.visibility = "visible";
         }
 
@@ -119,11 +120,13 @@
 
         this.registerEvents = () => {
             this.showFormButton.addEventListener("click",(e) => {
-                self.createAccountDiv.className = "";
+                self.createAccountDiv.className = "transfer_msg col-md-5 mb-5 container-fluid";
+                messageContainer.className = "messageContainer";
             },false);
 
             this.closeButton.addEventListener("click", (e) => {
-                self.createAccountDiv.className = "hidden";
+                self.createAccountDiv.className += " hidden";
+                messageContainer.className += " hidden";
             }, false);
 
             this.submitButton.addEventListener("click", self.addAccount(), false);
@@ -313,6 +316,7 @@
 
         this.reset = () => {
             self.transferBox.className = "hidden";
+            messageContainer.className += "hidden";
         }
 
         //assigns the behaviour to close button
@@ -379,6 +383,7 @@
                 //sets the content div
                 self.failDetails.textContent = data;
             }
+            messageContainer.className = "messageContainer";
         }
     }
 
@@ -498,6 +503,7 @@
 
     function PageOrchestrator() {
         //SIDEBAR elements
+        let msg = "message_container";
 
         this.start = () => {
             userDetails = new UserDetails(
@@ -522,7 +528,7 @@
                 document.getElementById("create_acc_form"),
                 document.getElementById("submitCreationBTN"),
                 document.getElementById("closeCreationBoxBTN"),
-                document.getElementById("creation_message_div")
+                document.getElementById("creation_message_div"),
             );
             addAccount.registerEvents();
 
@@ -579,6 +585,8 @@
                 document.getElementById("recipientAccountIDs")
             );
             contacts.load();
+
+            messageContainer = document.getElementById("message_container");
         }
 
         this.refresh = (currentAccount) => {
