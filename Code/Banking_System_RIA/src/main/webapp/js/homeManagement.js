@@ -476,7 +476,7 @@
                 so if the input box is only focused and no key has been pressed all the userID contained in
                 recipientUserIDsList will be added
                  */
-                if(!this.contactsMap.get(recipientUserID).contains(recipientAccountID)){
+                if(!this.contactsMap.get(recipientUserID).includes(recipientAccountID)){
                     let suggestedRecipientAccountIDs = [];
                     this.contactsMap.get(recipientUserID).forEach(accountID => {
                         if(String(accountID).startsWith(recipientAccountID) && accountID !== currentAccountID){ //Checks if senderID != recipientID
