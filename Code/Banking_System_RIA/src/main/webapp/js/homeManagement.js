@@ -289,11 +289,11 @@
             }, false);
 
             this.inputRecipientAccountID.addEventListener("focus", (e) => {
-                contacts.autocompleteRecipientAccountID(e.target.value);
+                contacts.autocompleteRecipientAccountID(this.inputRecipientUserID.value, e.target.value, accountDetails.accountID);
             }, false);
 
             this.inputRecipientAccountID.addEventListener("keyup", (e) => {
-                contacts.autocompleteRecipientAccountID(e.target.value);
+                contacts.autocompleteRecipientAccountID(this.inputRecipientUserID.value, e.target.value, accountDetails.accountID);
             }, false);
 
         }
@@ -436,7 +436,7 @@
             this.datalistRecipientAccountIDs.innerHTML = "";
 
             //Gets the recipient IDs in contacts
-            let recipientUserIDsList = Object.keys(this.contactsMap);
+            let recipientUserIDsList = this.contactsMap.keys();
 
             /*
             If the param given isn't a contact shows suggestions
@@ -468,11 +468,11 @@
             this.datalistRecipientAccountIDs.innerHTML = "";
 
             //Gets the userIDs in contacts to check if the recipient user ID is already matched
-            let recipientUserIDsList = Object.keys(this.contactsMap);
+            let recipientUserIDsList = this.contactsMap.keys();
 
             if(recipientUserIDsList.contains(recipientUserID)){ //Checks if the recipient user ID is already matched
                 //Suggests the accounts of the user selected
-                let recipientAccountIDsList = this.contactsMap[recipientUserID];
+                let recipientAccountIDsList = this.contactsMap.get(recipientUserID);
 
                 /*
                 If the param recipientAccountID isn't a contact shows suggestions
@@ -483,7 +483,7 @@
                 if(!recipientAccountIDsList.contains(recipientAccountID)){
                     let suggestedRecipientAccountIDs = [];
                     recipientAccountIDsList.forEach(accountID => {
-                        if(String(accountID).startsWith(recipientAccountID) && accountID != currentAccountID){ //Checks if senderID != recipientID
+                        if(String(accountID).startsWith(recipientAccountID) && accountID !== currentAccountID){ //Checks if senderID != recipientID
                             suggestedRecipientAccountIDs.push(accountID);
                         }
                     });
@@ -541,9 +541,9 @@
                 document.getElementById("noAccSelected"),
                 document.getElementById("selection_message_div"),
                 document.getElementById("accSelected"),
-                document.getElementById("accID"),
-                document.getElementById("accName"),
-                document.getElementById("accBal"),
+                document.getElementById("selAccID"),
+                document.getElementById("selAccName"),
+                document.getElementById("selAccBal"),
                 document.getElementById("transferList")
             );
             accountDetails.reset();
