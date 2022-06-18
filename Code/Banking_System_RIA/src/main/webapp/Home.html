@@ -188,12 +188,12 @@
                 <div class="col-md-3">
                   <div class="row">
                     <label for="recipientID" class="form-label">Recipient ID</label>
-                    <input type="number" class="form-control" id="recipientID" list="recipientUserIDs">
+                    <input type="number" class="form-control" id="recipientUserID" list="recipientUserIDs" name="recipientUserID">
                     <datalist id="recipientUserIDs"></datalist>
                   </div>
                   <div class="row">
                     <label for="recAccountID" class="form-label">Account ID</label>
-                    <input type="number" class="form-control" id="recAccountID" list="recipientAccountIDs">
+                    <input type="number" class="form-control" id="recipientID" list="recipientAccountIDs" name="recipientID">
                     <datalist id="recipientAccountIDs"></datalist>
                   </div>
                 </div>
@@ -203,7 +203,7 @@
                     <label for="amount" class="form_label">Amount</label> <br>
                     <div class="input-group mb-3">
                       <span class="input-group-text">&euro;</span>
-                      <input type="number" class="form-control">
+                      <input type="number" class="form-control" name="amount">
                     </div>
                   </div>
                 </div>
@@ -212,7 +212,7 @@
                   <div class="row">
                     <label for="reason" class="form_label">Reason:</label>
                     <div class="input-group">
-                      <textarea class="form-control" id="reason"></textarea>
+                      <textarea class="form-control" id="reason" name="reason"></textarea>
                     </div>
                   </div>
                 </div>
@@ -221,7 +221,7 @@
                     Submit
                   </button>
                 </div>
-                 <input type="hidden" id="hiddenAccID" name="accountID" value="">
+                 <input type="hidden" id="hiddenAccID" name="senderID" value="">
               </form>
               <div class="row flex-row-reverse">
               </div>
