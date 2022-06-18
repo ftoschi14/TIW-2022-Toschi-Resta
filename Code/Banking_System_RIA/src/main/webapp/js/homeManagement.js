@@ -80,8 +80,11 @@
 
                 //Registers event on the account div
                 accountDiv.addEventListener("click", (e) => {
+                    if(self.selectedAccountDiv !== undefined) {
+                        self.selectedAccountDiv.className = "account_entry d-flex align-items-center mb-3";
+                    }
+                    self.selectedAccountDiv = e.currentTarget;
                     accountDetails.show(account.ID);
-                    self.selectedAccount = accountDiv;
                 }, false);
 
                 self.accountListContainer.appendChild(accountDiv);
@@ -166,6 +169,7 @@
                     if(req.readyState === XMLHttpRequest.DONE) {
                         let message = req.responseText;
                         if(req.status === 200) { //OK
+                            accountList.selectedAccountDiv.className += " selected";
                             self.currentAccount = accountID;
                             self.hiddenAccountInput.value = accountID;
                             let account = JSON.parse(message);
@@ -267,7 +271,6 @@
                         if(req.readyState === XMLHttpRequest.DONE) {
                             let messageStr = req.responseText;
                             if(req.status === 200){
-                                self.transferForm.reset();
                                 transferResult.update(true,messageStr);
                                 pageOrchestrator.refresh(accountDetails.currentAccount);
                             }
@@ -279,7 +282,7 @@
                                 alert(messageStr);
                             }
                         }
-                    }, false);
+                    });
                 }
             },false);
 
@@ -492,6 +495,7 @@
                         let option = document.createElement("option");
                         option.text = accountID;
                         option.value = accountID;
+                        this.datalistRecipientAccountIDs.appendChild(option);
                     });
                 }
             }
@@ -528,7 +532,6 @@
 
     function PageOrchestrator() {
         //SIDEBAR elements
-        let msg = "message_container";
 
         this.start = () => {
             userDetails = new UserDetails(
