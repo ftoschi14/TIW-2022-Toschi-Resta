@@ -59,7 +59,7 @@
             let self = this;
             arrayAccounts.forEach((account) => {
 
-                //Builds a div 
+                //Builds a div for each account
                 accountDiv = document.createElement("div");
                 accountDiv.className = "account_entry d-flex align-items-center mb-3";
                 row = document.createElement("div");
@@ -79,7 +79,7 @@
 
                 //Registers event on the account div
                 accountDiv.addEventListener("click", (e) => {
-                    accountDetails.show(e.target.getAttribute("accountID"));
+                    accountDetails.show(account.ID);
                 }, false);
 
                 self.accountListContainer.appendChild(accountDiv);
@@ -129,7 +129,7 @@
                 messageContainer.className += " hidden";
             }, false);
 
-            this.submitButton.addEventListener("click", self.addAccount(), false);
+            this.submitButton.addEventListener("click", () => self.addAccount(), false);
         }
     }
 
@@ -528,7 +528,7 @@
                 document.getElementById("create_acc_form"),
                 document.getElementById("submitCreationBTN"),
                 document.getElementById("closeCreationBoxBTN"),
-                document.getElementById("creation_message_div"),
+                document.getElementById("creation_message_div")
             );
             addAccount.registerEvents();
 

@@ -63,7 +63,7 @@ public class CreateAccount extends HttpServlet {
 
 		User user = (User) session.getAttribute("user");
 
-		String accountName = StringEscapeUtils.escapeJava(request.getParameter("accountName"));
+		String accountName = StringEscapeUtils.escapeJava(request.getParameter("name"));
 
 		// Basic nullcheck
 		if(accountName == null) {
