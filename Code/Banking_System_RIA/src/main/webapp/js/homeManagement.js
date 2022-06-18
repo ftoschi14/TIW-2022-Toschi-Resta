@@ -352,10 +352,10 @@
             }, false);
         }
 
-        this.update = (success,data) => {
+        this.update = (success,msg) => {
             if(success){
+                let data = JSON.parse(msg);
                 self.transferStatus.textContent = "Transfer Confirmed";
-                self.transferBox.innerHTML = "";
                 self.transferFailedBox.className = "hidden";
                 self.transferAcceptedBox.className = "";
                 //sets the content of the sender account div
@@ -387,7 +387,7 @@
                 self.transferAcceptedBox.className = "hidden";
 
                 //sets the content div
-                self.failReason.textContent = data;
+                self.failReason.textContent = msg;
             }
             self.transferBox.className = "transfer_msg col-md-8 mb-5 container-fluid";
             messageContainer.className = "messageContainer";
