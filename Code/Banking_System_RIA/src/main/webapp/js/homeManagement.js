@@ -606,7 +606,7 @@
                 accountDetails.reset();
             } else {
                 accountDetails.accountID = currentAccount;
-                accountDetails.show();
+                accountDetails.show(currentAccount);
             }
             accountList.reset();
             accountList.show();
