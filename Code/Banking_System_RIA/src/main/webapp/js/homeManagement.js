@@ -107,10 +107,13 @@
                     if(req.readyState === XMLHttpRequest.DONE) {
                         let messageStr = req.responseText;
                         if(req.status !== 200){
-                            self.errorMessageDiv.className = "";
+                            self.errorMessageDiv.style.visibility = "visible";
                             self.errorMessageDiv.textContent = messageStr;
                         }
                         else{
+                            self.errorMessageDiv.style.visibility = "hidden";
+                            let click = new Event("click");
+                            self.closeButton.dispatchEvent(click);
                             pageOrchestrator.refresh();
                         }
                     }
@@ -127,6 +130,7 @@
             this.closeButton.addEventListener("click", (e) => {
                 self.createAccountDiv.className += " hidden";
                 messageContainer.className += " hidden";
+                self.createAccountForm.reset();
             }, false);
 
             this.submitButton.addEventListener("click", () => self.addAccount(), false);
@@ -175,13 +179,14 @@
 
         this.update = (data) => {
             //Clear previous transfers
-            self.transferList.innerHTML = "";
+            self.accountSelectedDiv.className = "";
 
             //Set main account info
             self.accountName.textContent = data.account.name;
             self.accountIDSpan.textContent = data.account.ID;
             self.accountBalance.textContent = data.account.balance;
 
+            self.transferList.innerHTML = "";
             //Build transfer list
             let transfers = data.transfers;
             transfers.forEach( (transfer) => {
@@ -534,13 +539,12 @@
 
             accountDetails = new AccountDetails(
                 document.getElementById("noAccSelected"),
+                document.getElementById("selection_message_div"),
                 document.getElementById("accSelected"),
                 document.getElementById("accID"),
                 document.getElementById("accName"),
                 document.getElementById("accBal"),
-                document.getElementById("transferList"),
-                document.getElementById("makeTransferForm"),
-                document.getElementById("requestTransferBtn")
+                document.getElementById("transferList")
             );
             accountDetails.reset();
 
