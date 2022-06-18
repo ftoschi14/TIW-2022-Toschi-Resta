@@ -1,5 +1,5 @@
 {// avoid variables ending up in the global scope
-    let userDetails, contacts, accountList, accountDetails, transferForm,
+    let logoutButton, userDetails, contacts, accountList, accountDetails, transferForm,
         transferResult, addAccount, messageContainer, pageOrchestrator = new PageOrchestrator();
 
     window.addEventListener("load", () => {
@@ -27,6 +27,7 @@
         this.summaryContainer = _summaryContainer;
         this.accountListContainer = _accountListContainer;
         this.alertBox = _alertBox;
+        this.selectedAccountDiv = undefined;
 
         this.reset = () => {
             this.summaryContainer.style.visibility = "hidden";
@@ -52,7 +53,7 @@
         }
 
         this.update = (arrayAccounts) => {
-            let row,anchor,accountDiv,accountNameDiv,spaceDiv,accountBalanceDiv,cashSum;
+            let row,accountDiv,accountNameDiv,spaceDiv,accountBalanceDiv,cashSum;
             this.accountListContainer.innerHTML = ""; //empty the div
             cashSum = 0;
             //build the updated list
@@ -80,6 +81,7 @@
                 //Registers event on the account div
                 accountDiv.addEventListener("click", (e) => {
                     accountDetails.show(account.ID);
+                    self.selectedAccount = accountDiv;
                 }, false);
 
                 self.accountListContainer.appendChild(accountDiv);
@@ -114,7 +116,7 @@
                             self.errorMessageDiv.style.visibility = "hidden";
                             let click = new Event("click");
                             self.closeButton.dispatchEvent(click);
-                            pageOrchestrator.refresh();
+                            pageOrchestrator.refresh(accountDetails.currentAccount);
                         }
                     }
                 });
@@ -147,7 +149,7 @@
         this.accountBalance = _accountBalance;
         this.transferList = _transferList;
         this.hiddenAccountInput = _hiddenAccountInput;
-        this.currentAccount = -1;
+        this.currentAccount = undefined;
 
         let self = this;
 
@@ -265,6 +267,7 @@
                         if(req.readyState === XMLHttpRequest.DONE) {
                             let messageStr = req.responseText;
                             if(req.status === 200){
+                                self.transferForm.reset();
                                 transferResult.update(true,messageStr);
                                 pageOrchestrator.refresh(accountDetails.currentAccount);
                             }
@@ -276,7 +279,7 @@
                                 alert(messageStr);
                             }
                         }
-                    });
+                    }, false);
                 }
             },false);
 
@@ -449,9 +452,9 @@
             if(!this.contactsMap.has(recipientUserID)){
                 //partial suggestions
                 let suggestedRecipientUserIDs = [];
-                this.contactsMap.forEach(entry => {
-                    if(String(entry.key).startsWith(recipientUserID)){
-                        suggestedRecipientUserIDs.push(entry.key);
+                this.contactsMap.forEach((key) => {
+                    if(String(key).startsWith(recipientUserID)){
+                        suggestedRecipientUserIDs.push(key);
                     }
                 });
                 suggestedRecipientUserIDs.forEach(userID => {
@@ -506,6 +509,21 @@
 
     function LogoutButton(_logoutButton){
         this.logoutButton = _logoutButton;
+
+        this.registerEvents = () => {
+            this.logoutButton.addEventListener("click", (e) => {
+                makeCall("GET", "Logout", null, (req) => {
+                    if(req.readyState === XMLHttpRequest.DONE) {
+                        if(req.status === 200) {
+                            sessionStorage.removeItem("id");
+                            sessionStorage.removeItem("name");
+                            sessionStorage.removeItem("surname");
+                            window.location.href = "Login.html";
+                        }
+                    }
+                }, false)
+            }, false);
+        }
     }
 
     function PageOrchestrator() {
@@ -598,7 +616,7 @@
             logoutButton = new LogoutButton(
                 document.getElementById("logoutBtn")
             );
-            logoutButton.load();
+            logoutButton.registerEvents();
         }
 
         this.refresh = (currentAccount) => {

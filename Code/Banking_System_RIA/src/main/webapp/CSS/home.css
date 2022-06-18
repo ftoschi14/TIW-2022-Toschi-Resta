@@ -79,6 +79,9 @@ body {
 .account_entry:focus {
 	background-color: #ADE8FF;
 }
+.selected {
+	background-color: #ADE8FF;
+}
 .entry_data {
 	padding: 2%;
 	width: 100%;
