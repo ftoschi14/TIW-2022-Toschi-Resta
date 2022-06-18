@@ -274,19 +274,19 @@
              */
             this.inputRecipientUserID.addEventListener("focus", (e) => {
                 contacts.autocompleteRecipientUserID(e.target.value);
-            });
+            }, false);
 
             this.inputRecipientUserID.addEventListener("keyup", (e) => {
                 contacts.autocompleteRecipientUserID(e.target.value);
-            });
+            }, false);
 
             this.inputRecipientAccountID.addEventListener("focus", (e) => {
                 contacts.autocompleteRecipientAccountID(e.target.value);
-            });
+            }, false);
 
             this.inputRecipientAccountID.addEventListener("keyup", (e) => {
                 contacts.autocompleteRecipientAccountID(e.target.value);
-            });
+            }, false);
 
         }
 
@@ -320,7 +320,7 @@
             //assigns behaviour to close button
             self.closeBoxButton.addEventListener("click", (e) => {
                 self.reset();
-            });
+            }, false);
             //Assigns behaviour to addContact button
             self.addContactButton.addEventListener("click", (e) => {
                 //Create form data with the accountID to add
@@ -339,7 +339,7 @@
                         }
                     }
                 });
-            });
+            }, false);
         }
 
         this.update = (success,data) => {
