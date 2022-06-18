@@ -138,7 +138,7 @@
     }
 
     function AccountDetails(_emptySelectionDiv, _selectionMessageDiv, _accountSelectedDiv, _accountIDSpan, _accountName, _accountBalance,
-                            _transferList){
+                            _transferList, _hiddenAccountInput){
         this.emptySelectiondiv = _emptySelectionDiv;
         this.selectionMessageDiv = _selectionMessageDiv;
         this.accountSelectedDiv = _accountSelectedDiv;
@@ -146,6 +146,8 @@
         this.accountName = _accountName;
         this.accountBalance = _accountBalance;
         this.transferList = _transferList;
+        this.hiddenAccountInput = _hiddenAccountInput;
+        this.currentAccount = -1;
 
         let self = this;
 
@@ -162,6 +164,8 @@
                     if(req.readyState === XMLHttpRequest.DONE) {
                         let message = req.responseText;
                         if(req.status === 200) { //OK
+                            self.currentAccount = accountID;
+                            self.hiddenAccountInput.value = accountID;
                             let account = JSON.parse(message);
                             self.update(account);
                             self.emptySelectiondiv.className = "hidden";
@@ -256,21 +260,21 @@
 
         this.registerEvents = () => {
             this.transferButton.addEventListener("click",(e) => {
-                if(self.createAccountForm.checkValidity()){
+                if(self.transferForm.checkValidity()){
                     makeCall("POST","MakeTransfer", self.transferForm,(req) => {
                         if(req.readyState === XMLHttpRequest.DONE) {
                             let messageStr = req.responseText;
                             if(req.status === 200){
-                                pageOrchestrator.transferResult.update(true,messageStr);
-                                pageOrchestrator.refresh(messageStr);
+                                transferResult.update(true,messageStr);
+                                pageOrchestrator.refresh(accountDetails.currentAccount);
                             }
                             else if(req.status === 403){
-                                pageOrchestrator.transferResult.update(false,messageStr);
-                                pageOrchestrator.refresh(messageStr);
+                                transferResult.update(false,messageStr);
+                                pageOrchestrator.refresh(accountDetails.currentAccount);
+                                alert(messageStr);
                             }
                             else{
-                                self.errorMessageDiv.className = "";
-                                self.errorMessageDiv.textContent = messageStr;
+                                alert(messageStr);
                             }
                         }
                     });
@@ -289,11 +293,11 @@
             }, false);
 
             this.inputRecipientAccountID.addEventListener("focus", (e) => {
-                contacts.autocompleteRecipientAccountID(this.inputRecipientUserID.value, e.target.value, accountDetails.accountID);
+                contacts.autocompleteRecipientAccountID(this.inputRecipientUserID.value, e.target.value, accountDetails.currentAccount);
             }, false);
 
             this.inputRecipientAccountID.addEventListener("keyup", (e) => {
-                contacts.autocompleteRecipientAccountID(this.inputRecipientUserID.value, e.target.value, accountDetails.accountID);
+                contacts.autocompleteRecipientAccountID(this.inputRecipientUserID.value, e.target.value, accountDetails.currentAccount);
             }, false);
 
         }
@@ -333,9 +337,7 @@
             //Assigns behaviour to addContact button
             self.addContactButton.addEventListener("click", (e) => {
                 //Create form data with the accountID to add
-                let addContactForm = new FormData();
-                addContactForm.append("contactID", self.transferRecipient.accountID.textContent);
-                makeCall("POST","AddContact", addContactForm,(req) => {
+                makeCall("POST","AddContact?contactID=" + self.transferRecipient.accountID.textContent, null,(req) => {
                     if(req.readyState === XMLHttpRequest.DONE) {
                         let messageStr = req.responseText;
                         if(req.status !== 200){
@@ -422,7 +424,7 @@
                 return false;
 
             let result = false;
-            accountList.forEach( (contactID) => {
+            accountList.forEach((contactID) => {
                if(accountID === contactID)
                    result = true;
             });
@@ -540,7 +542,8 @@
                 document.getElementById("selAccID"),
                 document.getElementById("selAccName"),
                 document.getElementById("selAccBal"),
-                document.getElementById("transferList")
+                document.getElementById("transferList"),
+                document.getElementById("hiddenAccID")
             );
             accountDetails.reset();
 
