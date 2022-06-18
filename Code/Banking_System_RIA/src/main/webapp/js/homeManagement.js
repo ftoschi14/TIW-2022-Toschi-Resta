@@ -444,7 +444,7 @@
             so if the input box is only focused and no key has been pressed all the userID contained in
             recipientUserIDsList will be added
              */
-            if(!recipientUserIDsList.contains(recipientUserID)){
+            if(!this.contactsMap.has(recipientUserID)){
                 //partial suggestions
                 let suggestedRecipientUserIDs = [];
                 recipientUserIDsList.forEach(userID => {
@@ -468,9 +468,7 @@
             this.datalistRecipientAccountIDs.innerHTML = "";
 
             //Gets the userIDs in contacts to check if the recipient user ID is already matched
-            let recipientUserIDsList = this.contactsMap.keys();
-
-            if(recipientUserIDsList.contains(recipientUserID)){ //Checks if the recipient user ID is already matched
+            if(this.contactsMap.has(recipientUserID)){ //Checks if the recipient user ID is already matched
                 //Suggests the accounts of the user selected
                 let recipientAccountIDsList = this.contactsMap.get(recipientUserID);
 
