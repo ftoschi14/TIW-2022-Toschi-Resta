@@ -89,8 +89,8 @@ private Connection connection;
 
 	public void makeTransfer(BigDecimal amount, String reason, int senderid, int recipentid) throws SQLException{
 		String queryInsert = "INSERT INTO transfer(amount,reason,senderID,recipientID) VALUES (?,?,?,?)";
-		String queryUpdateRecipient = "UPDATE bank.bank_account SET balance = balance + ? WHERE id = ?" ;
-		String queryUpdateSender = "UPDATE bank.bank_account SET balance = balance - ? WHERE id = ?" ;
+		String queryUpdateRecipient = "UPDATE bank_account SET balance = balance + ? WHERE id = ?" ;
+		String queryUpdateSender = "UPDATE bank_account SET balance = balance - ? WHERE id = ?" ;
 		PreparedStatement preparedStatementInsert = null;
 		PreparedStatement preparedStatementUpdateRecipient = null;
 		PreparedStatement preparedStatementUpdateSender = null;
