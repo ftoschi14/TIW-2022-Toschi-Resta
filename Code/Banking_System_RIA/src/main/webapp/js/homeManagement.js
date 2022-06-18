@@ -447,9 +447,9 @@
             if(!this.contactsMap.has(recipientUserID)){
                 //partial suggestions
                 let suggestedRecipientUserIDs = [];
-                recipientUserIDsList.forEach(userID => {
-                    if(String(userID).startsWith(recipientUserID)){
-                        suggestedRecipientUserIDs.push(userID);
+                this.contactsMap.forEach(entry => {
+                    if(String(entry.key).startsWith(recipientUserID)){
+                        suggestedRecipientUserIDs.push(entry.key);
                     }
                 });
                 suggestedRecipientUserIDs.forEach(userID => {
@@ -469,8 +469,6 @@
 
             //Gets the userIDs in contacts to check if the recipient user ID is already matched
             if(this.contactsMap.has(recipientUserID)){ //Checks if the recipient user ID is already matched
-                //Suggests the accounts of the user selected
-                let recipientAccountIDsList = this.contactsMap.get(recipientUserID);
 
                 /*
                 If the param recipientAccountID isn't a contact shows suggestions
@@ -478,9 +476,9 @@
                 so if the input box is only focused and no key has been pressed all the userID contained in
                 recipientUserIDsList will be added
                  */
-                if(!recipientAccountIDsList.contains(recipientAccountID)){
+                if(!this.contactsMap.get(recipientUserID).contains(recipientAccountID)){
                     let suggestedRecipientAccountIDs = [];
-                    recipientAccountIDsList.forEach(accountID => {
+                    this.contactsMap.get(recipientUserID).forEach(accountID => {
                         if(String(accountID).startsWith(recipientAccountID) && accountID !== currentAccountID){ //Checks if senderID != recipientID
                             suggestedRecipientAccountIDs.push(accountID);
                         }
