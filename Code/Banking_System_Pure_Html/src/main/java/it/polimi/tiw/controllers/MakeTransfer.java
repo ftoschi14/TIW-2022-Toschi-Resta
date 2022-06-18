@@ -2,6 +2,7 @@ package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -120,7 +121,8 @@ public class MakeTransfer extends HttpServlet {
 		else {
 			try{
 				amount = new BigDecimal(amountString.replace(",","."));
-			}catch(NumberFormatException e){
+				amount = amount.setScale(2,RoundingMode.HALF_EVEN);
+			}catch(ArithmeticException | IllegalArgumentException e){
 				errorRedirect(request, response, "Incorrect amount format");
 				return;
 			}
@@ -176,6 +178,11 @@ public class MakeTransfer extends HttpServlet {
 				request.setAttribute("senderid", senderAccount.getID());
 				path =  Paths.pathToTransferFailedPage;
 
+			}
+			else if(amount.compareTo(new BigDecimal(0)) == -1){
+				request.setAttribute("failReason", "The amount must be positive");
+				request.setAttribute("senderid", senderAccount.getID());
+				path =  Paths.pathToTransferFailedPage;
 			}
 			else {
 				TransferDAO transferDAO = new TransferDAO(connection);

@@ -2,6 +2,7 @@ package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
@@ -118,7 +119,8 @@ public class MakeTransfer extends HttpServlet {
 		else {
 			try{
 				amount = new BigDecimal(amountString.replace(",","."));
-			}catch(NumberFormatException e){
+				amount = amount.setScale(2,RoundingMode.HALF_EVEN);
+			}catch(ArithmeticException | IllegalArgumentException e){
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				response.getWriter().println("Incorrect amount format");
 				return;
