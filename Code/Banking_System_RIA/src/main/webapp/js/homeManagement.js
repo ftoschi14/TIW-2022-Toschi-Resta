@@ -241,6 +241,8 @@
 
     function TransferForm(_transferForm, _transferButton){
         this.transferForm = _transferForm;
+        this.inputRecipientUserID = this.transferForm.elements["recipientID"];
+        this.inputRecipientAccountID = this.transferForm.elements["recAccountID"];
         this.transferButton = _transferButton;
         let self = this;
 
@@ -265,7 +267,27 @@
                         }
                     });
                 }
+            },false);
+
+            /*
+            Adds the listeners to the input fields which have autocomplete
+             */
+            this.inputRecipientUserID.addEventListener("focus", (e) => {
+                contacts.autocompleteRecipientUserID(e.target.value);
             });
+
+            this.inputRecipientUserID.addEventListener("keyup", (e) => {
+                contacts.autocompleteRecipientUserID(e.target.value);
+            });
+
+            this.inputRecipientAccountID.addEventListener("focus", (e) => {
+                contacts.autocompleteRecipientAccountID(e.target.value);
+            });
+
+            this.inputRecipientAccountID.addEventListener("keyup", (e) => {
+                contacts.autocompleteRecipientAccountID(e.target.value);
+            });
+
         }
 
 
@@ -430,11 +452,38 @@
             }
         }
 
-        this.autocompleteRecipientAccountID = (recipientUserID, recipientAccountID, currentAccount) => {
+        this.autocompleteRecipientAccountID = (recipientUserID, recipientAccountID, currentAccountID) => {
             //Clear suggestions
             this.datalistRecipientUserIDs.innerHTML = "";
             this.datalistRecipientAccountIDs.innerHTML = "";
 
+            //Gets the userIDs in contacts to check if the recipient user ID is already matched
+            let recipientUserIDsList = Object.keys(this.contactsMap);
+
+            if(recipientUserIDsList.contains(recipientUserID)){ //Checks if the recipient user ID is already matched
+                //Suggests the accounts of the user selected
+                let recipientAccountIDsList = this.contactsMap[recipientUserID];
+
+                /*
+                If the param recipientAccountID isn't a contact shows suggestions
+                Adds the userID to suggestions if it starts with the param given
+                so if the input box is only focused and no key has been pressed all the userID contained in
+                recipientUserIDsList will be added
+                 */
+                if(!recipientAccountIDsList.contains(recipientAccountID)){
+                    let suggestedRecipientAccountIDs = [];
+                    recipientAccountIDsList.forEach(accountID => {
+                        if(String(accountID).startsWith(recipientAccountID) && accountID != currentAccountID){ //Checks if senderID != recipientID
+                            suggestedRecipientAccountIDs.push(accountID);
+                        }
+                    });
+                    suggestedRecipientAccountIDs.forEach(accountID => {
+                        let option = document.createElement("option");
+                        option.text = accountID;
+                        option.value = accountID;
+                    });
+                }
+            }
 
         }
     }
@@ -537,7 +586,7 @@
                 accountDetails.reset();
             } else {
                 accountDetails.accountID = currentAccount;
-            	accountDetails.show();
+                accountDetails.show();
             }
             accountList.reset();
             accountList.show();
