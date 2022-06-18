@@ -191,8 +191,7 @@ public class MakeTransfer extends HttpServlet {
 
 			//prepares the response
 			JsonObject respObj = new JsonObject();
-			JsonObject transferObj = new JsonObject();
-			transferObj.add("transfer",Serializer.serialize(transfer));
+			JsonObject transferObj = Serializer.serialize(transfer);
 			transferObj.remove("senderID");
 			transferObj.remove("recipientID");
 			transferObj.remove("timestamp");
