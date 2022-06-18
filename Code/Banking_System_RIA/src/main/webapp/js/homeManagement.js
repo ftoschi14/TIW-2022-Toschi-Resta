@@ -391,12 +391,13 @@
                 self.transferStatus.textContent = "Transfer Failed";
                 self.transferFailedBox.className = "";
                 self.transferAcceptedBox.className = "hidden";
-
+                self.addContactButton.className += " hidden";
                 //sets the content div
                 self.failReason.textContent = msg;
             }
             self.transferBox.className = "transfer_msg col-md-8 mb-5 container-fluid";
             messageContainer.className = "messageContainer";
+            self.transferBox.focus();
         }
     }
 
