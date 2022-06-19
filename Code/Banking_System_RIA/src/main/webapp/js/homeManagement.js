@@ -265,15 +265,31 @@
 
     function TransferForm(_transferForm, _transferButton){
         this.transferForm = _transferForm;
+        this.inputSenderAccountID = this.transferForm.elements["senderID"];
         this.inputRecipientUserID = this.transferForm.elements["recipientUserID"];
         this.inputRecipientAccountID = this.transferForm.elements["recipientID"];
+        this.inputAmount = this.transferForm.elements["amount"];
+        
         this.transferButton = _transferButton;
         let self = this;
 
         this.registerEvents = () => {
             this.transferButton.addEventListener("click",(e) => {
                 if(self.transferForm.checkValidity()){
-                    makeCall("POST","MakeTransfer", self.transferForm,(req) => {
+	
+					//Other checks
+					if(this.inputSenderAccountID.value === this.inputRecipientAccountID.value){
+						this.transferForm.reset();
+						transferResult.update(false,"Cannot make transfer on the same account :(");
+						return;
+					}
+					else if(Number(this.inputAmount.value) > Number(accountDetails.accountBalance.textContent)){
+						this.transferForm.reset();
+						transferResult.update(false,"You can't afford this transfer :(");
+						return;
+					}else{
+						//makeCall if all checks are OK
+                    	makeCall("POST","MakeTransfer", self.transferForm,(req) => {
                         if(req.readyState === XMLHttpRequest.DONE) {
                             let messageStr = req.responseText;
                             if(req.status === 200){
@@ -282,13 +298,15 @@
                             }
                             else if(req.status === 403){
                                 transferResult.update(false,messageStr);
-                                pageOrchestrator.refresh(accountDetails.currentAccount);
                             }
                             else{
                                 alert(messageStr);
                             }
                         }
                     });
+					}
+					
+					
                 }
             },false);
 
