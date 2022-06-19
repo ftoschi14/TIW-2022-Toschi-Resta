@@ -32,6 +32,7 @@
 
         this.start = () => {
             wizard = new Wizard(submit_div, change_form_div, login_container, registration_container, login_form, register_form, message_div);
+            wizard.preventRefresh(); //Prevents forms from incorrectly refreshing the page (submit event)
             wizard.show(true);
 
             registerImplicitSubmission(login_box);
@@ -157,8 +158,19 @@
         }
 
         this.reset = () => {
-            registerForm.reset();
-            loginForm.reset();
+            this.registerForm.reset();
+            this.loginForm.reset();
+        }
+
+        this.preventRefresh = () => {
+            this.registerForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+            this.loginForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
         }
     }
 

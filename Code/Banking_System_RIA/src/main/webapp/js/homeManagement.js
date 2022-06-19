@@ -116,17 +116,22 @@
                             self.errorMessageDiv.textContent = messageStr;
                         }
                         else{
+                            self.createAccountForm.reset();
                             self.errorMessageDiv.style.visibility = "hidden";
                             let click = new Event("click");
                             self.closeButton.dispatchEvent(click);
                             pageOrchestrator.refresh(accountDetails.currentAccount);
                         }
                     }
-                });
+                }, false);
             }
         }
 
         this.registerEvents = () => {
+            this.createAccountForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
             this.createAccountForm.addEventListener("keydown", (e) => {
                 if(e.key === "Enter"){
                     e.preventDefault();
@@ -159,6 +164,7 @@
         this.transferList = _transferList;
         this.hiddenAccountInput = _hiddenAccountInput;
         this.currentAccount = undefined;
+        this.balance = 0;
 
         let self = this;
 
@@ -200,7 +206,9 @@
             //Set main account info
             self.accountName.textContent = data.account.name;
             self.accountIDSpan.textContent = data.account.ID;
-            self.accountBalance.textContent = data.account.balance;
+            self.accountBalance.textContent = String(data.account.balance).concat("€");
+
+            self.balance = data.account.balance;
 
             self.transferList.innerHTML = "";
             //Build transfer list
@@ -278,12 +286,10 @@
                 if(self.transferForm.checkValidity()){
                     //Other checks
                     if(this.inputSenderAccountID.value === this.inputRecipientAccountID.value) {
-                        this.transferForm.reset();
                         transferResult.update(false, "Cannot make a transfer on the same account :/");
                         return;
                     }
-                    if(Number(this.inputAmount.value) > Number(accountDetails.accountBalance.textContent)) { //TODO change
-                        this.transferForm.reset();
+                    if(Number(this.inputAmount.value) > Number(accountDetails.balance)) {
                         transferResult.update(false, "You can't afford this transfer");
                         return;
                     }
@@ -293,6 +299,7 @@
                             if(req.status === 200){
                                 transferResult.update(true,messageStr);
                                 pageOrchestrator.refresh(accountDetails.currentAccount);
+                                self.transferForm.reset();
                             }
                             else if(req.status === 403){
                                 transferResult.update(false,messageStr);
@@ -301,9 +308,14 @@
                                 alert(messageStr);
                             }
                         }
-                    });
+                    }, false);
                 }
             },false);
+
+            this.transferForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
 
             /*
             Adds the listeners to the input fields which have autocomplete
@@ -437,7 +449,6 @@
                         alert(req.responseText);
                     } else {
                         self.contactsMap = new Map(Object.entries(JSON.parse(req.responseText).contacts));
-                        //TODO other stuff?
                     }
 
                 }
@@ -565,14 +576,12 @@
                 document.getElementById("user_welcome"),
                 document.getElementById("personalID")
             );
-            userDetails.show();
 
             accountList = new AccountList(
                 document.getElementById("cashSum"),
                 document.getElementById("accountList"),
                 document.getElementById("alertBox")
             );
-            accountList.show();
 
             addAccount = new AddAccount(
                 document.getElementById("addAccountBtn"),
@@ -594,7 +603,6 @@
                 document.getElementById("transferList"),
                 document.getElementById("hiddenAccID")
             );
-            accountDetails.reset();
 
             transferForm = new TransferForm(
                 document.getElementById("makeTransferForm"),
@@ -647,6 +655,7 @@
         }
 
         this.refresh = (currentAccount) => {
+            userDetails.show();
             if(currentAccount === undefined) {
                 accountDetails.reset();
             } else {
