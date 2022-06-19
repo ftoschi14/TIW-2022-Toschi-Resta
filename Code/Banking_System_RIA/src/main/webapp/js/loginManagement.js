@@ -52,10 +52,11 @@
         this.repeatPasswordInput = this.registerForm.querySelector('input[name="passwordRep"]');
 
         this.show = (isLogin) => {
-            var self = this;
+            let self = this;
             let submit_button, changeform_button;
             this.submitDiv.innerHTML = ""; // Clear login button div
             this.changeFormDiv.innerHTML = ""; // Clear register button div
+            this.messageDiv.style.visibility = "hidden";
             /*
              * Button creation
              */
@@ -83,7 +84,7 @@
                                     self.messageDiv.style.visibility = "visible";
                                 }
                                 else{
-                                    var respStr = JSON.parse(req.responseText);
+                                    let respStr = JSON.parse(req.responseText);
                                     sessionStorage.setItem("id", respStr.ID);
                                     sessionStorage.setItem("name", respStr.name);
                                     sessionStorage.setItem("surname", respStr.surname);
@@ -110,7 +111,7 @@
                 // Register events for new submit button (Submit registration form)
                 submit_button.addEventListener("click", (e) => {
                     //First form validity check
-                    if(registerForm.checkValidity() === true) {
+                    if(self.registerForm.checkValidity() === true) {
                         //Check if passwords are matching
                         if(self.passwordInput.value !== self.repeatPasswordInput.value) {
                             self.messageDiv.innerHTML = "";
