@@ -154,7 +154,7 @@ public class MakeTransfer extends HttpServlet {
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-				response.getWriter().println("The user selected is not the owner of the recipient account selected");
+				response.getWriter().println("recipient user and recipient account aren't matching");
 				return;
 			}
 			else if(recipientAccount.getID() == senderAccount.getID()) {
