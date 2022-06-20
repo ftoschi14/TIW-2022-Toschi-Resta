@@ -37,8 +37,6 @@ import org.apache.commons.text.StringEscapeUtils;
 public class MakeTransfer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
-	private Pattern reasonPattern;
-	private final String reasonRegex = "^([A-Za-z\\u00C0-\\u024F])+([A-Za-z\\u00C0-\\u024F]|\\s)*";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -50,7 +48,6 @@ public class MakeTransfer extends HttpServlet {
 
     public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
-		reasonPattern = Pattern.compile(reasonRegex);
 	}
 
 
@@ -128,11 +125,10 @@ public class MakeTransfer extends HttpServlet {
 
 		}
 
-		String reason = request.getParameter("reason");
-		Matcher reasonMatcher = reasonPattern.matcher(reason);
-		if(reason == null || reason.isEmpty() || !reasonMatcher.matches()) {
+		String reason = StringEscapeUtils.escapeJava(request.getParameter("reason"));
+		if(reason == null || reason.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Please specify a valid reason (No special characters allowed)");
+			response.getWriter().println("Please specify a valid reason");
 			return;
 		}
 
