@@ -26,7 +26,7 @@ import it.polimi.tiw.utils.Serializer;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
-       
+
     public Login() {
         super();
     }
@@ -38,7 +38,7 @@ public class Login extends HttpServlet {
     public void init() throws ServletException {
     	connection = ConnectionHandler.getConnection(getServletContext());
     }
-    
+
 
 	@Override
 	public void destroy() {
@@ -48,7 +48,7 @@ public class Login extends HttpServlet {
 			exc.printStackTrace();
 		}
 	}
-    
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
@@ -57,18 +57,18 @@ public class Login extends HttpServlet {
 		//Obtain and sanitize user input
 		String email = StringEscapeUtils.escapeJava(request.getParameter("email"));
 		String password = StringEscapeUtils.escapeJava(request.getParameter("password"));
-		
+
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Please type your username and password");
 			System.out.println(request);
 			return;
 		}
-		
+
 		//Query db for credentials
 		UserDAO dao = new UserDAO(connection);
 		User user = null;
-		
+
 		try {
 			user = dao.findUser(email, password);
 		} catch (SQLException e) {
@@ -76,12 +76,15 @@ public class Login extends HttpServlet {
 			response.getWriter().println("Database connection error: Unable to check credentials");
 			return;
 		}
-		
+
 		if(user != null) {
 			request.getSession().setAttribute("user", user);
-			
-			String responseUser = Serializer.serialize(user).toString();
-			
+
+			JsonObject userObj = new JsonObject();
+			userObj = Serializer.serialize(user);
+			userObj.remove("email");
+			String responseUser = userObj.toString();
+
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
@@ -90,6 +93,6 @@ public class Login extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().println("Invalid credentials");
 		}
-		
+
 	}
 }
