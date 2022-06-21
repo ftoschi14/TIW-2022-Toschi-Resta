@@ -209,17 +209,15 @@
                 </div>
 
                 <div class="col-md-3 d-flex align-items-center">
-                  <div class="row">
+                  <div class="row justify-content-evenly">
                     <label for="reason" class="form_label">Reason:</label>
-                    <div class="input-group">
-                      <textarea class="form-control" id="reason" name="reason" maxlength=255 required></textarea>
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" id="reason" name="reason" maxlength=255 required></input>
                     </div>
+                    <button id="requestTransferBtn" class="col-md-4 btn blue-button add_account " tabindex="0">
+                      Submit
+                    </button>
                   </div>
-                </div>
-                <div class="col-md-1 d-flex align-items-center">
-                  <button id="requestTransferBtn" class="btn blue-button add_account " tabindex="0">
-                    Submit
-                  </button>
                 </div>
                  <input type="hidden" id="hiddenAccID" name="senderID" value="">
               </form>
