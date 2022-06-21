@@ -132,8 +132,6 @@ public class MakeTransfer extends HttpServlet {
 			return;
 		}
 
-		//If the recipient account exists for the recipient user selected
-		//and amount <= sender account balance make the transfer
 		String path;
 		try {
 			recipientAccount = bankAccountDAO.findAccountByID(recipientID);
@@ -148,32 +146,27 @@ public class MakeTransfer extends HttpServlet {
 				path = Paths.pathToTransferFailedPage;
 			}
 			else if(recipientAccount == null) {
-				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "The recipient account doesn't exist");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = Paths.pathToTransferFailedPage;
 
 			}
 			else if(recipientAccount.getUserID() != recipientUserID) {
-				//TO-DO REDIRECT TransactionFailed
-				request.setAttribute("failReason", "The user selected is not the owner of the recipient account selected");
+				request.setAttribute("failReason", "recipientID and recipientUserID do not match");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = Paths.pathToTransferFailedPage;
 
 			}
 			else if(recipientAccount.getID() == senderAccount.getID()) {
-				//TO-DO REDIRECT TransactionFailed
-				request.setAttribute("failReason", "sender account ID = recipient account ID");
+				request.setAttribute("failReason", "sender account ID and recipient account ID must be different");
 				request.setAttribute("senderid", senderAccount.getID());
 				path = Paths.pathToTransferFailedPage;
 
 			}
 			else if(amount.compareTo(senderAccount.getBalance()) == 1) {
-				//TO-DO REDIRECT TransactionFailed
 				request.setAttribute("failReason", "Your account can't afford this transfer");
 				request.setAttribute("senderid", senderAccount.getID());
 				path =  Paths.pathToTransferFailedPage;
-
 			}
 			else if(amount.compareTo(new BigDecimal(0)) == -1){
 				request.setAttribute("failReason", "The amount must be positive");
