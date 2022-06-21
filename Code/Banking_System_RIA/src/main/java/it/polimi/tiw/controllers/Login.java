@@ -81,6 +81,10 @@ public class Login extends HttpServlet {
 
 		if(user != null) {
 			request.getSession().setAttribute("user", user);
+			
+			//Unescape strings (No need to unescape email as it never gets sent)
+			user.setName(StringEscapeUtils.unescapeJava(user.getName()));
+			user.setSurname(StringEscapeUtils.unescapeJava(user.getSurname()));
 
 			JsonObject userObj = new JsonObject();
 			userObj = Serializer.serialize(user);

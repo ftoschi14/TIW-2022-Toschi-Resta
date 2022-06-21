@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import com.google.gson.JsonObject;
 
 import it.polimi.tiw.beans.BankAccount;
@@ -51,6 +53,10 @@ public class GetAccounts extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Unable to fetch accounts for user " + user.getID() + ": " + e.getSQLState());
 			return;
+		}
+		//Unescape strings
+		for(BankAccount account : accounts) {
+			account.setName(StringEscapeUtils.unescapeJava(account.getName()));
 		}
 		
 		JsonObject jsonAccounts = Serializer.serializeAll(accounts, "accounts");

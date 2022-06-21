@@ -186,6 +186,12 @@ public class MakeTransfer extends HttpServlet {
 		try{
 			//extracts the transfer from the database
 			Transfer transfer = transferDAO.getLastTransferByUserID(user.getID());
+			
+			//Unescape strings - TRANSFER
+			transfer.setReason(StringEscapeUtils.unescapeJava(transfer.getReason()));
+			//Unescape strings - ACCOUNTS
+			senderAccount.setName(StringEscapeUtils.unescapeJava(senderAccount.getName()));
+			recipientAccount.setName(StringEscapeUtils.unescapeJava(recipientAccount.getName()));
 
 			//prepares the response
 			JsonObject respObj = new JsonObject();

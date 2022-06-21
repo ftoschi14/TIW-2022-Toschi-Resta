@@ -96,6 +96,12 @@ public class SelectAccount extends HttpServlet {
 			response.getWriter().println("Unable to fetch transfers for this Bank account, please try again");
 			return;
 		}
+		//Unescape strings
+		bankAccount.setName(StringEscapeUtils.unescapeJava(bankAccount.getName()));
+		
+		for(Transfer transfer : transfers) {
+			transfer.setReason(StringEscapeUtils.unescapeJava(transfer.getReason()));
+		}
 
 		//Preparing the response
 		JsonObject accountObject = Serializer.serializeAll(transfers,"transfers");
