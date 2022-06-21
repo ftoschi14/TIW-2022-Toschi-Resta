@@ -96,7 +96,10 @@ public class GoToTransferConfirmed extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-
+		//Unescape strings
+		transfer.setReason(StringEscapeUtils.unescapeJava(transfer.getReason()));
+		sender.setName(StringEscapeUtils.unescapeJava(sender.getName()));
+		recipient.setName(StringEscapeUtils.unescapeJava(recipient.getName()));
 
 		//redirect to the page with the account details
 		String path = Paths.pathToTransferConfirmedPage;

@@ -85,6 +85,11 @@ public class Login extends HttpServlet {
 		String path = "";
 		
 		if(user != null) {
+			//Unescape strings
+			user.setEmail(StringEscapeUtils.unescapeJava(user.getEmail()));
+			user.setName(StringEscapeUtils.unescapeJava(user.getName()));
+			user.setSurname(StringEscapeUtils.unescapeJava(user.getSurname()));
+			
 			request.getSession().setAttribute("user", user);
 			path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
 			response.sendRedirect(path);

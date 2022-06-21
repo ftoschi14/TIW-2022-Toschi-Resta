@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -74,6 +75,9 @@ public class GoToHome extends HttpServlet {
 			errorRedirect(request, response, "No Bank accounts found associated to user: " + user.getEmail());
 			return;
 		}
+		
+		//Unescape strings
+		accounts.stream().forEach((a) -> a.setName(StringEscapeUtils.unescapeJava(a.getName())));
 		
 		//Redirect to page with Account list
 		response.setCharacterEncoding("UTF-8"); //Ensure correct accented characters visualization

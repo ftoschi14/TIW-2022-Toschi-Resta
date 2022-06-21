@@ -94,6 +94,9 @@ public class SelectAccount extends HttpServlet {
 			errorRedirect(request, response, "Unable to fetch transfers for this Bank account, please try again");
 			return;
 		}
+		//Unescape strings
+		bankAccount.setName(StringEscapeUtils.unescapeJava(bankAccount.getName()));
+		transfers.stream().forEach((t) -> t.setReason(StringEscapeUtils.unescapeJava(t.getReason())));
 		
 		//redirect to the page with the account details
 		response.setCharacterEncoding("UTF-8");
