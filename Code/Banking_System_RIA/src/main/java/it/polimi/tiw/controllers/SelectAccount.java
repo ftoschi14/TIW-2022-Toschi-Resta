@@ -98,10 +98,7 @@ public class SelectAccount extends HttpServlet {
 		}
 		//Unescape strings
 		bankAccount.setName(StringEscapeUtils.unescapeJava(bankAccount.getName()));
-		
-		for(Transfer transfer : transfers) {
-			transfer.setReason(StringEscapeUtils.unescapeJava(transfer.getReason()));
-		}
+		transfers.stream().forEach((t) -> t.setReason(StringEscapeUtils.unescapeJava(t.getReason())));
 
 		//Preparing the response
 		JsonObject accountObject = Serializer.serializeAll(transfers,"transfers");

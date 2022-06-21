@@ -55,9 +55,7 @@ public class GetAccounts extends HttpServlet {
 			return;
 		}
 		//Unescape strings
-		for(BankAccount account : accounts) {
-			account.setName(StringEscapeUtils.unescapeJava(account.getName()));
-		}
+		accounts.stream().forEach((a) -> a.setName(StringEscapeUtils.unescapeJava(a.getName())));
 		
 		JsonObject jsonAccounts = Serializer.serializeAll(accounts, "accounts");
 		
