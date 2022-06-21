@@ -485,7 +485,7 @@
             If the param given isn't a contact shows suggestions
             Adds the userID to suggestions if it starts with the param given
             so if the input box is only focused and no key has been pressed all the userID contained in
-            recipientUserIDsList will be added
+            recipientUserIDsList will be added (because the empty string is prefix of all strings)
              */
             if(!this.contactsMap.has(recipientUserID)){
                 //partial suggestions
@@ -517,7 +517,7 @@
                 If the param recipientAccountID isn't a contact shows suggestions
                 Adds the userID to suggestions if it starts with the param given
                 so if the input box is only focused and no key has been pressed all the userID contained in
-                recipientUserIDsList will be added
+                recipientUserIDsList will be added (because the empty string is prefix of all strings)
                  */
                 if(!this.contactsMap.get(recipientUserID).includes(recipientAccountID)){
                     let suggestedRecipientAccountIDs = [];
