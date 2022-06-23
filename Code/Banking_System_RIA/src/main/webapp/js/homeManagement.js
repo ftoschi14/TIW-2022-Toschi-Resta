@@ -69,13 +69,13 @@
                 accountNameDiv = document.createElement("div");
                 accountNameDiv.className = "col-md-8";
                 accountNameDiv.textContent = account.name;
-                accountDiv.appendChild(accountNameDiv);
+                row.appendChild(accountNameDiv);
                 spaceDiv = document.createElement("div");
                 spaceDiv.className = "col-md-2";
-                accountDiv.appendChild(spaceDiv);
+                row.appendChild(spaceDiv);
                 accountBalanceDiv = document.createElement("div");
                 accountBalanceDiv.className = "col-md-2 account_balance";
-                accountDiv.appendChild(accountBalanceDiv);
+                row.appendChild(accountBalanceDiv);
                 accountBalanceDiv.textContent = account.balance + "€";
 
                 //Registers event on the account div
