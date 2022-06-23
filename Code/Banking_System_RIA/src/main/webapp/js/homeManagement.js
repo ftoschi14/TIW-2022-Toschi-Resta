@@ -67,14 +67,14 @@
                 row.className = "row entry_data";
                 accountDiv.appendChild(row);
                 accountNameDiv = document.createElement("div");
-                accountNameDiv.className = "col-md-8";
+                accountNameDiv.className = "col-md-5";
                 accountNameDiv.textContent = account.name;
                 row.appendChild(accountNameDiv);
                 spaceDiv = document.createElement("div");
                 spaceDiv.className = "col-md-2";
                 row.appendChild(spaceDiv);
                 accountBalanceDiv = document.createElement("div");
-                accountBalanceDiv.className = "col-md-2 account_balance";
+                accountBalanceDiv.className = "col-md-5 account_balance";
                 row.appendChild(accountBalanceDiv);
                 accountBalanceDiv.textContent = account.balance + "€";
 
