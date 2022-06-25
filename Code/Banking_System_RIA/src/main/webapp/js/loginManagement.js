@@ -94,6 +94,9 @@
                             }
                         }, false);
                     }
+                    else{
+						self.loginForm.reportValidity(); //If not valid, notify
+                    }
 
                 },false);
 
@@ -144,6 +147,9 @@
                             }
                         }, false);
                     }
+                    else{
+						self.registerForm.reportValidity();
+					}
                 });
                 //Define ChangeForm button behaviour
                 changeform_button.textContent = "Login";

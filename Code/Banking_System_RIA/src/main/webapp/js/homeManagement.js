@@ -125,6 +125,9 @@
                     }
                 }, false);
             }
+            else{
+				self.createAccountForm.reportValidity();
+			}
         }
 
         this.registerEvents = () => {
@@ -310,6 +313,9 @@
                         }
                     }, false);
                 }
+                else{
+					self.transferForm.reportValidity();
+				}
             },false);
 
             this.transferForm.addEventListener("submit", (e) => {
