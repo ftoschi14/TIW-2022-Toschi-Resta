@@ -6,6 +6,14 @@ body {
 	height: 100%;
 	overflow: auto;
 }
+.container-fluid{
+	margin: 0;
+	padding:0;
+}
+.first_row{
+	margin: 0;
+	padding:0;
+}
 .bank_account{
 	border-radius: 0.5em;
 	background-color: rgba(0, 168, 232, 0.1);
@@ -26,7 +34,7 @@ body {
 	background-color: #50514F;
 	color: #FFFFFF;
 	position: relative;
-  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  	box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 	margin: 0;
 	max-height: 100%;
 }
