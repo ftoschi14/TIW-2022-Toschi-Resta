@@ -41,12 +41,9 @@ public class MakeTransfer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine engine;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	
     public MakeTransfer() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -118,6 +115,7 @@ public class MakeTransfer extends HttpServlet {
 		else {
 			try{
 				amount = new BigDecimal(amountString.replace(",","."));
+				// Round the amount to 2 decimal digits
 				amount = amount.setScale(2,RoundingMode.HALF_EVEN);
 			}catch(ArithmeticException | IllegalArgumentException e){
 				errorRedirect(request, response, "Incorrect amount format");
@@ -132,6 +130,10 @@ public class MakeTransfer extends HttpServlet {
 			return;
 		}
 
+		/*
+		 * If a param inserted is invalid, set path and error information then redirect at the end of 
+		 * the if/else chain.
+		 */
 		String path;
 		try {
 			recipientAccount = bankAccountDAO.findAccountByID(recipientID);
@@ -174,6 +176,7 @@ public class MakeTransfer extends HttpServlet {
 				path =  Paths.pathToTransferFailedPage;
 			}
 			else {
+				//Every parameter was correctly set, proceeding with the Transfer.
 				TransferDAO transferDAO = new TransferDAO(connection);
 				transferDAO.makeTransfer(amount, reason, senderID, recipientID);
 				path = getServletContext().getContextPath() + Paths.pathToGoToTransferConfirmedServlet;
@@ -184,7 +187,6 @@ public class MakeTransfer extends HttpServlet {
 
 		}catch (SQLException e) {
 			errorRedirect(request, response, "Unable to submit this transfer, please try again");
-			//e.printStackTrace();
 			return;
 		}
 	}
@@ -201,7 +203,13 @@ public class MakeTransfer extends HttpServlet {
 		try{
 			senderID = Integer.parseInt(StringEscapeUtils.escapeJava(req.getParameter("senderID")));
 		}catch(NumberFormatException | NullPointerException e) {
-			curruptedDataErrorRedirect(req,res,error);
+			/*
+			 * If the servlet can't parse the senderID, a redirection to the Account details page is not possible.
+			 * The user will get redirected to an error page with back path set to the Home page.
+			 * 
+			 * Can happen if the query string gets manipulated (and the senderID is omitted/invalid).
+			 */
+			corruptedDataErrorRedirect(req,res,error);
 			return;
 		}
 		req.setAttribute("bankAccountID", senderID);
@@ -213,7 +221,7 @@ public class MakeTransfer extends HttpServlet {
 		engine.process(Paths.pathToErrorPage, context, res.getWriter());
 	}
 
-	private void curruptedDataErrorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
+	private void corruptedDataErrorRedirect(HttpServletRequest req, HttpServletResponse res, String error) throws IOException {
 		ServletContext servletContext = getServletContext();
 		req.setAttribute("backPath", Paths.pathToGoToHomeServlet);
 		req.setAttribute("error", error + "; corrupted data, click the yellow button to go back to your home");

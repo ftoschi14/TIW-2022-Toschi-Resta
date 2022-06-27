@@ -128,9 +128,6 @@ public class Register extends HttpServlet {
 			return;
 		}
 
-		//HttpSession session = request.getSession();
-		//session.setAttribute("user", user);
-
 		request.setAttribute("result", "Successfully registered");
 		final WebContext context = new WebContext(request, response, getServletContext(), request.getLocale());
 

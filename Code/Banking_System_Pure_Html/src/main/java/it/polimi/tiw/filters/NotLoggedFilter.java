@@ -29,6 +29,11 @@ public class NotLoggedFilter extends HttpFilter implements Filter {
 		
 	}
 
+	/**
+	 * NOT LOGGED FILTER:
+	 * Checks if the user sending the request (to a protected page) has an active session on the server. 
+	 * If a session is found, redirect to page requested, otherwise redirect to the Login page.
+	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		
 		HttpServletRequest req = (HttpServletRequest) request;

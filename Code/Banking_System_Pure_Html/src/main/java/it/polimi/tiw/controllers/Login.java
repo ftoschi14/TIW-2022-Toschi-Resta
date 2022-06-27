@@ -65,7 +65,6 @@ public class Login extends HttpServlet {
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
 			System.out.println("email: " + request.getParameter("email") + ", password: " + request.getParameter("password"));
 			errorRedirect(request, response, "Please type your username and password");
-			//response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Please type your username and password");
 			return;
 		}
 		

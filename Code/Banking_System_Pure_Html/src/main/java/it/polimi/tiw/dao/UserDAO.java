@@ -164,9 +164,10 @@ public class UserDAO {
 		} catch (SQLException e) {
 			
 			connection.rollback();
-			throw new SQLException(e);
+			throw new SQLException(e.getMessage(), e.getSQLState(), e.getErrorCode(), e.getCause());
 			
 		} finally {
+			//Re-enable autocommit
 			connection.setAutoCommit(true);
 		}
 		return result;

@@ -99,7 +99,7 @@ private Connection connection;
 			//Disabling autocommit for atomicity
 			connection.setAutoCommit(false);
 
-			//Preparing the statement for inserting the entry
+			//Preparing the statement for insertion of entry in the Transfers
 			preparedStatementInsert = connection.prepareStatement(queryInsert);
 			preparedStatementInsert.setBigDecimal(1, amount);
 			preparedStatementInsert.setString(2, reason);
@@ -116,7 +116,7 @@ private Connection connection;
 				preparedStatementInsert.close();
 			}
 
-			//Preparing the statement for updating recipient account
+			//Preparing the statement for updating of recipient account
 			preparedStatementUpdateRecipient = connection.prepareStatement(queryUpdateRecipient);
 			preparedStatementUpdateRecipient.setBigDecimal(1,amount);
 			preparedStatementUpdateRecipient.setInt(2, recipentid);
@@ -130,7 +130,7 @@ private Connection connection;
 				preparedStatementUpdateRecipient.close();
 			}
 
-			//Preparing the statement for updating recipient account
+			//Preparing the statement for updating of sender account
 			preparedStatementUpdateSender = connection.prepareStatement(queryUpdateSender);
 			preparedStatementUpdateSender.setBigDecimal(1,amount);
 			preparedStatementUpdateSender.setInt(2, senderid);
@@ -145,10 +145,9 @@ private Connection connection;
 			}
 		} catch (SQLException e) {
 			connection.rollback();
-			//TO-DO: GESTIONE MIGLIORE DELLE ECCEZIONI
-			throw new SQLException(e);
+			throw new SQLException(e.getMessage(), e.getSQLState(), e.getErrorCode(), e.getCause());
 		} finally {
-			//Enabling autocommit
+			//Re-Enabling autocommit
 			connection.setAutoCommit(true);
 		}
 

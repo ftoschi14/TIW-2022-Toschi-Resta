@@ -61,6 +61,7 @@ public class GoToTransferConfirmed extends HttpServlet {
 		BigDecimal amount;
 		String reason;
 
+		// Fetch last transfer by the sender and display it
 		try{
 			transfer = transferDAO.getLastTransferByUserID(user.getID());
 			if(transfer == null){

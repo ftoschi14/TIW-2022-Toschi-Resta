@@ -71,6 +71,7 @@ public class BankAccountDAO {
 			//Executing the query
 			result = preparedStatement.executeQuery();
 
+			//Populate list
 			while(result.next()) {
 				account = new BankAccount();
 				account.setID(result.getInt("id"));

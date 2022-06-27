@@ -29,6 +29,11 @@ public class LoginFilter extends HttpFilter implements Filter {
 	public void destroy() {
 	}
 
+	/**
+	 * LOGIN FILTER:
+	 * Checks if the user sending the request (to an unprotected page) has an active session on the server. 
+	 * If a session is found, redirect to the Home page, otherwise carry on.
+	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		
 		HttpServletRequest req = (HttpServletRequest) request;
