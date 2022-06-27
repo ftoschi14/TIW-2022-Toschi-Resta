@@ -224,10 +224,16 @@
                 let upperRow = document.createElement("div");
                 upperRow.className = "row transfer_up";
 
-                //Sender ID
+                //Sender ID or Recipient ID
                 let left_data_UP = document.createElement("span");
                 left_data_UP.className = "col-md-4 left_data";
-                left_data_UP.textContent = "Sender ID: " + transfer.senderID;
+                if(data.account.ID === transfer.senderID){
+					left_data_UP.textContent = "Recipient ID: " + transfer.recipientID;
+				}
+				else{
+					left_data_UP.textContent = "Sender ID: " + transfer.senderID;
+				}
+                
 
                 let spacer_UP = document.createElement("div");
                 spacer_UP.className = "col-md-4";
@@ -289,7 +295,7 @@
                 if(self.transferForm.checkValidity()){
                     //Other checks
                     if(this.inputSenderAccountID.value === this.inputRecipientAccountID.value) {
-                        transferResult.update(false, "Cannot make a transfer on the same account :/");
+                        transferResult.update(false, "Cannot make a transfer on the same account");
                         return;
                     }
                     if(Number(this.inputAmount.value) > Number(accountDetails.balance)) {
