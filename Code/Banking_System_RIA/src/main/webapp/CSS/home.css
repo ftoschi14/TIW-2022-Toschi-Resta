@@ -59,7 +59,7 @@ body {
 	width: 100%;
 	padding: 3%;
 	background-color: #50514F;
-	height: 150px;
+	height: 35vh;
 }
 .accounts_list::-webkit-scrollbar-track {
   padding: 2px 0;

@@ -54,6 +54,7 @@
         this.show = (isLogin) => {
             let self = this;
             let submit_button, changeform_button;
+            //Clear buttons and message
             this.submitDiv.innerHTML = ""; // Clear login button div
             this.changeFormDiv.innerHTML = ""; // Clear register button div
             this.messageDiv.style.visibility = "hidden";
