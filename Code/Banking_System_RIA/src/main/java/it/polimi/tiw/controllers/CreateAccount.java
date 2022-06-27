@@ -91,6 +91,7 @@ public class CreateAccount extends HttpServlet {
 			return;
 		}
 		
+		//Checks if the user already has an account with that name
 		try {
 			if(bankAccountDAO.isNameTaken(user.getID(), accountName)) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -103,6 +104,7 @@ public class CreateAccount extends HttpServlet {
 			return;
 		}
 		
+		//Proceed with the account creation
 		try {
 			bankAccountDAO.createAccount(user.getID(), accountName, new BigDecimal(0));
 		} catch (SQLException e) {
@@ -111,8 +113,6 @@ public class CreateAccount extends HttpServlet {
 			return;
 		}
 
-		//String path = getServletContext().getContextPath() + Paths.pathToGoToHomeServlet;
-		//response.sendRedirect(path);
 	}
 
 }

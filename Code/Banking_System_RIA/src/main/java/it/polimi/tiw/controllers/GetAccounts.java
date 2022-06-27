@@ -57,6 +57,7 @@ public class GetAccounts extends HttpServlet {
 		//Unescape strings
 		accounts.stream().forEach((a) -> a.setName(StringEscapeUtils.unescapeJava(a.getName())));
 		
+		//Preparing the json object for the response
 		JsonObject jsonAccounts = Serializer.serializeAll(accounts, "accounts");
 		
 		response.setContentType("application/json");

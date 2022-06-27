@@ -132,8 +132,9 @@ public class MakeTransfer extends HttpServlet {
 			return;
 		}
 
-		//If the recipient account exists for the recipient user selected
-		//and amount <= sender account balance make the transfer
+		/*
+		 * Params checks before the trying to make the transfer
+		 */
 		try {
 			recipientAccount = bankAccountDAO.findAccountByID(recipientID);
 			senderAccount = bankAccountDAO.findAccountByID(senderID);
