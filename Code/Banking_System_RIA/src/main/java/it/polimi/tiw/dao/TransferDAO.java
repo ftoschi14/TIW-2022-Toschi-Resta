@@ -145,7 +145,6 @@ private Connection connection;
 			}
 		} catch (SQLException e) {
 			connection.rollback();
-			//TO-DO: GESTIONE MIGLIORE DELLE ECCEZIONI
 			throw new SQLException(e);
 		} finally {
 			//Enabling autocommit

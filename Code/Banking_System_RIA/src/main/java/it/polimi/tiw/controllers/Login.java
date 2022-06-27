@@ -63,7 +63,6 @@ public class Login extends HttpServlet {
 		if(email == null || password == null || email.isEmpty() || password.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("Please type your username and password");
-			System.out.println(request);
 			return;
 		}
 

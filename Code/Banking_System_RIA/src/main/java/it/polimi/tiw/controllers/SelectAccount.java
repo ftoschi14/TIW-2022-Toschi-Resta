@@ -68,7 +68,7 @@ public class SelectAccount extends HttpServlet {
 			return;
 		}
 
-		//if the account exists for the user obtain the details
+		//if the account exists and the user is the owner obtain the details
 		try {
 			bankAccount = bankAccountDAO.findAccountByID(bankAccountID);
 			if (bankAccount == null) {

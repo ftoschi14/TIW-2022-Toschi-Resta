@@ -28,7 +28,6 @@ public class Logout extends HttpServlet {
 		}
 
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().println("Logged out");
 	}
 
 	

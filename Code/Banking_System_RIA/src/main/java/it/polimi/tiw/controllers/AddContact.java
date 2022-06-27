@@ -72,12 +72,14 @@ public class AddContact extends HttpServlet {
 			return;
 		}
 
+		//If the user owns the account shows an error
 		if(account.getUserID() == user.getID()){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().println("You can't add your account as a contact!");
 			return;
 		}
 		
+		//Adds the account to contacts
 		try{
 			contactDAO.insertContact(user.getID(), account.getID());
 		}catch (SQLException e) {

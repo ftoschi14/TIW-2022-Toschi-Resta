@@ -18,8 +18,7 @@ public class ContactsDAO{
   public Contacts getContactsByUserID(int userID) throws SQLException{
     Contacts contacts = new Contacts();
     contacts.setOwnerID(userID);
-    
-    //String query = "SELECT ownerID, accountID FROM contacts WHERE ownerID = ?";
+
     String query = "SELECT b.userID, c.accountID FROM contacts AS c JOIN bank_account AS b ON c.accountID = b.ID WHERE c.ownerID = ?";
 
     ResultSet result = null;
