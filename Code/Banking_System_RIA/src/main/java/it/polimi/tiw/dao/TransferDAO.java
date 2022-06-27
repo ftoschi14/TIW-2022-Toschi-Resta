@@ -145,7 +145,7 @@ private Connection connection;
 			}
 		} catch (SQLException e) {
 			connection.rollback();
-			throw new SQLException(e);
+			throw new SQLException(e.getMessage(), e.getSQLState(), e.getErrorCode(), e.getCause());
 		} finally {
 			//Enabling autocommit
 			connection.setAutoCommit(true);
