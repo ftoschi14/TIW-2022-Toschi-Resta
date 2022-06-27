@@ -47,3 +47,9 @@
 .title{
 	color: #084b83;
 }
+.form-control{
+	border: 1px solid #084b83;
+}
+.form-control:focus{
+	border: 1px solid #00a8e8;
+}
