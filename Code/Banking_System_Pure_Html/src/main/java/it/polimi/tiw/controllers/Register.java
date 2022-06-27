@@ -124,7 +124,7 @@ public class Register extends HttpServlet {
 		try {
 			userDAO.registerUser(email, password, name, surname);
 		} catch (SQLException e) {
-			errorRedirect(request, response, "Error during account creation: " + e.getSQLState() + "\n please try again");
+			response.getWriter().println("Error during account creation: \"" + e.getMessage() + "\"  -  please try again");
 			return;
 		}
 
