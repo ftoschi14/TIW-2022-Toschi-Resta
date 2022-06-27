@@ -499,22 +499,21 @@
             so if the input box is only focused and no key has been pressed all the userID contained in
             recipientUserIDsList will be added (because the empty string is prefix of all strings)
              */
-            if(!this.contactsMap.has(recipientUserID)){
-                //partial suggestions
-                let suggestedRecipientUserIDs = [];
-                this.contactsMap.forEach((key) => {
-                    if(String(key).startsWith(recipientUserID)){
-                        suggestedRecipientUserIDs.push(key);
-                    }
-                });
-                suggestedRecipientUserIDs.forEach(userID => {
-                    let option = document.createElement("option");
-                    option.text = userID;
-                    option.value = userID;
-                    this.datalistRecipientUserIDs.appendChild(option);
-                });
+            //partial suggestions
+            let suggestedRecipientUserIDs = [];
+            this.contactsMap.forEach((_value, key) => {
+				console.log(key);
+                if(String(key).startsWith(recipientUserID)){
+                    suggestedRecipientUserIDs.push(key);
+                }
+            });
+            suggestedRecipientUserIDs.forEach(userID => {
+                let option = document.createElement("option");
+                option.text = userID;
+                option.value = userID;
+                this.datalistRecipientUserIDs.appendChild(option);
+            });
 
-            }
         }
 
         this.autocompleteRecipientAccountID = (recipientUserID, recipientAccountID, currentAccountID) => {
@@ -531,20 +530,18 @@
                 so if the input box is only focused and no key has been pressed all the userID contained in
                 recipientUserIDsList will be added (because the empty string is prefix of all strings)
                  */
-                if(!this.contactsMap.get(recipientUserID).includes(recipientAccountID)){
-                    let suggestedRecipientAccountIDs = [];
-                    this.contactsMap.get(recipientUserID).forEach(accountID => {
-                        if(String(accountID).startsWith(recipientAccountID) && accountID !== currentAccountID){ //Checks if senderID != recipientID
-                            suggestedRecipientAccountIDs.push(accountID);
-                        }
-                    });
-                    suggestedRecipientAccountIDs.forEach(accountID => {
-                        let option = document.createElement("option");
-                        option.text = accountID;
-                        option.value = accountID;
-                        this.datalistRecipientAccountIDs.appendChild(option);
-                    });
-                }
+                let suggestedRecipientAccountIDs = [];
+                this.contactsMap.get(recipientUserID).forEach(accountID => {
+                    if(String(accountID).startsWith(recipientAccountID) && accountID !== currentAccountID){ //Checks if senderID != recipientID
+                        suggestedRecipientAccountIDs.push(accountID);
+                    }
+                });
+                suggestedRecipientAccountIDs.forEach(accountID => {
+                    let option = document.createElement("option");
+                    option.text = accountID;
+                    option.value = accountID;
+                    this.datalistRecipientAccountIDs.appendChild(option);
+                });
             }
 
         }
