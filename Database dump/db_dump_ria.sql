@@ -128,7 +128,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'sara.resta@mail.polimi.it','password001','Sara','Resta'),(2,'federico.toschi@mail.polimi.it','password002','Federico','Toschi'),(3,'user3@mail.polimi.it','password003','User','3'),(4,'user4@mail.polimi.it','password004','User','4'),(5,'user5@mail.polimi.it','password005','User','5'),(6,'user6@mail.polimi.it','password006','User','6'),(7,'user7@mail.polimi.it','password007','User','7'),(8,'user8i@mail.polimi.it','password008','User','8'),(9,'user9@mail.polimi.it','password009','User','9'),(10,'user10@mail.polimi.it','password010','User','10'),(11,'user11@mail.polimi.it','password011','User','11'),(12,'user12@mail.polimi.it','password012','User','12');
+INSERT INTO `user` VALUES (1,'user1@mail.polimi.it','password001','User','1'),(2,'uner2@mail.polimi.it','password002','User','2'),(3,'user3@mail.polimi.it','password003','User','3'),(4,'user4@mail.polimi.it','password004','User','4'),(5,'user5@mail.polimi.it','password005','User','5'),(6,'user6@mail.polimi.it','password006','User','6'),(7,'user7@mail.polimi.it','password007','User','7'),(8,'user8i@mail.polimi.it','password008','User','8'),(9,'user9@mail.polimi.it','password009','User','9'),(10,'user10@mail.polimi.it','password010','User','10'),(11,'user11@mail.polimi.it','password011','User','11'),(12,'user12@mail.polimi.it','password012','User','12');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
